@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Dashboard - SNS
+{% endblock %}
+
+
+{% block content %}
+
+<section class="dashboard-header">
+
+    <div>
+
+        <h1>
+            Welcome, {{ username }}
+        </h1>
+
+        <p>
+            Manage your notes from your dashboard.
+        </p>
+
+    </div>
+
+
+    <a
+        href="/notes/add"
+        class="btn btn-primary"
+    >
+        + Add Note
+    </a>
+
+</section>
+
+
+<section class="stats">
+
+    <div class="stat-card">
+
+        <h3>
+            {{ total_notes }}
+        </h3>
+
+        <p>
+            Total Notes
+        </p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h3>
+            {{ total_files }}
+        </h3>
+
+        <p>
+            Uploaded Files
+        </p>
+
+    </div>
+
+</section>
+
+
+<section>
+
+    <h2>
+        Recent Notes
+    </h2>
+
+
+    {% if notes %}
+
+        <div class="notes-grid">
+
+            {% for note in notes %}
+
+                <div class="note-card">
+
+                    <h3>
+                        {{ note.title }}
+                    </h3>
+
+                    <p>
+                        {{ note.content }}
+                    </p>
+
+                    <div class="note-actions">
+
+                        <a
+                            href="/notes/{{ note.id }}"
+                            class="btn btn-secondary"
+                        >
+                            View
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h3>
+                No Notes Yet
+            </h3>
+
+            <p>
+                Create your first note to get started.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

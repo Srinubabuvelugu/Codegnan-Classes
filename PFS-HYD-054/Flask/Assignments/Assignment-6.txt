@@ -1,0 +1,1 @@
+Create users, notes, file_data tables for SNM project.

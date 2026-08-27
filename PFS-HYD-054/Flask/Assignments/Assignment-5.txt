@@ -1,0 +1,1 @@
+Collect signup data from signup form having fields (username, email, address, password)

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+My Notes - SNS
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>
+        My Notes
+    </h1>
+
+    <a
+        href="/notes/add"
+        class="btn btn-primary"
+    >
+        Add Note
+    </a>
+
+</div>
+
+
+{% if notes %}
+
+<div class="notes-grid">
+
+    {% for note in notes %}
+
+    <div class="note-card">
+
+        <h3>
+            {{ note.title }}
+        </h3>
+
+        <p>
+            {{ note.content }}
+        </p>
+
+
+        <div class="note-actions">
+
+            <a
+                href="/notes/{{ note.id }}"
+                class="btn btn-secondary"
+            >
+                View
+            </a>
+
+            <a
+                href="/notes/{{ note.id }}/edit"
+                class="btn btn-edit"
+            >
+                Edit
+            </a>
+
+            <a
+                href="/notes/{{ note.id }}/delete"
+                class="btn btn-danger"
+            >
+                Delete
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+{% else %}
+
+<div class="empty-state">
+
+    <h2>
+        No Notes Found
+    </h2>
+
+    <p>
+        Start by creating your first note.
+    </p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

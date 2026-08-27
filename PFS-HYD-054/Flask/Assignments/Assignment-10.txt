@@ -1,0 +1,1 @@
+Read all records, one record based on email address and id from users table of SNM project

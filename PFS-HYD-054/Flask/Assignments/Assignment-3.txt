@@ -1,0 +1,7 @@
+Create a dynamic route for reading subject and subject marks (float) 
+Create a dynamic route for generating a uuid for a subject 
+Create a static route for '/' and '/home' to render resume.html
+
+@app.route('/')
+@app.route('/home')
+def home():

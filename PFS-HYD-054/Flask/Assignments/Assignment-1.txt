@@ -1,0 +1,1 @@
+Create multiple routes in Flask to display name, skills, batchno

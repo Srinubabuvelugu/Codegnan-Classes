@@ -1,0 +1,4 @@
+Display 'A' grade if marks percentage is greater than 80 and so on.
+Display list of 10 student records 
+  where each record is holding
+   name, percentage of marks, id

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Project - SNM</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Welcome to index page</h1>
+    {% if d %}
+        <h3>{{d}} is received</h3>
+        {% if d>20 %}
+            <p>{{d}} is greater than 20</p>
+        {% elif d<20 %}
+            <p>{{d}} is less than 20</p>
+        {% else %}
+            <p>{{d}} is equal to 20</p>
+        {% endif %}
+    {% else %}
+        <h3>d is not received</h3>
+    {% endif %}
+    {% if a %}
+        {% for student in a %}
+            <p>{{student.id}} - {{student.name}}</p>
+        {%endfor%}
+    {% endif %}
+{% endblock %}

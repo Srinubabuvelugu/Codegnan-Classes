@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+Profile - SNS
+{% endblock %}
+
+{% block navmenu %}
+<a href="{{ url_for('logout') }}">Logout</a>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-card">
+
+    <h2>My Profile</h2>
+
+    <div class="profile-field">
+        <label>Name</label>
+        <p>{{ name }}</p>
+    </div>
+
+    <div class="profile-field">
+        <label>Email</label>
+        <p>{{ email }}</p>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}" class="back-btn">
+        Back
+    </a>
+
+</div>
+
+{% endblock %}

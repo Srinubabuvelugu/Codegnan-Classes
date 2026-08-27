@@ -1,0 +1,1 @@
+Clone the SNM Template from https://github.com/maddydevcg/SNM-Project-Template

@@ -1,0 +1,3 @@
+Create a navigation to navigate from home to about page using url_for
+Create a GET request to get name, batchno using postman
+Create a POST request to fetch name, skills using json in postman
