@@ -372,6 +372,12 @@ def login():
         else:
             return redirect('/login')
 
+
+# forgot password route
+@app.route("/forgot-password")
+def forgot_password():
+    pass
+
         
 @app.route('/dashboard')
 def dashboard():
