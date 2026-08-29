@@ -1,4 +1,5 @@
-from config import Config
+from config import Config, emailTemplates
+
 import mysql.connector as sql
 import random
 import smtplib
@@ -6,10 +7,12 @@ from email.message import EmailMessage
 from flask import Flask,render_template,redirect,url_for,request,session
 import bcrypt
 
-
+from itsdangerous import URLSafeTimedSerializer, BadSignature, TimedSerializer
 
 app=Flask(__name__)
 app.secret_key="CodeGn@n123"
+
+serializer = URLSafeTimedSerializer(app.secret_key)
 
 DBConfig=Config()
 from_email="dantavaidya@gmail.com" #DBConfig.from_email
@@ -93,7 +96,7 @@ def readUserRecordByEmail(user_data):
     email=user_data['email']
     
     connection=getConnectionWithDB()
-    print(connection)
+    # print(connection)
     if connection=='Connection Failed':
         return False
     else:
@@ -243,6 +246,32 @@ def sendOTPviaEmail(to_email,otp):
         server.send_message(message)
     return True
 
+
+def SendEmail(subject:str, to_email:str,body:str):
+    message=EmailMessage()
+    message['Subject']=subject
+    message['From']=from_email
+    message['To']=to_email
+    message.set_content(body)
+    # print(message)
+    with smtplib.SMTP("smtp.gmail.com",587) as server:
+        print(server)
+        server.starttls()
+        server.login(from_email,email_app_password)
+        server.send_message(message)
+    return True
+
+
+
+
+
+
+
+
+
+
+
+
 def validateDataForRegister(user_data):
     errors=[]
     name=user_data['name']
@@ -322,8 +351,11 @@ def register():
                     session['username']=email
                     session['otp']=OTP
                     print(1)
-                    sendOTPviaEmail(email,OTP)
-                    print(2)
+                    SendEmail(subject="Verify Your Registration – Notes Management",
+                              to_email=email,
+                              body = emailTemplates.send_otp_template(username= name, otp =OTP)
+                    )
+                                               
                     return redirect('/verify')
                     #return render_template('register.html',res='Registration Successfully Completed')
                 else:
@@ -373,12 +405,51 @@ def login():
             return redirect('/login')
 
 
+
+# reset password token generation
+def resetPasswordTokenGenerate(email):
+    token = serializer.dump(
+        email,
+        salt="reset-password"
+    )
+    return token
+
+
 # forgot password route
-@app.route("/forgot-password")
+@app.route("/forgot_password",methods = ['GET','POST'])
 def forgot_password():
+    if request.method == 'GET':
+        return render_template("forgot_password.html")
+    if request.method == 'POST':
+        email = request.form.get('email', None)
+
+        # check weather the email exists in database or not
+        data = {'email':email}
+        record = readUserRecordByEmail(user_data=data)
+        if 'id' in record:
+            # send email
+            pass
+
+
+
+        # generate token
+        token = resetPasswordTokenGenerate(email=email)
+        # reset password url 
+        reset_url = url_for('reset_password', token=token)
+
+
+# reset password route
+@app.route('/reset-password/<string:token>', methods = ['GET', 'POST'])
+def reset_password(token):
     pass
 
-        
+
+
+
+
+
+
+
 @app.route('/dashboard')
 def dashboard():
     # if user data not in session redirect to login page

@@ -11,9 +11,9 @@ Our goal is not just to learn Flask, but to understand how real-world web applic
 
 # 👨‍🏫 Trainer
 
-**Madhu Parvathaneni**
+**Srinu Babu Velug**
 
-CTO | Solution Architect | Python Full Stack Trainer
+Python Full Stack Trainer
 
 ---
 
@@ -312,5 +312,5 @@ Every day you practice is one step closer to becoming a professional Full Stack 
 
 Happy Learning!
 
-**— Madhu Parvathaneni**, 
+**— Srinu Babu Velugu**, 
 **Codegnan IT Solutions**
