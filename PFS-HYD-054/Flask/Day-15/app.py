@@ -408,7 +408,7 @@ def login():
 
 # reset password token generation
 def resetPasswordTokenGenerate(email):
-    token = serializer.dump(
+    token = serializer.dumps(
         email,
         salt="reset-password"
     )
@@ -428,20 +428,70 @@ def forgot_password():
         record = readUserRecordByEmail(user_data=data)
         if 'id' in record:
             # send email
-            pass
+            
+            # generate token
+            token = resetPasswordTokenGenerate(email=email)
+            # reset password url 
+            reset_url = url_for('reset_password', token=token, _external = True)
+            email_status = SendEmail(
+                subject="Reset Password -SNS",
+                to_email=email,
+                body=emailTemplates.send_reset_password_template(
+                    username = record['name'],
+                    url = reset_url,
+                    time = 10
+                ))
+            if email_status:
+                return render_template("forgot_password.html", msg = "Email send to you mail")
+            else:
+                return render_template("forgot_password.html", error = "Unable to send email")
+        else:       
+            return render_template("forgot_password.html", error = "Enter Valied email")
 
-
-
-        # generate token
-        token = resetPasswordTokenGenerate(email=email)
-        # reset password url 
-        reset_url = url_for('reset_password', token=token)
+# validate token
+def validateToken(token):
+    try:
+        data = serializer.loads(
+            token,
+            salt = "reset-password",
+            max_age=600
+        )
+        return data
+    except BadSignature: # if token changed
+        return "Invalid"
+    except TimedSerializer: # if token time out
+        return "Timeout"
 
 
 # reset password route
 @app.route('/reset-password/<string:token>', methods = ['GET', 'POST'])
 def reset_password(token):
-    pass
+    token_status = validateToken(token=token)
+    if token_status == 'Invalid':
+        return render_template('fotgot_password.html',error = "Invalid URL")
+    elif token_status == "Timeout":
+        return render_template("forgot_password.html", error = "URL Expired")
+    email = token_status
+    if request.method == 'GET':
+        return render_template('reset_password.html', token=token)
+    # post request
+    if request.method == 'POST':
+        new_password = request.form.get('new_password')
+        conform_password = request.form.get('conform_password')
+        if new_password == conform_password:
+            # generate hash password
+            password_hash = generateHash(text=new_password)
+            # update password in database
+            data = {'email':email, 'new_password':password_hash}
+            update = updatePasswordByIdorEmail(user_data=data)
+            if update:
+                # redirect to login page
+                return redirect('/login')
+            else:
+                return render_template('reset_password.html')
+        else:
+            return render_template('reset_password.html', error = "Password Miss match")
+    
 
 
 
