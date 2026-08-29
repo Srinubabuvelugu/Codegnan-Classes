@@ -533,6 +533,22 @@ def profile():
     return render_template("profile.html", email = email, name=name)
 
 
+# ===============================================================
+#                         Notes Routes
+# =================================================================
+@app.route('/notes', methods =['GET', 'POST'])
+def addnotes():
+    if "id" not in session:
+        return redirect('/login')
+    if request.method == 'GET':
+        return render_template('notes.html')
+
+
+
+
+
+
+
 # logout route
 @app.route("/logout", methods = ['GET'])
 def logout():
