@@ -5,6 +5,13 @@
 My Notes - SNS
 {% endblock %}
 
+{% block navmenu %}
+    <a href="#">Files</a>
+    <a href="{{ url_for('mynotes') }}">Notes</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}
+
 
 {% block content %}
 
@@ -54,21 +61,21 @@ My Notes - SNS
         <div class="note-actions">
 
             <a
-                href="/notes/{{ note.id }}"
+                href="/notes/view/{{ note.id }}"
                 class="btn btn-secondary"
             >
                 View
             </a>
 
             <a
-                href="/notes/{{ note.id }}/edit"
+                href="/notes/edit/{{ note.id }}"
                 class="btn btn-edit"
             >
                 Edit
             </a>
 
             <a
-                href="/notes/{{ note.id }}/delete"
+                href="/notes/delete/{{ note.id }}"
                 class="btn btn-danger"
             >
                 Delete
