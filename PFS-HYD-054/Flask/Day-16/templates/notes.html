@@ -6,7 +6,8 @@ My Notes - SNS
 {% endblock %}
 
 {% block navmenu %}
-    <a href="#">Files</a>
+    <a href="{{ url_for('dashboard') }}">dashboard</a>
+    <a href="{{ url_for('myfiles') }}">Files</a>
     <a href="{{ url_for('mynotes') }}">Notes</a>
     <a href="{{ url_for('profile') }}">Profile</a>
     <a href="{{ url_for('logout') }}">Logout</a>

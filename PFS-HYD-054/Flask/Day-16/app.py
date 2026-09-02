@@ -704,14 +704,34 @@ def edit_notes(note_id):
         status,msg = updateNotesById(title=title,
                                      content=content,
                                      notes_id=note_id)
+        _, notes = getNotesByUserId(user_id=session['id'])
         if status == True:
-            return render_template('notes.html', msg = msg)
+            return render_template('notes.html', msg = msg, notes = notes)
         else:
-            return render_template('notes.html', err = msg)
+            return render_template('notes.html', err = msg, notes=notes)
+        
 
     
 
     
+# delete notes by id
+def deleteNotesById(notes_id):
+    try:
+        connection=getConnectionWithDB()
+        if connection=='Connection Failed':
+            return False, "Database connection Failed"
+        else:
+            cursor=connection.cursor()
+            delete_notes_by_id = """delete from notes
+                                where id = %s;"""
+            cursor.execute(delete_notes_by_id,(notes_id,))
+            connection.commit()
+            cursor.close()
+            connection.close()
+            return True, "Notes Deleted"
+    except Exception as e:
+        return False, f"Execption raised in update notes: {e}"
+
 
 
 
@@ -720,9 +740,23 @@ def edit_notes(note_id):
 @app.route("/notes/delete/<int:note_id>", methods = ['GET', 'POST'])
 def delete_notes(note_id):
     pass
-    # POST request
+    # get request
     # delete notes from database based on note_id
+    status, msg = deleteNotesById(notes_id=note_id)
+    _, notes = getNotesByUserId(user_id=session['id'])
+    if status == True:
 
+        return render_template('notes.html', msg = msg, notes = notes)
+    else:
+        return render_template('notes.html', err = msg, notes=notes)
+
+
+# =======================================================
+#                       Files
+# =======================================================
+@app.route('/files')
+def myfiles():
+    pass
 
 
 
