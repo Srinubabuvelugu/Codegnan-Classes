@@ -622,15 +622,59 @@ def add_notes():
             return render_template('notes.html',err=msg)
 
 
-
-
+# get notes by id
+def getNotesById(notes_id):
+    try:
+        connection=getConnectionWithDB()
+        if connection=='Connection Failed':
+            return False, "Database connection Failed"
+        else:
+            cursor=connection.cursor(dictionary=True)
+            get_notes_by_id = """select title, content from notes
+                                    where id = %s;"""
+            cursor.execute(get_notes_by_id,(notes_id,))
+            notes = cursor.fetchone()
+            cursor.close()
+            connection.close()
+            return True, notes
+    except Exception as e:
+        return False, f"Execption raised in view notes: {e}"
 
 # viwe notes route
 @app.route("/notes/view/<int:note_id>")
 def view_notes(note_id):
-    pass
+    
     # get request
     # get notes from database based on note_id
+    status, notes = getNotesById(notes_id=note_id)
+    if status == True:
+        title = notes['title']
+        content = notes['content']
+        return render_template('viewnotes.html',
+                            title=title, 
+                            content=content)
+    else:
+        return render_template('notes.html',err=notes)
+
+
+
+# update notes by id
+def updateNotesById(notes_id:int, title:str, content:str):
+    try:
+        connection=getConnectionWithDB()
+        if connection=='Connection Failed':
+            return False, "Database connection Failed"
+        else:
+            cursor=connection.cursor()
+            update_notes_by_id = """update notes set title = %s, content = %s
+                                where id = %s;"""
+            cursor.execute(update_notes_by_id,(title, content, notes_id))
+            connection.commit()
+            cursor.close()
+            connection.close()
+            return True, "Notes Updated"
+    except Exception as e:
+        return False, f"Execption raised in update notes: {e}"
 
 
 
@@ -640,9 +684,34 @@ def edit_notes(note_id):
     pass
     # get request
     # get notes from database based on note_id
+    if request.method == 'GET':
+        status, notes = getNotesById(notes_id=note_id)
+        if status == True:
+            return render_template('updatenotes.html',
+                                   title = notes['title'],
+                                   content = notes['content'],
+                                   notes_id = note_id)
+        else:
+            return render_template('notes.html',err=notes)
 
     ## Post request 
-    # update notes content in database as per the notes id
+    
+    if request.method == 'POST':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        print(title, content)
+        # update notes content in database as per the notes id
+        status,msg = updateNotesById(title=title,
+                                     content=content,
+                                     notes_id=note_id)
+        if status == True:
+            return render_template('notes.html', msg = msg)
+        else:
+            return render_template('notes.html', err = msg)
+
+    
+
+    
 
 
 
