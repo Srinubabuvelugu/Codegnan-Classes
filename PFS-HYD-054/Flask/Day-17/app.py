@@ -6,6 +6,10 @@ import smtplib
 from email.message import EmailMessage
 from flask import Flask,render_template,redirect,url_for,request,session
 import bcrypt
+from werkzeug.utils import secure_filename
+import os
+import sys
+
 
 from itsdangerous import URLSafeTimedSerializer, BadSignature, TimedSerializer
 
@@ -18,6 +22,12 @@ DBConfig=Config()
 from_email="dantavaidya@gmail.com" #DBConfig.from_email
 email_app_password= "yfaqlvniiahfgdsn" #DBConfig.email_app_password
 
+
+
+
+# create upload folder if not exists
+if not os.path.exists('upload'):
+    os.mkdir('upload')
 
 # Encode - Str to Bytes
 # Decode - Bytes to Str
@@ -643,6 +653,8 @@ def getNotesById(notes_id):
 # viwe notes route
 @app.route("/notes/view/<int:note_id>")
 def view_notes(note_id):
+    if "id" not in session:
+        return redirect('/login')
     
     # get request
     # get notes from database based on note_id
@@ -681,7 +693,9 @@ def updateNotesById(notes_id:int, title:str, content:str):
 # edit notes route
 @app.route("/notes/edit/<int:note_id>",methods = ['GET', 'POST'])
 def edit_notes(note_id):
-    pass
+
+    if "id" not in session:
+        return redirect('/login')
     # get request
     # get notes from database based on note_id
     if request.method == 'GET':
@@ -739,7 +753,8 @@ def deleteNotesById(notes_id):
 # delete notes route
 @app.route("/notes/delete/<int:note_id>", methods = ['GET', 'POST'])
 def delete_notes(note_id):
-    pass
+    if "id" not in session:
+        return redirect('/login')
     # get request
     # delete notes from database based on note_id
     status, msg = deleteNotesById(notes_id=note_id)
@@ -756,7 +771,130 @@ def delete_notes(note_id):
 # =======================================================
 @app.route('/files')
 def myfiles():
+    if "id" not in session:
+        return redirect('/login')
+
+    if request.method == 'GET':
+        return render_template('files.html')
+
+
+# check file exist in allowed types
+def checkFileAllowed(filename):
+    allow_types = ['pdf','doc','jpeg','jpg','png',"svg",'csv', 'xml', 'txt']
+    if "." in filename and filename.split('.')[1] in allow_types:
+        return True
+    else:
+        return False
+
+# check duplicate file
+def checkFileDuplicate(userid, filename):
+    try:
+        connection=getConnectionWithDB()
+        if connection=='Connection Failed':
+            return False, "Database connection Failed"
+        else:
+            cursor=connection.cursor()
+            check_file_duplicate = """select * from file_data
+                                    where stored_name =%s and user_id = %s;"""
+            cursor.execute(check_file_duplicate,(filename,userid))
+            record = cursor.fetchone()
+            cursor.close()
+            connection.close()
+            if record:
+                return False, "Duplicate File"
+            else:
+                return True, "Not Duplicate file"
+    except Exception as e:
+        return False, f"Execption raised in update notes: {e}"
+
+
+# insert file into table 
+# delete notes by id
+def UploadFileInDB(userid, filename, stored_name, type, size,path):
+    try:
+        connection=getConnectionWithDB()
+        if connection=='Connection Failed':
+            return False, "Database connection Failed"
+        else:
+            cursor=connection.cursor()
+            insert_filedata_query = """insert into file_data(user_id, original_name,stored_name, mime_type,size_bytes, stored_path)
+                                    values(%s, %s, %s, %s,%s, %s);"""
+            cursor.execute(insert_filedata_query,(userid, filename, stored_name,type, size, path))
+            connection.commit()
+            cursor.close()
+            connection.close()
+            return True, "File Uploaded"
+    except Exception as e:
+        return False, f"Execption raised in update notes: {e}"
+
+
+
+# upload file route
+@app.route('/files/upload', methods=['GET','POST'])
+def uploadFile():
+    if "id" not in session:
+        return redirect('/login')
+    if request.method=='GET':
+        return render_template('uploadfile.html')
+    #post request
+    if request.method == 'POST':
+        # get file from form
+        file = request.files.get('file')
+        if file and file.filename != "":
+            # check file in allowed types
+            filename = file.filename
+            if checkFileAllowed(filename=filename):
+                # check file is duplicate or not
+            
+                filename_secure = secure_filename(filename)
+                file.save('/upload')
+                file_size = os.path.getsize(filename=f"upload/{filename}")
+                file_type = filename.split('.')[1]
+                # insert file metadata in database
+
+
+
+                # get file meta data
+        
+        # give secure file name 
+        # store filemeta data in database
+        # redirect to files dashboard
+
+
+
+
+
+
+
+
+
+
+
+
+
+# view file 
+@app.route('/files/view/<file_id>')
+def  viewFile(file_id):
+    if "id" not in session:
+        return redirect('/login')
     pass
+
+
+# download file 
+@app.route('/files/download/<file_id>')
+def  downloadFile(file_id):
+    if "id" not in session:
+        return redirect('/login')
+    pass
+
+
+# Delete file 
+@app.route('/files/delete/<file_id>')
+def  deleteFile(file_id):
+    if "id" not in session:
+        return redirect('/login')
+    pass
+
 
 
 
