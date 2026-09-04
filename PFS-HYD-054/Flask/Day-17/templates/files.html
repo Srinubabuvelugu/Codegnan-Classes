@@ -32,6 +32,22 @@ My Files - SNS
 </div>
 
 <div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category == "msg" %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% elif category == "err" %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+</div>
+
+<div>
     {% if msg %}
        <p style="color: green;">{{ msg }}</p>
     {% endif %}
