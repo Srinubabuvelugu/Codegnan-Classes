@@ -4,7 +4,7 @@ import mysql.connector as sql
 import random
 import smtplib
 from email.message import EmailMessage
-from flask import Flask,render_template,redirect,url_for,request,session, flash
+from flask import Flask,render_template,redirect,url_for,request,session, flash, send_file
 import bcrypt
 from werkzeug.utils import secure_filename
 import os
@@ -769,13 +769,48 @@ def delete_notes(note_id):
 # =======================================================
 #                       Files
 # =======================================================
+# delete notes by id
+
+def GetFilesbyUserid(userid):
+    try:
+        connection=getConnectionWithDB()
+        if connection=='Connection Failed':
+            return False, "Database connection Failed"
+        else:
+            cursor=connection.cursor(dictionary=True)
+            get_file_by_userid = """select * from file_data
+                                    where user_id = %s;"""
+            cursor.execute(get_file_by_userid,(userid,))
+            files = cursor.fetchall()
+            cursor.close()
+            connection.close()
+            return True, files
+    except Exception as e:
+        return False, f"Execption raised in upload Files: {e}"
+
+
+
+
+
+
+
 @app.route('/files')
 def myfiles():
     if "id" not in session:
         return redirect('/login')
 
     if request.method == 'GET':
-        return render_template('files.html')
+        # get all files
+        userid = session['id']
+        status, files = GetFilesbyUserid(userid=userid)
+        print(files)
+        if status== True:
+            return render_template('files.html', files = files)
+        else:
+            msg = files
+            flash(msg, "err")
+            return render_template('files.html')
+            
 
 
 # check file exist in allowed types
@@ -897,18 +932,53 @@ def uploadFile():
 
 
 
+#get file metadata by file_id
+def getFileByFileId(fileid):
+    try:
+        connection=getConnectionWithDB()
+        if connection=='Connection Failed':
+            return False, "Database connection Failed"
+        else:
+            cursor=connection.cursor(dictionary=True)
+            get_file_by_userid = """select * from file_data
+                                    where id = %s;"""
+            cursor.execute(get_file_by_userid,(fileid,))
+            file = cursor.fetchone()
+            cursor.close()
+            connection.close()
+            return True, file
+    except Exception as e:
+        return False, f"Execption raised in view Files: {e}"   
 
 
 
-
-
+import mimetypes
 
 # view file 
 @app.route('/files/view/<file_id>')
 def  viewFile(file_id):
     if "id" not in session:
         return redirect('/login')
-    pass
+
+    if request.method == 'GET':
+        # get file by file_id
+        status, file = getFileByFileId(fileid=file_id)
+        if status == True:
+            root_path=app.root_path
+            print(root_path)
+            file_path = os.path.join(root_path,file['storage_path'].lstrip('/'))
+            print("FilePAth:",file_path)
+            mime_type, _ = mimetypes.guess_type(file_path)
+
+            return send_file(
+                file_path,
+                mimetype='application/pdf',
+                as_attachment=False
+            )
+        else:
+            flash(file, 'err')
+            return redirect('/files')
+
 
 
 # download file 
