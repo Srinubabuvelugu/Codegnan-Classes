@@ -506,6 +506,29 @@ def reset_password(token):
 
 
 
+# total notes count
+# total files count
+def getFilesAndNotesCount(user_id):
+    try:
+        connection=getConnectionWithDB()
+        if connection=='Connection Failed':
+            return False, "Database connection Failed"
+        else:
+            cursor=connection.cursor()
+            get_notes_count = """SELECT COUNT(*) FROM NOTES
+                                WHERE USER_ID = %s;"""
+            cursor.execute(get_notes_count,(user_id,))
+            notes_count = cursor.fetchone()[0]
+            # files count
+            get_files_count = """SELECT COUNT(*) FROM file_data
+                                            WHERE USER_ID = %s;"""
+            cursor.execute(get_files_count,(user_id,))
+            files_count = cursor.fetchone()[0]
+            cursor.close()
+            connection.close()
+            return notes_count, files_count
+    except Exception as e:
+        return False, f"Execption raised in add notes: {e}"
 
 
 
@@ -515,8 +538,14 @@ def dashboard():
     # if user data not in session redirect to login page
     if "id" not in session:
         return redirect("/login")
+    notes_count, files_count = getFilesAndNotesCount(session['id'])
     
-    return render_template('dashboard.html', username = session['name'])
+    return render_template(
+                            'dashboard.html', 
+                            username = session['name'],
+                            total_notes=notes_count,
+                            total_files=files_count
+                        )
 
 @app.route('/verify',methods=['GET','POST'])
 def verify():
@@ -547,16 +576,21 @@ def profile():
 #                         Notes Routes
 # =================================================================
 #  get notes by user id
-def getNotesByUserId(user_id):
+def getNotesByUserId(user_id, filename=None):
     try:
         connection=getConnectionWithDB()
         if connection=='Connection Failed':
             return False, "Database connection Failed"
         else:
             cursor=connection.cursor(dictionary=True)
-            get_notes_by_id = """SELECT * FROM NOTES
-                                WHERE USER_ID = %s;"""
-            cursor.execute(get_notes_by_id,(user_id,))
+            query = " where USER_ID = %s"
+            values= [user_id]
+            if filename:
+                query += f" and title like %s"
+                values.append(f"%{filename}%")
+
+            get_notes_by_id = """SELECT * FROM NOTES"""+ query
+            cursor.execute(get_notes_by_id,tuple(values))
             notes = cursor.fetchall()
             connection.commit()
             cursor.close()
@@ -571,15 +605,22 @@ def mynotes():
     if "id" not in session:
         return redirect('/login')
     if request.method == 'GET':
-        # get user notes from database
+        # get user notes from database based on search notes name
+        notes_name = request.args.get('searchnotes')
+        # print(notes_name)
         id = session['id']
-        print(id)
-        status, notes = getNotesByUserId(user_id=id)
-        print(notes)
+        # print(id)
+        status, notes = getNotesByUserId(user_id=id, filename=notes_name)
+        # print(notes)
         if status == True:
             return render_template('notes.html', notes=notes)
         else:
             return render_template('notes.html', err=notes)
+    
+        
+       
+
+
 
 # insert notes records in table
 def addNotesRecord(user_id:int, title:str, content:str):
@@ -626,10 +667,12 @@ def add_notes():
         )
         if status == True:
             # redirect to notes dashboard
-            return render_template('notes.html',msg=msg)
+            flash(msg, "msg")
+            return redirect(url_for('mynotes'))
         else:
             # redirect to notes dashboard
-            return render_template('notes.html',err=msg)
+            flash(msg, "err")
+            return redirect(url_for('mynotes'))
 
 
 # get notes by id
@@ -706,7 +749,8 @@ def edit_notes(note_id):
                                    content = notes['content'],
                                    notes_id = note_id)
         else:
-            return render_template('notes.html',err=notes)
+            flash(notes, "err")
+            return redirect(url_for('mynotes'))
 
     ## Post request 
     
@@ -758,12 +802,13 @@ def delete_notes(note_id):
     # get request
     # delete notes from database based on note_id
     status, msg = deleteNotesById(notes_id=note_id)
-    _, notes = getNotesByUserId(user_id=session['id'])
+   
     if status == True:
-
-        return render_template('notes.html', msg = msg, notes = notes)
+        flash(msg, "msg")
+        return redirect(url_for('mynotes'))
     else:
-        return render_template('notes.html', err = msg, notes=notes)
+        flash(msg, "err")
+        return redirect(url_for('mynotes'))
 
 
 # =======================================================
