@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div>
+        <DIV>
+            <h2>All Students</h2>
+        </DIV>
+        <div>
+            
+        </div>
+        <div>
+            {% for id in students %}
+                <p>Name:{{ students[id]['name'] }}</p>
+                <p>Age: {{ students[id]['age'] }}</p>
+                <p>class: {{ students[id]['class'] }}</p>
+                <p>Marks:{{ students[id]['marks'] }}</p>
+                {% if students[id]['marks'] > 35 %}
+                    <p>Status:Pass</p>
+                {% else %}
+                    <p>Status: Fail</p>
+                {% endif %}
+                <hr>
+            {% endfor %}
+        </div>
+        
+    </div>
+    
+<div>
+    <button><a href="/">Back</a></button>
+</div>
+</body>
+</html>

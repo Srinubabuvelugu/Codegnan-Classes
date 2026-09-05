@@ -964,15 +964,12 @@ def  viewFile(file_id):
         # get file by file_id
         status, file = getFileByFileId(fileid=file_id)
         if status == True:
-            root_path=app.root_path
-            print(root_path)
-            file_path = os.path.join(root_path,file['storage_path'].lstrip('/'))
-            print("FilePAth:",file_path)
-            mime_type, _ = mimetypes.guess_type(file_path)
-
+            
+            secure_filename = file['stored_name']
+            mime_type, _ = mimetypes.guess_type(secure_filename)
             return send_file(
-                file_path,
-                mimetype='application/pdf',
+                f"upload/{secure_filename}",
+                mimetype=mime_type,
                 as_attachment=False
             )
         else:
@@ -986,8 +983,22 @@ def  viewFile(file_id):
 def  downloadFile(file_id):
     if "id" not in session:
         return redirect('/login')
-    pass
 
+    if request.method == 'GET':
+        # get file by file_id
+        status, file = getFileByFileId(fileid=file_id)
+        if status == True:
+            
+            secure_filename = file['stored_name']
+            mime_type, _ = mimetypes.guess_type(secure_filename)
+            return send_file(
+                f"upload/{secure_filename}",
+                mimetype=mime_type,
+                as_attachment=True
+            )
+        else:
+            flash(file, 'err')
+            return redirect('/files')
 
 # Delete file 
 @app.route('/files/delete/<file_id>')
