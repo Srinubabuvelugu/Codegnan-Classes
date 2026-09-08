@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Verify - SNS
+{% endblock %}
+
+
+{% block content %}
+
+<div class="form-container">
+
+    <h1>Verify Account</h1>
+
+    <p class="form-subtitle">
+        Verify to start managing your notes.
+    </p>
+
+
+    <form
+        method="POST"
+        action="{{ url_for('verify') }}"
+    >
+
+        <div class="form-group">
+
+            <label for="otp">
+                OTP
+            </label>
+
+            <input
+                type="text"
+                id="otp"
+                name="otp"
+                placeholder="Enter your otp"
+                required
+            >
+
+        </div>
+
+        <button
+            type="submit"
+            class="btn btn-primary full-width"
+        >
+            Verify
+        </button>
+
+    </form>
+
+
+    <p class="form-footer">
+
+        Already have an account?
+
+        <a href="{{ url_for('login') }}">
+            Login
+        </a><br/>
+        <span style="color:red">{{err}}</span>
+
+    </p>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Upload Files - SNS
+{% endblock %}
+
+
+{% block navmenu %}
+    <a href="{{ url_for('myfiles') }}">Files</a>
+    <a href="{{ url_for('mynotes') }}">Notes</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+<div class="form-container">
+
+    <h1>Upload File</h1>
+
+    <p class="form-subtitle">
+        Upload file for your refference
+    </p>
+
+
+    <form
+        method="POST"
+        action="{{ url_for('uploadFile') }}"
+        enctype="multipart/form-data"
+    >
+
+        <div class="form-group">
+
+            <label for="Title">
+                File
+            </label>
+
+            <input
+                type="file"
+                id="file"
+                name="file"
+                placeholder="upload file"
+                required
+            >
+
+        </div>
+
+
+
+
+        <button
+            type="submit"
+            class="btn btn-primary full-width"
+        >
+            Upload
+        </button>
+
+    </form>
+
+
+</div>
+
+{% endblock %}
