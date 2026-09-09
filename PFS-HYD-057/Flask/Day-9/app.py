@@ -26,10 +26,12 @@ def register():
     if request.method == 'POST':
         username = request.form.get('username')
         email = request.form.get('email')
-        password = request.form.get('passwrod')
+        password = request.form.get('password')
         conform_password = request.form.get('conformpassword')
         # check password match
-        if not password != conform_password:
+        print(password, type(password))
+        print(conform_password, type(conform_password))
+        if password != conform_password:
             # password miss match
             return redirect('/register')
 
