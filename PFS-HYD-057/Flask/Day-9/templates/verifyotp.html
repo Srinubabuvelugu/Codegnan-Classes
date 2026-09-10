@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+SNS- Verify OTP
+{% endblock %}
+
+{% block navmenu %}
+    <a href="/">Home</a>
+    <a href="/login">Login</a>
+{% endblock %}
+
+{% block content %}
+
+<div style="text-align: center;">
+    <h2>Verify OTP</h2>
+    <div>
+        <form action="{{ url_for('verifyOTP') }}" method="POST">
+            <div>
+                
+                <div>
+                    <label for="email">OTP</label>
+                    <input type="number" name="otp" required>
+                </div>
+                
+                
+                <div>
+                    <button type="submit">Verify</button>
+                
+                </div>
+                <p>Do you don't have account?<a href="/register">Register</a></p>
+            </div>
+        </form>
+
+    </div>
+    
+
+    </form>
+</div>
+{% endblock %}

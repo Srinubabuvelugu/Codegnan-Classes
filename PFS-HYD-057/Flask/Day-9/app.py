@@ -1,13 +1,15 @@
-from flask import Flask, request, redirect, render_template
-from database import CreateTables, getUserByEmail
+from flask import Flask, request, redirect, render_template, url_for,session
+from database import CreateTables, getUserByEmail, insertUserRecord
 import random
 
 from utils import sendEmail
 from email_templates import EmailTemplates
 
+from utils import generateHashPassword, verifyHashPassword
+
 # Flask instance
 app = Flask(__name__)
-
+app.secret_key = "Srinubabu@123"
 
 # ======================================================
 #                     Auth routes
@@ -40,6 +42,11 @@ def register():
             # if user not exists
             # verify otp
             OTP = random.randint(1000,9999)
+            # store OTP in session
+            session['otp'] = OTP
+            session['username'] = username
+            session['email'] = email
+            session['password'] = password
             # send otp email
             status, msg = sendEmail(to_email=email,
                                     subject="SNS- OTP Verification for Register",
@@ -47,9 +54,11 @@ def register():
                                         username=username,
                                         otp=OTP
                                     ))
+            
             if status == True:
                 # reidect to verify otp page
-                return msg
+                # flash msg Email email send
+                return redirect(url_for('verifyOTP'))
             else:
                 return msg
         else:
@@ -57,6 +66,31 @@ def register():
 
 
         # redirect to login page
+
+
+
+# verify OTP
+@app.route("/verify-otp",methods = ['GET', 'POST'])
+def verifyOTP():
+    if 'otp' not in session:
+        return redirect(url_for('register'))
+    if request.method == 'GET':
+        return render_template('verifyotp.html')
+    if request.method == 'POST':
+        otp = int(request.form.get('otp'))
+        if otp == session['otp']:
+            #store user data in users table
+            hash_password = generateHashPassword(password=session['password'])
+            status, msg = insertUserRecord(name=session['username'],
+                                           email=session['email'],
+                                           hash_pasword=hash_password)
+
+            if status == True:# reditect to login 
+                return redirect(url_for('login'))
+            else:
+                return msg
+        return "OTP not match"
+    
 
 
 # login route

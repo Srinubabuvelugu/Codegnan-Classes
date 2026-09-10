@@ -1,3 +1,3 @@
 from database.tablesDB import CreateTables
 
-from database.utilityDB import getUserByEmail
+from database.utilityDB import getUserByEmail, insertUserRecord

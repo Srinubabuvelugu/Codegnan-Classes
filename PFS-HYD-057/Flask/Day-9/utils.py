@@ -5,6 +5,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import os
 from dotenv import load_dotenv
+import bcrypt
 
 load_dotenv()
 
@@ -14,7 +15,7 @@ PORT = 587
 SMTP_SERVER = "smtp.gmail.com"
 
 def sendEmail(to_email:str, subject:str, body:str):
-    print(SENDER_EMAIL,SENDER_PASSKEY)
+    
     msg =MIMEMultipart()
     msg['From'] = SENDER_EMAIL
     msg['To'] = to_email
@@ -35,3 +36,15 @@ def sendEmail(to_email:str, subject:str, body:str):
         return True, "Email Send"
     except Exception as e:
         return False, f"Someting wrong in email sending:{e}"
+
+# generate hash password
+def generateHashPassword(password:str):
+    hash_password = bcrypt.hashpw(password=password.encode('utf-8'),
+                                  salt=bcrypt.gensalt(4)
+                                  )
+    return hash_password
+
+# verify hash password
+def verifyHashPassword(user_password:str, hash_password:str):
+    status = bcrypt.checkpw(user_password.encode('utf-8'),hash_password)
+    return status
