@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Add Notes - SNS
+{% endblock %}
+
+
+{% block navmenu %}
+    <a href="#">Files</a>
+    <a href="{{ url_for('mynotes') }}">Notes</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+<div class="form-container">
+
+    <h1>Add Notes</h1>
+
+    <p class="form-subtitle">
+        Add new notes for your refference
+    </p>
+
+
+    <form
+        method="POST"
+        action="{{ url_for('add_notes') }}"
+    >
+
+        <div class="form-group">
+
+            <label for="Title">
+                Title
+            </label>
+
+            <input
+                type="text"
+                id="Title"
+                name="Title"
+                placeholder="Enter your title"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="content">
+                Content
+            </label>
+
+            <textarea
+                type="text"
+                rows="5"
+                cols="50"
+                id="content"
+                name="content"
+                placeholder="Enter Notes"
+                
+                required
+            >
+            </textarea>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="btn btn-primary full-width"
+        >
+            Save Notes
+        </button>
+
+
+
+    </form>
+
+
+</div>
+
+{% endblock %}

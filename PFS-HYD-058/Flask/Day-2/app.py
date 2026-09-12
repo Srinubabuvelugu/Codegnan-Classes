@@ -10,9 +10,9 @@ app = Flask(__name__)
 
 
 data = {
-    "1":{'name':"srinu", "age":12, "class":7},
-    "2":{'name':"babu", "age":11, "class":6},
-    "3":{'name':"bhanu", "age":12, "class":7},
+    1:{'name':"srinu", "age":12, "class":7},
+    2:{'name':"babu", "age":11, "class":6},
+    3:{'name':"bhanu", "age":12, "class":7},
     "4":{'name':"sam", "age":13, "class":8},
     "5":{'name':"geethu", "age":10, "class":10}
 }
@@ -43,7 +43,7 @@ def concat():
 #     return data['3']
 
 # dynamic routing
-@app.route("/students/id=<id>")
+@app.route("/students/id=<string:id>")
 def get_student_data(id):
     if id in data:
         return data[id]
