@@ -138,6 +138,7 @@ def dashboard():
 @app.route("/notes")
 def mynotes():
     if request.method == 'GET':
+        
         return render_template('notes.html')
 @app.route("/notes/addnotes")
 def add_notes():
@@ -148,8 +149,15 @@ def add_notes():
         content = request.form.get('content')
         # store notes in table
         status, msg = insertNotesRecord(userid=session['USERID'], title=title, content=content)
-
         # redirect to notes dashboard
+        if status == True:
+            flash(msg, "msg")
+            return redirect(url_for('mynotes'))
+        else:
+            flash(msg, "err")
+            return redirect(url_for('mynotes'))
+
+        
 
 
 @app.route("/files")
