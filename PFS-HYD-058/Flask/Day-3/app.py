@@ -21,11 +21,11 @@ data = {
 # routing
 @app.route("/")
 def home():
-    return render_template("home.html", module = "Flask", timings="9-11 am")
+    return render_template("home.html", name = "Srinu",module = "Flask", timings="9-11 am")
 
 @app.route('/students')
 def concat():
-    return render_template("students.html", data = data)
+    return render_template("students.html")
 
 # # return student 1 info
 # @app.route('/students/1')
