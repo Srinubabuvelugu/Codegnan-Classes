@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SM</title>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h2>All students</h2>
+        <p>You can find the all students data here</p>
+        <div>
+            <form action="">
+                <label for="class">Class</label>
+                <input type="number" name="class" id="">
+                <input type="num" name="max_age" placeholder="Enter max age">
+                <div>
+                    <button type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <div style="text-align: center;">
+        {% if data %}
+            {% for id in data %}
+                <p>ID: {{ id }}</p>
+                <p>Name: {{ data[id]['name'] }}</p>
+                <p>Class: {{ data[id]['class'] }}</p>
+                <p>Age : {{ data[id]['age'] }}</p>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <p>No Student Found</p>
+        {% endif %}
+
+    </div>
+</body>
+</html>
