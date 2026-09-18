@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+View Notes - SNS
+{% endblock %}
+
+{% block navmenu %}
+    <a href="{{ url_for('dashboard') }}">dashboard</a>
+    <a href="{{ url_for('myfiles') }}">Files</a>
+    <a href="{{ url_for('mynotes') }}">Notes</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>
+        View Notes
+    </h1>
+
+</div>
+<div>
+    <div>
+        <h2>Title: {{ title }}</h2>
+    </div>
+    <div>
+        <p>Content: {{ content }}</p>
+    </div>
+</div>
+<div>
+    <button><a href="{{ url_for('mynotes') }}"> Back</a></button>
+</div>
+
+
+
+{% endblock %}
