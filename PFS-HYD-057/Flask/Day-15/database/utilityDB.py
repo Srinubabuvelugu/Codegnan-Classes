@@ -130,3 +130,26 @@ def deleteNotesByNotesid(notesid:int, userid:int):
     except Exception as e:
         return False, f"Something wrong in database/utilityDB.py:deleteNotesByNotesid: {e}"
 
+
+
+
+# check file duplicate exists or not
+def checkFileDuplicate(filename:int, userid:int):
+    try:
+        db_config = DatabaseConnection()
+        cusror = db_config.cursor()
+        get_file_query = """select * from files 
+                            where storedname = %s and userid = %s;"""
+        cusror.execute(get_file_query, (filename,userid))
+        file = cusror.fetchone()
+        cusror.close()
+        db_config.close()
+        if file:
+            return False, "File already exists"
+        else:
+            return True, "File Not Exists"
+      
+    except Exception as e:
+        return False, f"Something wrong in database/utilityDB.py:checkFileDuplicate: {e}"
+
+

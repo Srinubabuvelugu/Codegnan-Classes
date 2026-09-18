@@ -1,15 +1,28 @@
 from flask import Flask, request, redirect, render_template, url_for,session, flash
 from database import CreateTables, getUserByEmail, insertUserRecord, insertNotesRecord, getNotesByUserid, getNotesByNotesid, updateNotesByNotesid, deleteNotesByNotesid
+from database import checkFileDuplicate
 import random
 
 from utils import sendEmail
 from email_templates import EmailTemplates
+from werkzeug.utils import secure_filename
+import mimetypes
 
 from utils import generateHashPassword, verifyHashPassword
+import os
+import sys
 
 # Flask instance
 app = Flask(__name__)
 app.secret_key = "Srinubabu@123"
+
+# create upload folder if not exist
+if not os.path.exists('uploads'):
+    os.mkdir('uploads')
+
+
+
+
 
 # ======================================================
 #                     Auth routes
@@ -234,7 +247,59 @@ def deletenotes(notesid):
 
 @app.route("/files")
 def myfiles():
-    pass
+    if request.method == 'GET':
+        return render_template('files.html')
+
+
+@app.route('/files/uploadfile', methods = ['GET', 'POST'])
+def uploadfile():
+    if 'USERID' not in session:
+        return redirect(url_for('login'))
+    
+    userid = session['USERID']
+
+    if request.method == 'GET':
+        return render_template('uploadfile.html')
+    if request.method =='POST':
+        file = request.files.get('file')
+        # get file meta data
+        original_filename = file.filename
+        #generate secure file name 
+        filename_secure = secure_filename(filename=original_filename)
+        # check file in allowed exstation
+        file_type = filename_secure.split(".")[-1].strip()
+        allowed_types = ['png','jpg', 'jpeg','pdf','csv','doc']
+        if file_type not in allowed_types:
+            flash("File type not allowed", "err")
+            return redirect(url_for('uploadfile'))
+        #check duplicate file exists or not
+        status, msg = checkFileDuplicate(filename=filename_secure, userid=userid)
+        if status == False:
+            flash(msg, 'err')
+            return redirect(url_for('myfiles'))
+        
+        # file path
+        file_path = os.path.join('uploads', filename_secure)
+        file.save(file_path) # saves the file in sepecified path
+        file_size = os.path.getsize(file_path)
+
+        file_mime_type,_ = mimetypes.guess_type(file_path)
+        print("--------------------------------File Meta Data------------------")
+        print("Orignal name:",original_filename)
+        print("Filename Secure:", filename_secure)
+        print("File type:", file_type)
+        print("File path:", file_path)
+        print("file mime type:",file_mime_type)
+        print("File size:", file_size)
+
+
+
+
+
+
+
+
+
 
 @app.route("/profile")
 def profile():

@@ -2,7 +2,7 @@
 
 
 {% block title %}
-My Notes - SNS
+My Files - SNS
 {% endblock %}
 
 {% block navmenu %}
@@ -19,14 +19,14 @@ My Notes - SNS
 <div class="page-header">
 
     <h1>
-        My Notes
+        My Files
     </h1>
 
     <a
-        href="{{ url_for('add_notes') }}"
+        href="{{ url_for('uploadfile') }}"
         class="btn btn-primary"
     >
-        Add Note
+        Upload File
     </a>
 
 </div>
@@ -56,52 +56,41 @@ My Notes - SNS
         <input type="text" name="searchnotes" id="searchnotes">
         <button type="submit">Search</button>
     </form>
-    <a href="{{ url_for('mynotes') }}"><button>Remove Filter</button></a>
+    <a href="{{ url_for('myfiles') }}"><button>Remove Filter</button></a>
 </div>
 
-<div>
-    {% if msg %}
-       <p style="color: green;">{{ msg }}</p>
-    {% endif %}
-    {% if err %}
-        <p style="color: red;"> {{ err }}</p>
-    {% endif %}
-</div>
 
-{% if notes %}
+
+{% if files %}
 <div class="notes-grid">
 
-    {% for note in notes %}
+    {% for file in files %}
 
     <div class="note-card">
 
         <h3>
-            {{ note.TITLE }}
+            {{ files.STOREDNAME }}
         </h3>
-
-        <p>
-            {{ note.CONTENT }}
-        </p>
 
 
         <div class="note-actions">
 
             <a
-                href="/notes/view/{{ note.NOTESID }}"
+                href="/files/view/{{ file.FILEID }}"
                 class="btn btn-secondary"
             >
                 View 
             </a>
 
             <a
-                href="/notes/edit/{{ note.NOTESID }}"
+                href="/files/download/{{ file.FILEID }}"
                 class="btn btn-edit"
             >
-                Edit
+                Download
             </a>
 
             <a
-                href="/notes/delete/{{ note.NOTESID }}"
+                href="/files/delete/{{ file.FILEID }}"
                 class="btn btn-danger"
             >
                 Delete
@@ -121,11 +110,11 @@ My Notes - SNS
 <div class="empty-state">
 
     <h2>
-        No Notes Found
+        No Files Found
     </h2>
 
     <p>
-        Start by creating your first note.
+        Start by Uploading your first File.
     </p>
 
 </div>
