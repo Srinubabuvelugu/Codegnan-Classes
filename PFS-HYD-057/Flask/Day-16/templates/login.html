@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+SNS- Login
+{% endblock %}
+
+{% block navmenu %}
+    <a href="/">Home</a>
+    <a href="/register">Register</a>
+    <a href="/login">Login</a>
+{% endblock %}
+
+{% block content %}
+
+<div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category == "msg" %}
+                <div class="alert alert-success" style="color: green;">
+                    {{ message }}
+                </div>
+            {% elif category == "err" %}
+                <div class="alert alert-danger" style="color: red;">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+</div>
+
+
+
+
+<div style="text-align: center;">
+    <h2>Login</h2>
+    <div>
+        <form action="/login" method="POST">
+            <div>
+                
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div>
+                    <label for="password">password</label>
+                    <input type="password" name="password" required>
+                </div>
+                
+                <div>
+                    <button type="submit">Login</button>
+                
+                </div>
+                <p>Do you don't have account?<a href="/register">Register</a></p>
+            </div>
+        </form>
+
+    </div>
+    
+
+    </form>
+</div>
+{% endblock %}
