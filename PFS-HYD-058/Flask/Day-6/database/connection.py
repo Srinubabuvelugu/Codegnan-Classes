@@ -3,7 +3,7 @@ import mysql.connector as SQLC
 def DatabaseConnection():
     try:
         db_config = SQLC.connect(
-            host = "locahost",
+            host = "localhost",
             user = "root",
             password = "root", # your sql password,
             database = "sns_management1"
