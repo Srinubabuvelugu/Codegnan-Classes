@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+My Files - SNS
+{% endblock %}
+
+{% block navmenu %}
+    <a href="{{ url_for('dashboard') }}">dashboard</a>
+    <a href="{{ url_for('myfiles') }}">Files</a>
+    <a href="{{ url_for('mynotes') }}">Notes</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>
+        My Files
+    </h1>
+
+    <a
+        href="{{ url_for('uploadfile') }}"
+        class="btn btn-primary"
+    >
+        Upload File
+    </a>
+
+</div>
+
+<div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category == "msg" %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% elif category == "err" %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+</div>
+
+
+<div>
+    <form>
+        <label for="searchnotes">
+            Search
+        </label>
+        <input type="text" name="searchnotes" id="searchnotes">
+        <button type="submit">Search</button>
+    </form>
+    <a href="{{ url_for('myfiles') }}"><button>Remove Filter</button></a>
+</div>
+
+
+
+{% if files %}
+<div class="notes-grid">
+
+    {% for file in files %}
+
+    <div class="note-card">
+
+        <h3>
+            {{ file.STOREDNAME }}
+        </h3>
+
+
+        <div class="note-actions">
+
+            <a
+                href="/files/view/{{ file.FILEID }}"
+                class="btn btn-secondary"
+            >
+                View 
+            </a>
+
+            <a
+                href="/files/download/{{ file.FILEID }}"
+                class="btn btn-edit"
+            >
+                Download
+            </a>
+
+            <a
+                href="/files/delete/{{ file.FILEID }}"
+                class="btn btn-danger"
+            >
+                Delete
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+{% else %}
+
+<div class="empty-state">
+
+    <h2>
+        No Files Found
+    </h2>
+
+    <p>
+        Start by Uploading your first File.
+    </p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Upload File - SNS
+{% endblock %}
+
+
+{% block navmenu %}
+    <a href="{{ url_for('myfiles') }}">Files</a>
+    <a href="{{ url_for('mynotes') }}">Notes</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}
+
+
+
+
+
+
+{% block content %}
+<div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category == "msg" %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% elif category == "err" %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+</div>
+
+<div class="form-container">
+
+    <h1>Upload File</h1>
+
+    <p class="form-subtitle">
+        Upload your files for your refference
+    </p>
+
+
+    <form
+        method="POST"
+        action="{{ url_for('uploadfile') }}"
+        enctype="multipart/form-data"
+    >
+
+        <div class="form-group">
+
+            <label for="file">
+                File:
+            </label>
+
+            <input
+                type="file"
+                id="file"
+                name="file"
+                placeholder="Upload your file"
+                required
+            >
+        </div>
+        <button
+            type="submit"
+            class="btn btn-primary full-width"
+        >
+            Upload File
+        </button>
+
+    </form>
+
+
+</div>
+
+{% endblock %}
