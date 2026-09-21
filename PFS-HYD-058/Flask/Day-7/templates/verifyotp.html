@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SNS-Verify-OTP
+{% endblock %}
+
+{% block content %}
+
+    {% block navmenu %}
+        <a href="#">Home</a>
+        <a href="#">Register</a>
+        <a href="#">Login</a>
+    {% endblock %}
+
+
+    <div>
+        <h2>Verify OTP</h2>
+        <p>To verify your eamil for creation of account</p>
+        <div>
+            <form action="#">
+                <div>
+                    <label for="otp">OTP</label>
+                    <input type="number" name="otp" id="">
+                </div>
+
+                <div>
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
