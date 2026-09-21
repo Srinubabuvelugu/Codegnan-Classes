@@ -7,9 +7,9 @@ SNS-Register
 {% block content %}
 
     {% block navmenu %}
-        <a href="#">Home</a>
-        <a href="#">Register</a>
-        <a href="#">Login</a>
+        <a href="/">Home</a>
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
     {% endblock %}
 
 
@@ -17,7 +17,7 @@ SNS-Register
         <h2>Register</h2>
         <p>To manage your notes and files data for that create a account</p>
         <div>
-            <form action="#">
+            <form action="/register" method="POST">
                 <div>
                     <label for="email">Email</label>
                     <input type="email" name="email" id="">
@@ -32,14 +32,14 @@ SNS-Register
                 </div>
                 <div>
                     <label for="confirm_password">Confirm Password</label>
-                    <input type="text" name="confirm_password" id="">
+                    <input type="password" name="confirm_password" id="">
                 </div>
 
                 <div>
                     <button type="submit">Submit</button>
                 </div>
                 <div>
-                    <p>Do you have account? <a href="#">Login</a></p>
+                    <p>Do you have account? <a href="/login">Login</a></p>
                 </div>
             </form>
         </div>
