@@ -1,0 +1,131 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} | ShopZone{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="product-details">
+
+        <div class="product-details-image">
+
+            {% if product.image %}
+
+            <img
+                src="{{ url_for('static', filename=product.image) }}"
+                alt="{{ product.name }}"
+            >
+
+            {% else %}
+
+            <div class="no-image">
+                No Image Available
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="product-details-info">
+
+            <p class="product-category">
+                {{ product.category }}
+            </p>
+
+            <h1>{{ product.name }}</h1>
+
+            <p class="product-details-price">
+                ₹{{ product.price }}
+            </p>
+
+            <p class="product-description">
+                {{ product.description }}
+            </p>
+
+
+            {% if product.stock > 0 %}
+
+            <p class="stock available">
+                In Stock
+            </p>
+
+            <p class="stock-count">
+                {{ product.stock }} items available
+            </p>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('add_to_cart', product_id=product.id) }}"
+                class="add-cart-form"
+            >
+
+                <div class="quantity-group">
+
+                    <label for="quantity">
+                        Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        value="1"
+                        min="1"
+                        max="{{ product.stock }}"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Add to Cart
+                </button>
+
+            </form>
+
+            {% else %}
+
+            <p class="stock unavailable">
+                Out of Stock
+            </p>
+
+            {% endif %}
+
+
+            <div class="product-actions">
+
+                <a
+                    href="{{ url_for('products') }}"
+                    class="btn btn-secondary"
+                >
+                    Continue Shopping
+                </a>
+
+                <a
+                    href="{{ url_for('cart') }}"
+                    class="btn btn-cart"
+                >
+                    View Cart
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
