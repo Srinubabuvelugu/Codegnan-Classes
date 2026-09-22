@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from flask import Flask, render_template, url_for, session, redirect, request, flash, send_file
 from werkzeug.utils import secure_filename
 import os
@@ -9,6 +10,15 @@ from database import AdminDBQueries
 
 app = Flask(__name__)
 app.secret_key = "Srinubabu@1234"
+=======
+from flask import Flask, render_template, url_for, session, redirect, request
+
+
+from database import createTables
+
+
+app = Flask(__name__)
+>>>>>>> b8ff824 (Register Completed)
 
 
 @app.route("/")
@@ -38,6 +48,7 @@ def admin():
 
 @app.route("/admin/products")
 def admin_products():
+<<<<<<< HEAD
     # get products
     if request.method == 'GET':
         # get all products
@@ -48,6 +59,9 @@ def admin_products():
             flash(products, 'err')
             return render_template('admin/products.html')
 
+=======
+    return render_template('admin/products.html')
+>>>>>>> b8ff824 (Register Completed)
 
 @app.route("/admin/products/add", methods=["GET", "POST"])
 def admin_add_product():
@@ -55,6 +69,7 @@ def admin_add_product():
         return render_template('admin/add_product.html')
     elif request.method == 'POST':
         # Handle form submission
+<<<<<<< HEAD
         productname = request.form.get('name')
         category = request.form.get('category')
         if not category:
@@ -136,6 +151,20 @@ def admin_users():
 
 
 
+=======
+        product_name = request.form.get('product_name')
+        category = request.form.get('category')
+        if not category:
+            category = request.form.get('new_category')
+        price = request.form.get('price')
+        stock = request.form.get('stock')
+        description = request.form.get('description')
+        image = request.files.get('image')
+        # Here you can add code to save the product details to the database
+        
+
+        pass
+>>>>>>> b8ff824 (Register Completed)
 
 @app.route("/logout")
 def logout():
