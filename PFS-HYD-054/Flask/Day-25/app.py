@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from flask import Flask, render_template, url_for, session, redirect, request, flash, send_file
 from werkzeug.utils import secure_filename
 import os
@@ -10,15 +9,7 @@ from database import AdminDBQueries
 
 app = Flask(__name__)
 app.secret_key = "Srinubabu@1234"
-=======
-from flask import Flask, render_template, url_for, session, redirect, request
 
-
-from database import createTables
-
-
-app = Flask(__name__)
->>>>>>> b8ff824 (Register Completed)
 
 
 @app.route("/")
@@ -48,20 +39,20 @@ def admin():
 
 @app.route("/admin/products")
 def admin_products():
-<<<<<<< HEAD
+
     # get products
     if request.method == 'GET':
         # get all products
         status, products = AdminDBQueries.getAllProducts()
         if status == True:
+            print(products)
             return render_template('admin/products.html', products=products)
         else:
             flash(products, 'err')
             return render_template('admin/products.html')
 
-=======
+
     return render_template('admin/products.html')
->>>>>>> b8ff824 (Register Completed)
 
 @app.route("/admin/products/add", methods=["GET", "POST"])
 def admin_add_product():
@@ -69,7 +60,6 @@ def admin_add_product():
         return render_template('admin/add_product.html')
     elif request.method == 'POST':
         # Handle form submission
-<<<<<<< HEAD
         productname = request.form.get('name')
         category = request.form.get('category')
         if not category:
@@ -81,7 +71,8 @@ def admin_add_product():
         image = request.files.get('image')
 
         imgname = secure_filename(image.filename)
-        storedpath = os.path.join('static','images','products',imgname)
+        print(imgname)
+        storedpath = os.path.join('./static/images/products', imgname).replace('\\', '/')
 
         # Here you can add code to save the product details to the database
         data = (productname, description, category, quantity, buyprice, saleprice,imgname,storedpath)
@@ -90,15 +81,23 @@ def admin_add_product():
         if status ==True:
             image.save(storedpath)
 
-            flash(msg, 'msg')
+            # flash(msg, 'msg')
             return redirect(url_for('admin_products'))
         else:        
             flash(msg, 'err')
             return redirect(url_for('admin_products'))
         
 
+@app.route('/admin/products/delete/<product_id>')
+def admin_delete_product(product_id):
+    pass
 
-
+@app.route('/admin/produts/edit/<product_id>')
+def admin_edit_product(product_id):
+    if request.method =='GET':
+        product = AdminDBQueries.getAllProducts(id=product_id)
+        print(product)
+        return render_template('admin/edit_product.html', product = product)
 # ===============================================================
 #                           Category
 # =============================================================
@@ -151,7 +150,7 @@ def admin_users():
 
 
 
-=======
+
         product_name = request.form.get('product_name')
         category = request.form.get('category')
         if not category:
@@ -163,8 +162,6 @@ def admin_users():
         # Here you can add code to save the product details to the database
         
 
-        pass
->>>>>>> b8ff824 (Register Completed)
 
 @app.route("/logout")
 def logout():

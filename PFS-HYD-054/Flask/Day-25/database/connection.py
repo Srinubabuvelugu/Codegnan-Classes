@@ -5,7 +5,7 @@ def DatabaseConnction():
         db_config = SQLC.connect(
             host = 'localhost',
             user = 'root',
-            password = 'root1234', # your Mysql Password
+            password = 'root', # your Mysql Password
             database = "ecommerce"
         )
         return db_config

@@ -39,20 +39,28 @@ class AdminDBQueries:
         except Exception as e:
             return False, f"Something wrong in database/adminDB.py-iinsertProductRecord:{e}"
     # get products
-    def getAllProducts():
+    def getAllProducts(id:int=None):
         try: 
             db_config = DatabaseConnction()
             cursor = db_config.cursor(dictionary=True)
 
-            query = """select * from products order by updated_at desc;
-            """
-            cursor.execute(query)
-            products = cursor.fetchall()
+            query = "select * from products"
+            values = []
+            if id:
+                query += " where productid = %s"
+                values.append(id)
+            # query += " order by updated_At desc"
+            if id:
+                cursor.execute(query, tuple(values))
+                products = cursor.fetchone()
+            else:
+                cursor.execute(query)
+                products = cursor.fetchall()
 
             db_config.commit()
             return True, products
         except Exception as e:
-            return False, f"Something wrong in database/adminDB.py-iinsertProductRecord:{e}"
+            return False, f"Something wrong in database/adminDB.py-getAllProducts:{e}"
 
 
     
