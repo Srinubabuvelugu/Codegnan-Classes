@@ -94,6 +94,37 @@ def verifyotp():
 def login():
     if request.method == 'GET':
         return render_template('login.html')
+    if request.method == "POST":
+        email = request.form.get('email')
+        password = request.form.get('password')
+        # check email exists in table or not
+        status, user = getUserDataByEmail(email=email)
+        if status == False:
+            flash(user, "err")
+            print(user)
+            return redirect('/login')
+        # if user exist verify password
+        status = verifyHashPassword(hash_password=user['hashpassword'],
+                                    password=password)
+        if status == False:
+            flash("Check login credentials", 'err')
+            print("Check login credentials")
+            return redirect('/login')
+        # redirect to dashboard 
+        session.clear()
+        session['id'] = user['userid']
+        session['email'] = email
+        session['name'] = user['username']
+        return redirect('/dashboard')
+
+
+# dashboard route
+@app.route('/dashboard')
+def dashboard():
+    if "id" not in session:
+        return redirect('/login')
+    if request.method == 'GET':
+        return render_template('dashboard.html', name = session['name'])
 
 
 

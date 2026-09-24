@@ -12,13 +12,28 @@ SNS-Login
         <a href="/login">Login</a>
     {% endblock %}
 
+<div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category == "msg" %}
+                <div class="alert alert-success" style="color: green;">
+                    {{ message }}
+                </div>
+            {% elif category == "err" %}
+                <div class="alert alert-danger" style="color: red;">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+</div>
 
 
     <div>
         <h2>Login</h2>
         <p>Login to SNS account to manage your files and notes</p>
         <div>
-            <form action="#">
+            <form action="/login" method="POST">
                 <div>
                     <label for="email">Email</label>
                     <input type="email" name="email" id="">

@@ -4,7 +4,7 @@ from database.connection import DatabaseConnection
 def getUserDataByEmail(email:str):
     try:
         db_config = DatabaseConnection()
-        cursor = db_config.cursor()
+        cursor = db_config.cursor(dictionary=True)
         query = "select * from users where email = %s;"
         cursor.execute(query, (email, ))
         user = cursor.fetchone()
