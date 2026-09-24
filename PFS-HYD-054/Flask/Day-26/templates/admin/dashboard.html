@@ -1,0 +1,130 @@
+
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard | ShopZone{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <div>
+        <h1>Dashboard</h1>
+        <p>Welcome to the ShopZone Admin Panel</p>
+    </div>
+</div>
+
+<!-- Statistics -->
+<div class="dashboard-cards">
+
+    <div class="dashboard-card">
+        <h3>Total Products</h3>
+        <p class="card-number">{{ total_products }}</p>
+        <a href="{{ url_for('admin_products') }}">View Products</a>
+    </div>
+
+    <div class="dashboard-card">
+        <h3>Total Categories</h3>
+        <p class="card-number">{{ total_categories }}</p>
+        <a href="#">View Categories</a>
+    </div>
+
+    <div class="dashboard-card">
+        <h3>Total Orders</h3>
+        <p class="card-number">{{ total_orders }}</p>
+        <a href="#">View Orders</a>
+    </div>
+
+    <div class="dashboard-card">
+        <h3>Total Users</h3>
+        <p class="card-number">{{ total_users }}</p>
+        <a href="#">View Users</a>
+    </div>
+
+</div>
+
+<!-- Recent Orders -->
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <h2>Recent Orders</h2>
+        <a href="#">View All Orders</a>
+    </div>
+
+    <table class="dashboard-table">
+
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for order in recent_orders %}
+
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.customer_name }}</td>
+                <td>₹{{ order.total_amount }}</td>
+                <td>
+                    <span class="status {{ order.status|lower }}">
+                        {{ order.status }}
+                    </span>
+                </td>
+                <td>{{ order.created_at }}</td>
+            </tr>
+
+            {% else %}
+
+            <tr>
+                <td colspan="5" class="no-data">
+                    No recent orders found.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- Quick Actions -->
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <h2>Quick Actions</h2>
+    </div>
+
+    <div class="quick-actions">
+
+        <a href="{{ url_for('admin_products') }}" class="action-card">
+            <h3>Manage Products</h3>
+            <p>Add, edit or delete products.</p>
+        </a>
+
+        <a href="#" class="action-card">
+            <h3>Manage Categories</h3>
+            <p>Create and manage product categories.</p>
+        </a>
+
+        <a href="#" class="action-card">
+            <h3>Manage Orders</h3>
+            <p>View and update customer orders.</p>
+        </a>
+
+        <a href="#" class="action-card">
+            <h3>Manage Users</h3>
+            <p>View registered customers.</p>
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
+```
