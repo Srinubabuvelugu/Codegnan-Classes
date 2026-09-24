@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SM</title>
+</head>
+<body>
+    <div>
+        <h2>Student managment Application</h2>
+
+    </div>
+    <div>
+        {% if name %}
+            <p>Hello {{ name }}</p>
+        {% else %}
+            <p>Hello dear</p>
+        {% endif %}
+    </div>
+    <div>
+        <p>This application can manage the students data</p>
+        <strong>Can Perform following operations</strong>
+        <li>All Students</li>
+        <li>Register</li>
+        <li>Get studenet data</li>
+        <li>Get Class data</li>
+        <li>Filter students</li>
+    </div>
+
+    <div>
+        <a href="/students">All Students</a>
+    </div>
+    
+</body>
+</html>

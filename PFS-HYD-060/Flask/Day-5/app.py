@@ -1,6 +1,6 @@
 # Topic: Dynamic routing 
 
-from flask import Flask
+from flask import Flask, render_template, request, redirect
 
 
 # flask instance 
@@ -16,37 +16,16 @@ data = {
 }
 
 
-
-# # syntax for routing
-# @app.route('/path')
-# def func():
-#     # black statements
-#     # Return statement
-
-
-
-
 # home route
 @app.route('/')
 def home():
-    return "This is student management application"
+    return render_template('home.html')
 
 
 
 @app.route('/students')
 def students():
     return data
-
-# @app.route('/students/1')
-# def student1():
-#     return data['1']
-
-
-# @app.route('/students/2')
-# def student2():
-#     return data['2']
-
-
 
 
 # Dynamic path parameters
