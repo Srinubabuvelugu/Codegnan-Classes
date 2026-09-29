@@ -37,6 +37,7 @@ def get_fruit_by_id(id):
 # add new fruit
 @app.route('/fruits', methods=['POST'])
 def add_fruit():
+
     data = request.get_json()
     name = data['name']
     price = data['price']
@@ -49,6 +50,31 @@ def add_fruit():
     id = len(fruits) + 1
     fruits[id] = new_fruit
     return {"msg":"Fruit added successfully","fruit id":id}    
+
+# update fruit info by id
+@app.route('/fruits/<int:id>', methods = ['PUT'])
+def update_fruit(id):
+    if id in fruits:
+        data = request.get_json()
+
+        fruits[id] = data
+        return {"msg":f"Fruit {id} data updated successfully"}
+    return {"error":f"Fruit {id} not found"}
+
+
+# update stock for one fruit
+@app.route('/fruits/<int:id>', methods= ['PATCH'])
+def update_stock(id):
+    if id in fruits:
+        data = request.get_json()
+        stock = data['stock'] 
+        fruits[id]['stock'] = stock
+        return {"msg": "stock updated"}
+
+    return {"error":f"Fruit {id} not found"}
+
+
+
 
 
 # main

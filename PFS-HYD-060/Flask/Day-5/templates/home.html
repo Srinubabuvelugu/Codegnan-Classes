@@ -6,6 +6,7 @@
     <title>SM</title>
 </head>
 <body>
+    <h1>hello {{ name }}</h1>
     <div>
         <h2>Student managment Application</h2>
 
@@ -19,6 +20,15 @@
     </div>
     <div>
         <p>This application can manage the students data</p>
+
+
+
+
+        <div>
+            <P>Module: {{ module }}</P>
+            <p>Batch no: {{ batch }}</p>
+            <p>Timimgs: {{ time }}</p>
+        </div>
         <strong>Can Perform following operations</strong>
         <li>All Students</li>
         <li>Register</li>
@@ -29,6 +39,7 @@
 
     <div>
         <a href="/students">All Students</a>
+        <a href="/register">Register</a>
     </div>
     
 </body>

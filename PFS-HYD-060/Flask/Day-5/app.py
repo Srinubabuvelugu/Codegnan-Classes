@@ -8,24 +8,46 @@ app = Flask(__name__)
 
 
 data = {
-    "1":{'name':'srinu','class':5},
-    "2":{'name':'babu','class':6},
-    "3":{'name':'bhanu','class':7},
-    "4":{'name':'mahi','class':5},
-    "5":{'name':'geethu','class':6}      
+    "1":{'name':'srinu','class':5, 'marks':50},
+    "2":{'name':'babu','class':6, 'marks':20},
+    "3":{'name':'bhanu','class':7, 'marks':25},
+    "4":{'name':'mahi','class':5, 'marks':98},
+    "5":{'name':'geethu','class':6, 'marks':75}      
 }
 
 
 # home route
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', 
+                           name="babu",
+                            module = "Flask", 
+                            batch = 57, 
+                            time = "2-4 PM")
 
 
 
 @app.route('/students')
 def students():
-    return data
+    return render_template('students.html', students=data)
+
+#register
+@app.route('/register', methods = ['GET','POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+    if request.method == 'POST':
+        name = request.form.get('username')
+        class_no = int(request.form.get('class'))
+        marks = int(request.form.get('marks'))
+        print(name,class_no, marks)
+        id = len(data) + 1
+        student_data = {'name':name, 'class':class_no,'marks':marks}
+        data[id] = student_data
+        return redirect('/students')
+
+
+
 
 
 # Dynamic path parameters

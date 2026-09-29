@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SNS-Notes
+{% endblock %}
+
+{% block content %}
+
+    {% block navmenu %}
+        <div style="background-color: mediumslateblue; text-align: right;
+            padding: auto;">
+            <a href="/dashboard">Dashboard</a>
+            <a href="#">Notes</a>
+            <a href="#">Files</a>
+            <a href="#">Profile</a>
+            <a href="#">Logout</a>
+        </div>
+    {% endblock %}
+
+
+    <div>
+        <h2>Notes</h2>
+    
+        <p>Here you can create notes and reffer it</p>
+        <div>
+            <button><a href="{{ url_for('addnotes') }}">Add Notes</a></button>
+        </div>
+        
+    </div>
+
+{% endblock %}
