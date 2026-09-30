@@ -52,7 +52,7 @@ class UserDBQueries:
             db_config = DatabaseConnction()
             cursor = db_config.cursor(dictionary=True)
 
-            query = """select c.userid, c.productid, c.quantity, p.productname, p.category, p.saleprice, p.storedpath, (c.quantity * p.saleprice) as subtotal
+            query = """select c.cartid, c.userid, c.productid, c.quantity, p.productname, p.category, p.saleprice, p.storedpath, (c.quantity * p.saleprice) as subtotal
                 from cart c
                 left join products p
                 on c.productid = p.productid
@@ -62,4 +62,16 @@ class UserDBQueries:
             return True, items
         except Exception as e:
             return False, f"Something wrong in database/userDB.py-getCartItems:{e}"
+
+    def updateCartQuantity(cartid:int, quantity:int, userid:int):
+        try: 
+            db_config = DatabaseConnction()
+            cursor = db_config.cursor(dictionary=True)
+
+            query = """update cart set quantity = %s where cartid = %s and userid = %s"""
+            cursor.execute(query,(quantity,cartid, userid))
+            db_config.commit()
+            return True, "Qauntity Updated"
+        except Exception as e:
+            return False, f"Something wrong in database/userDB.py-updateCartQuantity:{e}"
 

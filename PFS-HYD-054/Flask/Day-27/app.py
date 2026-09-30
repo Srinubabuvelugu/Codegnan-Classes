@@ -203,7 +203,17 @@ def viewcart():
         status, items = UserDBQueries.getCartItems(userid=userid)
         print(items)
         return render_template('user/cart.html', cart_items= items)
-    
+# update item quantity in cart
+@app.route('/cart/update-quantity/<cartid>', methods=['POST'])
+def update_cart_quantity(cartid):
+    if request.method == 'POST':
+        quantity = request.form.get('quantity')
+        # update quantity through cartid
+        userid = session.get('id',2)
+        status, msg = UserDBQueries.updateCartQuantity(cartid=cartid, quantity=quantity, userid = userid)
+        return redirect(url_for('viewcart'))
+
+
 @app.route("/logout")
 def logout():
     pass
