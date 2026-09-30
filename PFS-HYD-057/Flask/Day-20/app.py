@@ -2,11 +2,11 @@
 
 # Postman 
 
-from flask import Flask, request
+from flask import Flask, request, session, jsonify
 
 
 app = Flask(__name__)
-
+app.secret_key =  "srinubabu@12233"
 fruits = {
     1:{"name":"Apple", 'price':150, 'stock':15},
     2:{"name":"Banana", 'price':50, 'stock':5},
@@ -21,17 +21,27 @@ fruits = {
 def home():
     return {"Msg": "This is fruit market application"}
 
-# return all fruits
-@app.route("/fruits")
-def all_fruits():
-    return fruits
+@app.route('/login')
+def login():
+    data = request.get_json()
+    id = data['id']
+    session['id'] = id
+    return f"Id {id } stoerd in session "
+    
+
+# # return all fruits
+# @app.route("/fruits")
+# def all_fruits():
+#     return fruits
 
 # return the fruit  based on id
-@app.route("/fruits/<int:id>")
-def get_fruit_by_id(id):
+@app.route("/fruits")
+def get_fruit_by_id():
+    id = session.get('id')
+    print(id)
     if id in fruits:
         return fruits[id]
-    return {'error':f"Fruit id {id} not found"}
+    return fruits
 
 
 # add new fruit
@@ -39,9 +49,12 @@ def get_fruit_by_id(id):
 def add_fruit():
 
     data = request.get_json()
+    if 'name' not in data or 'price' not in data:
+        return jsonify({"error": "request body not in correct format"}), 400
     name = data['name']
     price = data['price']
     stock = data.get('stock', 0)
+
     new_fruit = {"name":name, 'price':price, 'stock':stock}
     if stock == 0:
         new_fruit['is_avilable'] = "out of stock"
@@ -49,7 +62,7 @@ def add_fruit():
         new_fruit['is_avilable'] = "stock avialable"
     id = len(fruits) + 1
     fruits[id] = new_fruit
-    return {"msg":"Fruit added successfully","fruit id":id}    
+    return jsonify({"msg":"Fruit added successfully","fruit id":id}), 201  
 
 # update fruit info by id
 @app.route('/fruits/<int:id>', methods = ['PUT'])
@@ -74,6 +87,12 @@ def update_stock(id):
     return {"error":f"Fruit {id} not found"}
 
 
+
+#reset session
+@app.route('/reset')
+def reset_session():
+    session.clear()
+    return "ression is creared"
 
 
 
