@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+<title>
+    {% block title %}
+        Register
+    {% endblock %}
+</title>
+
+
+<body>
+{% block navmenu %}
+    <a href="#">Login</a>
+    <a href="#">Register</a>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Register</h2>
+        <p>
+            Create account to manage your Notes and Files
+        </p>
+
+        <div>
+            <form action="">
+                <div>
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="">
+                </div>
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="">
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="">
+                </div>
+                <div>
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" name="confirm_password" id="">
+                </div>
+                <div>
+                    <button type="submit">Submit</button>
+                </div>
+                <p>Don't know password?<a href="#">Forgot Password</a></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+</body>

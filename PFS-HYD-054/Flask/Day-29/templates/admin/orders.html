@@ -1,0 +1,256 @@
+
+{% extends "admin/base.html" %}
+
+{% block title %}Orders | ShopZone Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Orders</h1>
+        <p>Manage customer orders in your store.</p>
+    </div>
+
+</div>
+
+
+<!-- Order Filters -->
+
+<div class="order-tools">
+
+    <form method="GET" action="{{ url_for('admin_orders') }}">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search by Order ID or Customer..."
+            value="{{ request.args.get('search', '') }}"
+        >
+
+        <select name="status">
+
+            <option value="">
+                All Status
+            </option>
+
+            <option value="PENDING"
+                {% if request.args.get('status') == 'PENDING' %}
+                    selected
+                {% endif %}
+            >
+                Pending
+            </option>
+
+            <option value="PROCESSING"
+                {% if request.args.get('status') == 'PROCESSING' %}
+                    selected
+                {% endif %}
+            >
+                Processing
+            </option>
+
+            <option value="SHIPPED"
+                {% if request.args.get('status') == 'SHIPPED' %}
+                    selected
+                {% endif %}
+            >
+                Shipped
+            </option>
+
+            <option value="DELIVERED"
+                {% if request.args.get('status') == 'DELIVERED' %}
+                    selected
+                {% endif %}
+            >
+                Delivered
+            </option>
+
+            <option value="CANCELLED"
+                {% if request.args.get('status') == 'CANCELLED' %}
+                    selected
+                {% endif %}
+            >
+                Cancelled
+            </option>
+
+        </select>
+
+        <button
+            type="submit"
+            class="btn btn-search"
+        >
+            Search
+        </button>
+
+    </form>
+
+</div>
+
+
+<!-- Orders List -->
+
+<div class="order-section">
+
+    <div class="section-header">
+
+        <h2>Order List</h2>
+
+        <span>
+            Total Orders: {{ orders|length }}
+        </span>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table class="order-table">
+
+            <thead>
+
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Items</th>
+                    <th>Total Amount</th>
+                    <th>Payment</th>
+                    <th>Order Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for order in orders %}
+
+                <tr>
+
+                    <td>
+                        <strong>#{{ order.id }}</strong>
+                    </td>
+
+
+                    <td>
+
+                        <strong>
+                            {{ order.customer_name }}
+                        </strong>
+
+                        <br>
+
+                        <span class="customer-email">
+                            {{ order.customer_email }}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+                        {{ order.item_count }}
+                    </td>
+
+
+                    <td>
+                        ₹{{ order.total_amount }}
+                    </td>
+
+
+                    <td>
+
+                        {% if order.payment_status == "PAID" %}
+
+                            <span class="payment-status paid">
+                                Paid
+                            </span>
+
+                        {% elif order.payment_status == "FAILED" %}
+
+                            <span class="payment-status failed">
+                                Failed
+                            </span>
+
+                        {% else %}
+
+                            <span class="payment-status pending">
+                                Pending
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="order-status {{ order.status|lower }}">
+                            {{ order.status }}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+                        {{ order.created_at }}
+                    </td>
+
+
+                    <td>
+
+                        <div class="order-actions">
+
+                            <a
+                                href="{{ url_for(
+                                    'admin_order_details',
+                                    order_id=order.id
+                                ) }}"
+                                class="action-view"
+                            >
+                                View
+                            </a>
+
+
+                            <a
+                                href="{{ url_for(
+                                    'admin_edit_order',
+                                    order_id=order.id
+                                ) }}"
+                                class="action-edit"
+                            >
+                                Update
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+
+                    <td
+                        colspan="8"
+                        class="no-orders"
+                    >
+                        No orders found.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
