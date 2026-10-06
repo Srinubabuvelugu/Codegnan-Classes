@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SNS-Notes
+{% endblock %}
+
+{% block content %}
+
+    {% block navmenu %}
+        <div style="background-color: mediumslateblue; text-align: right;
+            padding: auto;">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/notes">Notes</a>
+            <a href="/files">Files</a>
+            <a href="#">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    {% endblock %}
+
+
+
+<div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category == "msg" %}
+                <div class="alert alert-success" style="color: green;">
+                    {{ message }}
+                </div>
+            {% elif category == "err" %}
+                <div class="alert alert-danger" style="color: red;">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+</div>
+    <div>
+        <h2>Notes</h2>
+    
+        <p>Here you can create notes and reffer it</p>
+        <div>
+            <form>
+                <input type="text" name="search_ele" id="" placeholder="Search Notes">
+                <button type="submit">Search</button>
+            </form>
+            <button><a href="/notes">clear</a></button>
+        </div>
+        <div>
+            <button><a href="{{ url_for('addnotes') }}">Add Notes</a></button>
+        </div>
+        
+    </div>
+    <div>
+        <div>
+            {% if notes %}
+
+                {% for note in notes %}
+                    <div>
+                        <div>
+                            Title: {{ note.title }}
+                        </div>
+                        <div>
+                            Content : {{ note.content[:100] }}
+                        </div>
+
+                        <div>
+                            <div>
+                                <button><a href="/notes/view/{{ note.notesid }}">View</a></button>
+                            </div>
+                            <div>
+                                <button><a href="{{ url_for('editnotes', notesid= note.notesid)}}">Edit</a></button>
+                            </div>
+                            <div>
+                                <button><a href="{{ url_for('deletenotes', notesid= note.notesid)}}">delete</a></button>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                {% endfor %}
+                    
+
+            {% else %}
+                <p>Start to create your first notes by click on add notes</p>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}

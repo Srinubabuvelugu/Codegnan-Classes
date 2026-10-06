@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SNS-Login
+{% endblock %}
+
+{% block content %}
+
+    {% block navmenu %}
+        <a href="/">Home</a>
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
+    {% endblock %}
+
+<div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category == "msg" %}
+                <div class="alert alert-success" style="color: green;">
+                    {{ message }}
+                </div>
+            {% elif category == "err" %}
+                <div class="alert alert-danger" style="color: red;">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+</div>
+
+
+    <div>
+        <h2>Login</h2>
+        <p>Login to SNS account to manage your files and notes</p>
+        <div>
+            <form action="/login" method="POST">
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="">
+                </div>
+            
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="">
+                </div>
+
+                <div>
+                    <button type="submit">Submit</button>
+                </div>
+                <div>
+                    <p>Don't have account? <a href="/register">Register</a></p>
+                    <p>Don't know password? <a href="/forgot-password">Forgot Password</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

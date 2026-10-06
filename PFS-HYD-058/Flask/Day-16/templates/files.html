@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SNS-Files
+{% endblock %}
+
+{% block content %}
+
+    {% block navmenu %}
+        <div style="background-color: mediumslateblue; text-align: right;
+            padding: auto;">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/notes">Notes</a>
+            <a href="/files">Files</a>
+            <a href="#">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    {% endblock %}
+
+<div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category == "msg" %}
+                <div class="alert alert-success" style="color: green;">
+                    {{ message }}
+                </div>
+            {% elif category == "err" %}
+                <div class="alert alert-danger" style="color: red;">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+</div>
+
+    <div>
+        <h2>Files</h2>
+    
+        <p>Here you can upload file for refference</p>
+        <div>
+            <button><a href="{{ url_for('uploadfile') }}">Upload File</a></button>
+        </div>
+        
+    </div>
+    <div>
+        <div>
+            {% if files %}
+
+                {% for file in files %}
+                    <div>
+                        <div>
+                            Title: {{ file.orignalname }}
+                        </div>
+                        
+
+                        <div>
+                            <div>
+                                <button><a href="/files/view/{{ file.fileid }}" target="_blank">View</a></button>
+                            </div>
+                            <div>
+                                <button><a href="/files/download/{{ file.fileid }}">Download</a></button>
+                            </div>
+                            <div>
+                                <button><a href="/files/delete/{{ file.fileid }}">Delete</a></button>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                {% endfor %}
+                    
+
+            {% else %}
+                <p>Start to upload your first file by click on upload</p>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}

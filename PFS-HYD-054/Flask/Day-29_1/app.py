@@ -106,20 +106,105 @@ def logout():
 @admin_required
 def admin():
     return redirect(url_for('admin_dashboard'))
+
 @app.route('/admin/dashboard')
 @admin_required
 def admin_dashboard():
-    _,products=AdminDBQueries.getAllProducts()
-    _,users=AdminDBQueries.getUsers()
-    _,orders=AdminDBQueries.getOrders()
-    return render_template('admin/dashboard.html',products=products or [],users=users or [],orders=orders or [])
 
+    _, products = AdminDBQueries.getAllProducts()
+    _, users = AdminDBQueries.getUsers()
+    _, orders = AdminDBQueries.getOrders()
+
+    products = products or []
+    users = users or []
+    orders = orders or []
+
+    # Total products
+    total_products = len(products)
+
+    # Total users
+    total_users = len(users)
+
+    # Total orders
+    total_orders = len(orders)
+
+    # Categories are stored directly in products.category
+    categories = set()
+
+    for product in products:
+        category = product.get('category')
+
+        if category:
+            categories.add(category)
+
+    total_categories = len(categories)
+
+    # Latest 5 orders
+    recent_orders = orders[:5]
+
+    return render_template(
+        'admin/dashboard.html',
+        total_products=total_products,
+        total_categories=total_categories,
+        total_orders=total_orders,
+        total_users=total_users,
+        recent_orders=recent_orders
+    )
 @app.route('/admin/products')
 @admin_required
 def admin_products():
-    _,products=AdminDBQueries.getAllProducts()
-    return render_template('admin/products.html',products=products or [])
 
+    search = request.args.get('search', '').strip()
+    category = request.args.get('category', '').strip()
+    status = request.args.get('status', '').strip()
+    stock = request.args.get('stock', '').strip()
+
+    try:
+        min_price = float(request.args.get('min_price', 0))
+    except ValueError:
+        min_price = 0
+
+    try:
+        max_price = float(request.args.get('max_price', 0))
+    except ValueError:
+        max_price = 0
+
+    page = request.args.get('page', 1, type=int)
+
+    per_page = 10
+
+    result = AdminDBQueries.getProducts(
+        search=search,
+        category=category,
+        status=status,
+        stock=stock,
+        min_price=min_price,
+        max_price=max_price,
+        page=page,
+        per_page=per_page
+    )
+    print(result)
+    products = result['products']
+    total = result['total']
+    categories = result['categories']
+
+    total_pages = (total + per_page - 1) // per_page
+
+    return render_template(
+        'admin/products.html',
+        products=products,
+        categories=categories,
+        page=page,
+        total_pages=total_pages,
+        total=total,
+        search=search,
+        category=category,
+        status=status,
+        stock=stock,
+        min_price=min_price,
+        max_price=max_price,
+        per_page = 10
+    )
 
 @app.route('/admin/products/add',methods=['GET','POST'])
 @admin_required
@@ -128,7 +213,8 @@ def admin_add_product():
         return render_template('admin/add_product.html')
     name=request.form.get('name','').strip()
     category=request.form.get('category','').strip() or request.form.get('new_category','').strip()
-    description=request.form.get('description','');image=request.files.get('image')
+    description=request.form.get('description','')
+    image=request.files.get('image')
     try: 
         buy=money(request.form.get('buyprice','0'))
         price=money(request.form.get('price','0'))
@@ -144,48 +230,106 @@ def admin_add_product():
     target.mkdir(parents=True,exist_ok=True)
     # Avoid collisions between uploads.
     
-    imgname=f'{uuid.uuid4().hex}_{imgname}'; storedpath=f'static/images/products/{imgname}'
+    imgname=f'{uuid.uuid4().hex}_{imgname}'
+    storedpath=f'static/images/products/{imgname}'
     ok,msg=AdminDBQueries.insertProductRecord((name,description,category,stock,buy,price,imgname,storedpath))
-    if ok:image.save(target/imgname);flash(msg,'msg')
-    else:flash(msg,'err')
+    if ok:
+        image.save(target/imgname)
+        flash(msg,'msg')
+    else:
+        flash(msg,'err')
     return redirect(url_for('admin_products'))
+
+
 @app.route('/admin/products/delete/<int:product_id>',methods=['POST','GET'])
 @admin_required
 def admin_delete_product(product_id):
-    ok,msg=AdminDBQueries.deleteProduct(product_id);flash(msg,'msg' if ok else 'err');return redirect(url_for('admin_products'))
+    ok,msg=AdminDBQueries.deleteProduct(product_id)
+    flash(msg,'msg' if ok else 'err')
+    return redirect(url_for('admin_products'))
+
+@app.route('/admin/products/deactivate/<int:product_id>', methods=['POST'])
+@admin_required
+def admin_deactivate_product(product_id):
+
+    success = AdminDBQueries.deactivateProduct(product_id)
+
+    if success:
+        flash("Product deactivated successfully.", "msg")
+    else:
+        flash("Unable to deactivate product.", "err")
+
+
+    return redirect(url_for('admin_products'))
+
+@app.route('/admin/products/activate/<int:product_id>', methods=['POST'])
+@admin_required
+def admin_activate_product(product_id):
+
+    success = AdminDBQueries.activateProduct(product_id)
+
+    if success:
+        flash("Product activated successfully.", "msg")
+    else:
+        flash("Unable to activate product.", "err")
+
+    return redirect(url_for('admin_products'))
 @app.route('/admin/products/edit/<int:product_id>',methods=['GET','POST'])
 @admin_required
 def admin_edit_product(product_id):
     if request.method=='GET':
         ok,p=AdminDBQueries.getAllProducts(product_id)
-        if not ok:abort(404)
+        if not ok:
+            abort(404)
         return render_template('admin/edit_product.html',product=p)
-    try:data=(request.form['name'].strip(),request.form.get('description',''),request.form['category'].strip(),int(request.form['stock']),money(request.form.get('buyprice',0)),money(request.form['price']))
-    except (ValueError,KeyError,InvalidOperation):flash('Invalid product values.','err');return redirect(url_for('admin_edit_product',product_id=product_id))
-    ok,msg=AdminDBQueries.updateProduct(product_id,data);flash(msg,'msg' if ok else 'err');return redirect(url_for('admin_products'))
+    try:
+        data=(request.form['name'].strip(),request.form.get('description',''),request.form['category'].strip(),int(request.form['stock']),money(request.form.get('buyprice',0)),money(request.form['price']))
+    except (ValueError,KeyError,InvalidOperation):
+        flash('Invalid product values.','err')
+        return redirect(url_for('admin_edit_product',product_id=product_id))
+    ok,msg=AdminDBQueries.updateProduct(product_id,data)
+    flash(msg,'msg' if ok else 'err')
+    return redirect(url_for('admin_products'))
+
+
 @app.route('/admin/category')
 @admin_required
 def admin_category():
-    _,products=AdminDBQueries.getAllProducts();categories=sorted({p['category'] for p in (products or []) if p.get('category')});return render_template('admin/category.html',categories=categories)
+    _,products=AdminDBQueries.getAllProducts()
+    categories=sorted({p['category'] for p in (products or []) if p.get('category')})
+    return render_template('admin/category.html',categories=categories)
+
+
 @app.route('/admin/category/add-category',methods=['GET','POST'])
 @admin_required
-def admin_add_category():flash('Categories are stored as text on products; add a category while creating/editing a product.','msg');return redirect(url_for('admin_category'))
+def admin_add_category():
+    flash('Categories are stored as text on products; add a category while creating/editing a product.','msg')
+    return redirect(url_for('admin_category'))
+
+
 @app.route('/admin/users')
 @admin_required
 def admin_users():
-    _,users=AdminDBQueries.getUsers();return render_template('admin/users.html',users=users or [])
+    _,users=AdminDBQueries.getUsers()
+    return render_template('admin/users.html',users=users or [])
+
+
 @app.route('/admin/users/<int:user_id>')
 @admin_required
 def admin_user_details(user_id):
     ok,user=AdminDBQueries.getUserDetails(user_id)
-    if not ok:abort(404)
+    if not ok:
+        abort(404)
     return render_template('admin/user_details.html',user=user)
+
+
 @app.route('/admin/users/<int:user_id>/edit',methods=['GET','POST'])
 @admin_required
 def admin_edit_user(user_id):
     if request.method == 'GET':
         ok,user=AdminDBQueries.getUserById(user_id)
-        if not ok: abort(404)
+        if not ok: 
+            abort(404)
         return render_template('admin/edit_user.html',user=user)
     data={
         'username': request.form.get('name','').strip(),
@@ -197,20 +341,171 @@ def admin_edit_user(user_id):
     flash(msg,'msg' if ok else 'err')
     return redirect(url_for('admin_user_details',user_id=user_id))
 
+
+# ============================================================
+# ADMIN ORDERS
+# ============================================================
+
 @app.route('/admin/orders')
 @admin_required
 def admin_orders():
-    _,orders=AdminDBQueries.getOrders(request.args.get('search'),request.args.get('status'));return render_template('admin/orders.html',orders=orders or [])
+
+    search = request.args.get('search', '').strip()
+    status = request.args.get('status', '').strip()
+
+    page = request.args.get('page', 1, type=int)
+
+    if page < 1:
+        page = 1
+
+    per_page = 10
+
+    result = AdminDBQueries.getOrders(
+        search=search,
+        status=status,
+        page=page,
+        per_page=per_page
+    )
+
+    orders = result['orders']
+    total = result['total']
+
+    total_pages = (total + per_page - 1) // per_page
+
+    # If requested page doesn't exist
+    if total_pages > 0 and page > total_pages:
+
+        return redirect(
+            url_for(
+                'admin_orders',
+                page=total_pages,
+                search=search,
+                status=status
+            )
+        )
+
+    return render_template(
+        'admin/orders.html',
+        orders=orders,
+        total=total,
+        page=page,
+        per_page=per_page,
+        total_pages=total_pages
+    )
+
+
+# ============================================================
+# VIEW ORDER DETAILS
+# ============================================================
+
 @app.route('/admin/orders/<int:order_id>')
 @admin_required
 def admin_order_details(order_id):
-    ok,order=AdminDBQueries.getOrderDetails(order_id)
-    if not ok:abort(404)
-    return render_template('admin/order_details.html',order=order)
-@app.route('/admin/orders/<int:order_id>/status',methods=['POST'])
+
+    order = AdminDBQueries.getOrderById(order_id)
+
+    if not order:
+
+        flash('Order not found.', 'err')
+
+        return redirect(
+            url_for('admin_orders')
+        )
+
+    items = AdminDBQueries.getOrderItems(order_id)
+
+    return render_template(
+        'admin/order_details.html',
+        order=order,
+        items=items
+    )
+
+
+# ============================================================
+# UPDATE ORDER
+# ============================================================
+
+@app.route(
+    '/admin/orders/<int:order_id>/edit',
+    methods=['GET', 'POST']
+)
 @admin_required
 def admin_edit_order(order_id):
-    ok,msg=AdminDBQueries.updateOrderStatus(order_id,request.form.get('status',''));flash(msg,'msg' if ok else 'err');return redirect(url_for('admin_order_details',order_id=order_id))
+
+    order = AdminDBQueries.getOrderById(order_id)
+
+    if not order:
+
+        flash('Order not found.', 'err')
+
+        return redirect(
+            url_for('admin_orders')
+        )
+
+    if request.method == 'POST':
+
+        status = request.form.get('status', '').strip().upper()
+
+        allowed_statuses = [
+            'PENDING',
+            'PROCESSING',
+            'SHIPPED',
+            'DELIVERED',
+            'CANCELLED'
+        ]
+
+        if status not in allowed_statuses:
+
+            flash(
+                'Invalid order status.',
+                'err'
+            )
+
+            return redirect(
+                url_for(
+                    'admin_edit_order',
+                    order_id=order_id
+                )
+            )
+
+        success = AdminDBQueries.updateOrderStatus(
+            order_id,
+            status
+        )
+
+        if success:
+
+            flash(
+                'Order status updated successfully.',
+                'msg'
+            )
+
+            return redirect(
+                url_for(
+                    'admin_order_details',
+                    order_id=order_id
+                )
+            )
+
+        else:
+
+            flash(
+                'Failed to update order status.',
+                'err'
+            )
+
+    return render_template(
+        'admin/order_edit.html',
+        order=order
+    )
+
+
+# @app.route('/admin/orders/<int:order_id>/status',methods=['POST'])
+# @admin_required
+# def admin_edit_order(order_id):
+#     ok,msg=AdminDBQueries.updateOrderStatus(order_id,request.form.get('status',''))
+#     flash(msg,'msg' if ok else 'err')
+#     return redirect(url_for('admin_order_details',order_id=order_id))
 
 @app.route('/products')
 def products():
@@ -339,23 +634,35 @@ def edit_profile():
     except Exception:db.rollback();flash('Could not update profile.','err')
     finally:cur.close();db.close()
     return redirect(url_for('profile'))
+
 @app.route('/change-password',methods=['GET','POST'])
 @user_required
 def change_password():
-    if request.method=='GET':return render_template('user/change_password.html')
+    if request.method=='GET':
+        return render_template('user/change_password.html')
     from database.connection import DatabaseConnction
-    old=request.form.get('current_password','');new=request.form.get('new_password','')
+    old=request.form.get('current_password','');
+    new=request.form.get('new_password','')
     ok,user=getUserByEmail(session['email'])
-    if not ok or not check_password_hash(user['hashpassword'],old) or len(new)<8:flash('Current password is incorrect or new password is too short.','err');return redirect(url_for('change_password'))
-    db=DatabaseConnction();cur=db.cursor()
-    try:cur.execute('UPDATE users SET hashpassword=%s WHERE userid=%s',(generate_password_hash(new),session['id']));db.commit();flash('Password changed.','msg')
-    finally:cur.close();db.close()
+    if not ok or not check_password_hash(user['hashpassword'],old) or len(new)<8:
+        flash('Current password is incorrect or new password is too short.','err')
+        return redirect(url_for('change_password'))
+    db=DatabaseConnction()
+    cur=db.cursor()
+    try:
+        cur.execute('UPDATE users SET hashpassword=%s WHERE userid=%s',(generate_password_hash(new),session['id']))
+        db.commit()
+        flash('Password changed.','msg')
+    finally:
+        cur.close()
+        db.close()
     return redirect(url_for('profile'))
 
 @app.errorhandler(403)
-def forbidden(e):return render_template('base.html'),403
+def forbidden(e):
+    return render_template('base.html'),403
 
 if __name__=='__main__':
     try: print(createTables())
     except Exception as e: print(f'Database setup failed: {e}')
-    app.run(debug=os.getenv('FLASK_DEBUG','false').lower()=='true',port=int(os.getenv('PORT','5001')))
+    app.run(debug=True)

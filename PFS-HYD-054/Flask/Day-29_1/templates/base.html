@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,82 +61,239 @@
         <div class="collapse navbar-collapse"
              id="mainNavbar">
 
-            <!-- Navigation -->
+
+            <!-- ================= NAVIGATION ================= -->
+
             <ul class="navbar-nav mx-auto">
 
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="{{ url_for('home') }}">
-                        Home
-                    </a>
-                </li>
+                {% if session.get('role') == 'admin' %}
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/products">
-                        Shop
-                    </a>
-                </li>
+                    <!-- ADMIN NAVIGATION -->
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        Categories
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/admin">
+                            <i class="bi bi-speedometer2"></i>
+                            Dashboard
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        About
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/admin/products">
+                            <i class="bi bi-box-seam"></i>
+                            Products
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        Contact
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/admin/users">
+                            <i class="bi bi-people"></i>
+                            Users
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/admin/orders">
+                            <i class="bi bi-cart-check"></i>
+                            Orders
+                        </a>
+                    </li>
+
+                {% elif session.get('role') == 'user' %}
+
+                    <!-- USER NAVIGATION -->
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{{ url_for('home') }}">
+                            <i class="bi bi-house"></i>
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/products">
+                            <i class="bi bi-shop"></i>
+                            Shop
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/orders">
+                            <i class="bi bi-box-seam"></i>
+                            My Orders
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/profile">
+                            <i class="bi bi-person"></i>
+                            Profile
+                        </a>
+                    </li>
+
+                {% else %}
+
+                    <!-- GUEST NAVIGATION -->
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{{ url_for('home') }}">
+                            <i class="bi bi-house"></i>
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/products">
+                            <i class="bi bi-shop"></i>
+                            Shop
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/products">
+                            <i class="bi bi-grid"></i>
+                            Categories
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="#about">
+                            <i class="bi bi-info-circle"></i>
+                            About
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="#contact">
+                            <i class="bi bi-envelope"></i>
+                            Contact
+                        </a>
+                    </li>
+
+                {% endif %}
 
             </ul>
 
 
-            <!-- Right side -->
+            <!-- ================= RIGHT SIDE ================= -->
+
             <div class="navbar-actions">
 
-                <!-- Search -->
-                <a href="#"
-                   class="nav-icon">
-                    <i class="bi bi-search"></i>
-                </a>
+                {% if session.get('role') == 'admin' %}
 
+                    <!-- ADMIN -->
 
-                <!-- Cart -->
-                <a href="{{ url_for('viewcart') }}"
-                   class="nav-icon cart-icon">
+                    <span class="text-light me-3">
 
-                    <i class="bi bi-cart3"></i>
+                        <i class="bi bi-person-circle"></i>
 
-                    <span class="cart-count">
-                        {{ cart_len }}
+                        {{ session.get('username') }}
+
                     </span>
 
-                </a>
+                    <a href="/logout"
+                       class="btn btn-register">
+
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+
+                    </a>
 
 
-                <!-- Login -->
-                <a href="{{ url_for('login') }}"
-                   class="btn btn-login">
+                {% elif session.get('role') == 'user' %}
 
-                    Login
+                    <!-- USER -->
 
-                </a>
+                    <!-- Search -->
+                    <a href="/products"
+                       class="nav-icon"
+                       title="Search Products">
+
+                        <i class="bi bi-search"></i>
+
+                    </a>
 
 
-                <!-- Register -->
-                <a href="{{ url_for('register') }}"
-                   class="btn btn-register">
+                    <!-- Cart -->
+                    <a href="{{ url_for('viewcart') }}"
+                       class="nav-icon cart-icon"
+                       title="Shopping Cart">
 
-                    Register
+                        <i class="bi bi-cart3"></i>
 
-                </a>
+                        <span class="cart-count">
+                            {{ cart_len }}
+                        </span>
+
+                    </a>
+
+
+                    <!-- User -->
+                    <span class="text-light me-3">
+
+                        <i class="bi bi-person-circle"></i>
+
+                        {{ session.get('username') }}
+
+                    </span>
+
+
+                    <!-- Logout -->
+                    <a href="/logout"
+                       class="btn btn-register">
+
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+
+                    </a>
+
+
+                {% else %}
+
+                    <!-- GUEST -->
+
+                    <!-- Search -->
+                    <a href="/products"
+                       class="nav-icon"
+                       title="Search Products">
+
+                        <i class="bi bi-search"></i>
+
+                    </a>
+
+
+                    <!-- Login -->
+                    <a href="{{ url_for('login') }}"
+                       class="btn btn-login">
+
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Login
+
+                    </a>
+
+
+                    <!-- Register -->
+                    <a href="{{ url_for('register') }}"
+                       class="btn btn-register">
+
+                        <i class="bi bi-person-plus"></i>
+                        Register
+
+                    </a>
+
+                {% endif %}
 
             </div>
 
@@ -192,11 +350,20 @@
 
         <div class="row">
 
+
+            <!-- ShopZone -->
             <div class="col-md-4">
 
                 <h5>
-                    <i class="bi bi-bag-heart-fill"></i>
-                    ShopZone
+
+                    <a href="{{ url_for('home') }}"
+                       class="text-decoration-none text-light">
+
+                        <i class="bi bi-bag-heart-fill"></i>
+                        ShopZone
+
+                    </a>
+
                 </h5>
 
                 <p>
@@ -207,64 +374,123 @@
             </div>
 
 
+            <!-- Quick Links -->
             <div class="col-md-2">
 
                 <h6>Quick Links</h6>
 
                 <a href="{{ url_for('home') }}">
+                    <i class="bi bi-house"></i>
                     Home
                 </a>
 
-                <a href="#">
+                <a href="/products">
+                    <i class="bi bi-shop"></i>
                     Shop
                 </a>
 
-                <a href="#">
-                    About
+                <a href="/products">
+                    <i class="bi bi-grid"></i>
+                    Categories
                 </a>
 
             </div>
 
 
+            <!-- Customer Service -->
             <div class="col-md-3">
 
                 <h6>Customer Service</h6>
 
-                <a href="#">
-                    My Account
-                </a>
+                {% if session.get('role') == 'user' %}
 
-                <a href="#">
-                    Orders
-                </a>
+                    <a href="/profile">
+                        <i class="bi bi-person"></i>
+                        My Account
+                    </a>
 
-                <a href="#">
-                    Returns
-                </a>
+                    <a href="/orders">
+                        <i class="bi bi-box-seam"></i>
+                        Orders
+                    </a>
+
+                    <a href="/products">
+                        <i class="bi bi-arrow-repeat"></i>
+                        Returns
+                    </a>
+
+                {% elif session.get('role') == 'admin' %}
+
+                    <a href="/admin">
+                        <i class="bi bi-speedometer2"></i>
+                        Dashboard
+                    </a>
+
+                    <a href="/admin/orders">
+                        <i class="bi bi-cart-check"></i>
+                        Manage Orders
+                    </a>
+
+                    <a href="/admin/users">
+                        <i class="bi bi-people"></i>
+                        Manage Users
+                    </a>
+
+                {% else %}
+
+                    <a href="{{ url_for('login') }}">
+                        <i class="bi bi-person"></i>
+                        My Account
+                    </a>
+
+                    <a href="{{ url_for('login') }}">
+                        <i class="bi bi-box-seam"></i>
+                        Orders
+                    </a>
+
+                    <a href="/products">
+                        <i class="bi bi-arrow-repeat"></i>
+                        Returns
+                    </a>
+
+                {% endif %}
 
             </div>
 
 
+            <!-- Social Media -->
             <div class="col-md-3">
 
                 <h6>Follow Us</h6>
 
                 <div class="social-icons">
 
-                    <a href="#">
+                    <a href="#"
+                       title="Facebook">
+
                         <i class="bi bi-facebook"></i>
+
                     </a>
 
-                    <a href="#">
+                    <a href="#"
+                       title="Instagram">
+
                         <i class="bi bi-instagram"></i>
+
                     </a>
 
-                    <a href="#">
+                    <a href="#"
+                       title="Twitter">
+
                         <i class="bi bi-twitter-x"></i>
+
                     </a>
 
-                    <a href="#">
+                    <a href="#"
+                       title="YouTube">
+
                         <i class="bi bi-youtube"></i>
+
                     </a>
 
                 </div>
@@ -277,6 +503,7 @@
         <hr>
 
 
+        <!-- Copyright -->
         <div class="copyright">
 
             © 2026 ShopZone. All Rights Reserved.
@@ -297,3 +524,4 @@
 
 </body>
 </html>
+```
