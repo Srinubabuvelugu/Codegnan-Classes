@@ -118,6 +118,7 @@ def admin_dashboard():
     products = products or []
     users = users or []
     orders = orders or []
+    print("Orders:",orders)
 
     # Total products
     total_products = len(products)
@@ -360,15 +361,13 @@ def admin_orders():
 
     per_page = 10
 
-    result = AdminDBQueries.getOrders(
+    _,result = AdminDBQueries.getOrders(
         search=search,
-        status=status,
-        page=page,
-        per_page=per_page
+        status=status
     )
-
-    orders = result['orders']
-    total = result['total']
+    print(result)
+    orders = result
+    total = len(result)
 
     total_pages = (total + per_page - 1) // per_page
 

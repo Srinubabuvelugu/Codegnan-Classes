@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SNS-Dashboard
+{% endblock %}
+
+{% block content %}
+
+    {% block navmenu %}
+        <div style="background-color: mediumslateblue; text-align: right;
+            padding: auto;">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/notes">Notes</a>
+            <a href="/files">Files</a>
+            <a href="#">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    {% endblock %}
+
+
+    <div>
+        <h2>SNS Manamgement App</h2>
+        <p>Welcome {{ name }},</p>
+        <p>Here you can create notes and stores the files for your refference</p>
+        <div>
+            <a href="{{ url_for('myfiles') }}">My Files</a>
+            <a href="{{ url_for('mynotes') }}">My Notes</a>
+        </div>
+        <div>
+            <div>
+                <h4>Total Files</h4>
+                    <p>{{ total_files }}</p>
+            </div>
+            <div>
+                <h4>Total Notes</h4>
+                    <p>{{ total_notes }}</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

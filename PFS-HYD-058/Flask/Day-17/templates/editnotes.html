@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SNS-Notes
+{% endblock %}
+
+{% block content %}
+
+    {% block navmenu %}
+        <div style="background-color: mediumslateblue; text-align: right;
+            padding: auto;">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/notes">Notes</a>
+            <a href="/files">Files</a>
+            <a href="#">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    {% endblock %}
+
+
+<div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category == "msg" %}
+                <div class="alert alert-success" style="color: green;">
+                    {{ message }}
+                </div>
+            {% elif category == "err" %}
+                <div class="alert alert-danger" style="color: red;">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+</div>
+
+
+    <div>
+        <h2>Update Notes</h2>
+        <p>Update your notes for fuature refference</p>
+        <div>
+            <form action="{{ url_for('editnotes',notesid=notesid) }}" method="POST">
+                <div>
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="", value="{{ title }}">
+                </div>
+            
+                <div>
+                    <label for="password">Content</label>
+                    <textarea name="content" id="" rows="5" cols="50">{{ content }}</textarea>
+                </div>
+
+                <div>
+                    <button type="submit">Save</button>
+                </div>
+                
+            </form>
+            <button><a href="{{ url_for('mynotes') }}">Back</a></button>
+        </div>
+    </div>
+
+{% endblock %}

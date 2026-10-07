@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SNS-View Notes
+{% endblock %}
+
+{% block content %}
+
+    {% block navmenu %}
+        <div style="background-color: mediumslateblue; text-align: right;
+            padding: auto;">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/notes">Notes</a>
+            <a href="/files">Files</a>
+            <a href="#">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    {% endblock %}
+
+
+<div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category == "msg" %}
+                <div class="alert alert-success" style="color: green;">
+                    {{ message }}
+                </div>
+            {% elif category == "err" %}
+                <div class="alert alert-danger" style="color: red;">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+</div>
+
+
+    <div>
+        <h2>View Notes</h2>
+        <p>View notes for your refference</p>
+        <div>
+            <div>
+                <h4>Title:</h4>
+                <p>{{ title }}</p>
+            </div>
+            <div>
+                <h4>Content:</h4>
+                <p>{{ content }}</p>
+            </div>
+
+            <button><a href="{{ url_for('mynotes') }}">Back</a></button>
+        </div>
+    </div>
+
+{% endblock %}

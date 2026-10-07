@@ -35,13 +35,22 @@ class AdminDBQueries:
         finally:cur.close();db.close()
     @staticmethod
     def getOrders(search=None,status=None):
-        db=DatabaseConnction();cur=db.cursor(dictionary=True)
+        db=DatabaseConnction();
+        cur=db.cursor(dictionary=True)
         try:
             sql='''SELECT o.orderid AS id,u.username customer_name,u.email customer_email,o.total_amount,o.status,o.payment_method,o.payment_status,o.created_at,COUNT(*) item_count FROM orders o JOIN users u ON u.userid=o.userid LEFT JOIN order_details od ON od.orderid=o.orderid WHERE 1=1''';vals=[]
-            if search:sql+=' AND (CAST(o.orderid AS CHAR) LIKE %s OR u.username LIKE %s OR u.email LIKE %s)';vals += ['%'+search+'%']*3
-            if status:sql+=' AND o.status=%s';vals.append(status.lower())
-            sql+=' GROUP BY o.orderid ORDER BY o.created_at DESC';cur.execute(sql,tuple(vals));return True,cur.fetchall()
-        finally:cur.close();db.close()
+            if search:
+                sql+=' AND (CAST(o.orderid AS CHAR) LIKE %s OR u.username LIKE %s OR u.email LIKE %s)'
+                vals += ['%'+search+'%']*3
+            if status:
+                sql+=' AND o.status=%s'
+                vals.append(status.lower())
+            sql+=' GROUP BY o.orderid ORDER BY o.created_at DESC'
+            cur.execute(sql,tuple(vals))
+            return True,cur.fetchall()
+        finally:
+            cur.close()
+            db.close()
     @staticmethod
     def getOrderDetails(orderid):
         db=DatabaseConnction();cur=db.cursor(dictionary=True)
@@ -272,169 +281,169 @@ class AdminDBQueries:
     # ---------------------------------------------------------
     # GET ORDERS
     # ---------------------------------------------------------
-    @staticmethod
-    def getOrders(search='', status='', page=1, per_page=10):
+    # @staticmethod
+    # def getOrders(search='', status='', page=1, per_page=10):
 
-        db = None
-        cur = None
+    #     db = None
+    #     cur = None
 
-        try:
-            db = DatabaseConnction()
-            cur = db.cursor(dictionary=True)
+    #     try:
+    #         db = DatabaseConnction()
+    #         cur = db.cursor(dictionary=True)
 
-            query = """
-                SELECT
-                    o.orderid,
-                    o.userid,
-                    o.status,
-                    o.address,
-                    o.total_amount,
-                    o.payment_method,
-                    o.payment_status,
-                    o.razorpay_order_id,
-                    o.razorpay_payment_id,
-                    o.created_at,
-                    o.updated_at,
+    #         query = """
+    #             SELECT
+    #                 o.orderid,
+    #                 o.userid,
+    #                 o.status,
+    #                 o.address,
+    #                 o.total_amount,
+    #                 o.payment_method,
+    #                 o.payment_status,
+    #                 o.razorpay_order_id,
+    #                 o.razorpay_payment_id,
+    #                 o.created_at,
+    #                 o.updated_at,
 
-                    u.username AS customer_name,
-                    u.email AS customer_email,
+    #                 u.username AS customer_name,
+    #                 u.email AS customer_email,
 
-                    COUNT(od.orderdetailid) AS item_count
+    #                 COUNT(od.orderdetailid) AS item_count
 
-                FROM orders o
+    #             FROM orders o
 
-                LEFT JOIN users u
-                    ON o.userid = u.userid
+    #             LEFT JOIN users u
+    #                 ON o.userid = u.userid
 
-                LEFT JOIN order_details od
-                    ON o.orderid = od.orderid
+    #             LEFT JOIN order_details od
+    #                 ON o.orderid = od.orderid
 
-                WHERE 1 = 1
-            """
+    #             WHERE 1 = 1
+    #         """
 
-            params = []
+    #         params = []
 
-            # -----------------------------
-            # SEARCH
-            # -----------------------------
-            if search:
+    #         # -----------------------------
+    #         # SEARCH
+    #         # -----------------------------
+    #         if search:
 
-                if search.isdigit():
+    #             if search.isdigit():
 
-                    query += """
-                        AND (
-                            o.orderid = %s
-                            OR u.username LIKE %s
-                            OR u.email LIKE %s
-                        )
-                    """
+    #                 query += """
+    #                     AND (
+    #                         o.orderid = %s
+    #                         OR u.username LIKE %s
+    #                         OR u.email LIKE %s
+    #                     )
+    #                 """
 
-                    params.append(int(search))
-                    params.append(f"%{search}%")
-                    params.append(f"%{search}%")
+    #                 params.append(int(search))
+    #                 params.append(f"%{search}%")
+    #                 params.append(f"%{search}%")
 
-                else:
+    #             else:
 
-                    query += """
-                        AND (
-                            u.username LIKE %s
-                            OR u.email LIKE %s
-                        )
-                    """
+    #                 query += """
+    #                     AND (
+    #                         u.username LIKE %s
+    #                         OR u.email LIKE %s
+    #                     )
+    #                 """
 
-                    params.append(f"%{search}%")
-                    params.append(f"%{search}%")
+    #                 params.append(f"%{search}%")
+    #                 params.append(f"%{search}%")
 
-            # -----------------------------
-            # STATUS FILTER
-            # -----------------------------
-            if status:
+    #         # -----------------------------
+    #         # STATUS FILTER
+    #         # -----------------------------
+    #         if status:
 
-                query += """
-                    AND o.status = %s
-                """
+    #             query += """
+    #                 AND o.status = %s
+    #             """
 
-                params.append(status)
+    #             params.append(status)
 
-            # -----------------------------
-            # GROUP
-            # -----------------------------
-            query += """
-                GROUP BY
-                    o.orderid,
-                    o.userid,
-                    o.status,
-                    o.address,
-                    o.total_amount,
-                    o.payment_method,
-                    o.payment_status,
-                    o.razorpay_order_id,
-                    o.razorpay_payment_id,
-                    o.created_at,
-                    o.updated_at,
-                    u.username,
-                    u.email
-            """
+    #         # -----------------------------
+    #         # GROUP
+    #         # -----------------------------
+    #         query += """
+    #             GROUP BY
+    #                 o.orderid,
+    #                 o.userid,
+    #                 o.status,
+    #                 o.address,
+    #                 o.total_amount,
+    #                 o.payment_method,
+    #                 o.payment_status,
+    #                 o.razorpay_order_id,
+    #                 o.razorpay_payment_id,
+    #                 o.created_at,
+    #                 o.updated_at,
+    #                 u.username,
+    #                 u.email
+    #         """
 
-            # -----------------------------
-            # COUNT
-            # -----------------------------
-            count_query = f"""
-                SELECT COUNT(*) AS total
-                FROM (
-                    {query}
-                ) AS filtered_orders
-            """
+    #         # -----------------------------
+    #         # COUNT
+    #         # -----------------------------
+    #         count_query = f"""
+    #             SELECT COUNT(*) AS total
+    #             FROM (
+    #                 {query}
+    #             ) AS filtered_orders
+    #         """
 
-            cur.execute(count_query, tuple(params))
+    #         cur.execute(count_query, tuple(params))
 
-            count_row = cur.fetchone()
-            total = count_row['total']
+    #         count_row = cur.fetchone()
+    #         total = count_row['total']
 
-            # -----------------------------
-            # PAGINATION
-            # -----------------------------
-            offset = (page - 1) * per_page
+    #         # -----------------------------
+    #         # PAGINATION
+    #         # -----------------------------
+    #         offset = (page - 1) * per_page
 
-            query += """
-                ORDER BY o.orderid DESC
-                LIMIT %s OFFSET %s
-            """
+    #         query += """
+    #             ORDER BY o.orderid DESC
+    #             LIMIT %s OFFSET %s
+    #         """
 
-            params.append(per_page)
-            params.append(offset)
+    #         params.append(per_page)
+    #         params.append(offset)
 
-            cur.execute(query, tuple(params))
+    #         cur.execute(query, tuple(params))
 
-            orders = cur.fetchall()
+    #         orders = cur.fetchall()
 
-            return {
-                'orders': orders,
-                'total': total
-            }
+    #         return {
+    #             'orders': orders,
+    #             'total': total
+    #         }
 
-        except Exception as e:
+    #     except Exception as e:
 
-            print("====================================")
-            print("GET ORDERS ERROR")
-            print("====================================")
-            print(e)
+    #         print("====================================")
+    #         print("GET ORDERS ERROR")
+    #         print("====================================")
+    #         print(e)
 
-            import traceback
-            traceback.print_exc()
+    #         import traceback
+    #         traceback.print_exc()
 
-            return {
-                'orders': [],
-                'total': 0
-            }
+    #         return {
+    #             'orders': [],
+    #             'total': 0
+    #         }
 
-        finally:
+    #     finally:
 
-            if cur:
-                cur.close()
+    #         if cur:
+    #             cur.close()
 
-            if db:
-                db.close()
+    #         if db:
+    #             db.close()
 
 
     # ---------------------------------------------------------
