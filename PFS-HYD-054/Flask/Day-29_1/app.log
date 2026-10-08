@@ -1,0 +1,28 @@
+2026-10-07 17:23:54,157 - INFO - WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+2026-10-07 17:23:54,157 - INFO - Press CTRL+C to quit
+2026-10-07 17:23:54,159 - INFO -  * Restarting with stat
+2026-10-07 17:23:55,055 - WARNING -  * Debugger is active!
+2026-10-07 17:23:55,059 - INFO -  * Debugger PIN: 755-919-401
+2026-10-07 17:24:08,836 - INFO - user in home page
+2026-10-07 17:24:08,892 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:08] "GET / HTTP/1.1" 200 -
+2026-10-07 17:24:08,999 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:08] "GET /static/css/style.css HTTP/1.1" 304 -
+2026-10-07 17:24:13,706 - INFO - user entered login page
+2026-10-07 17:24:13,729 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:13] "GET /login HTTP/1.1" 200 -
+2026-10-07 17:24:13,757 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:13] "GET /static/css/style.css HTTP/1.1" 304 -
+2026-10-07 17:24:13,818 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:13] "GET /static/css/style.css HTTP/1.1" 304 -
+2026-10-07 17:24:21,583 - INFO - register GET request
+2026-10-07 17:24:21,611 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:21] "GET /register HTTP/1.1" 200 -
+2026-10-07 17:24:21,636 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:21] "GET /static/css/style.css HTTP/1.1" 304 -
+2026-10-07 17:24:21,690 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:21] "GET /static/css/style.css HTTP/1.1" 304 -
+2026-10-07 17:24:32,684 - INFO - user entered login page
+2026-10-07 17:24:32,686 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:32] "GET /login HTTP/1.1" 200 -
+2026-10-07 17:24:32,717 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:32] "GET /static/css/style.css HTTP/1.1" 304 -
+2026-10-07 17:24:32,776 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:32] "GET /static/css/style.css HTTP/1.1" 304 -
+2026-10-07 17:24:55,364 - INFO - Register page -POST request
+2026-10-07 17:24:55,390 - WARNING - Invalid email or password.
+2026-10-07 17:24:55,392 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:55] "POST /login HTTP/1.1" 302 -
+2026-10-07 17:24:55,411 - INFO - user entered login page
+2026-10-07 17:24:55,411 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:55] "GET /login HTTP/1.1" 200 -
+2026-10-07 17:24:55,431 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:55] "GET /static/css/style.css HTTP/1.1" 304 -
+2026-10-07 17:24:55,475 - INFO - 127.0.0.1 - - [07/Oct/2026 17:24:55] "GET /static/css/style.css HTTP/1.1" 304 -

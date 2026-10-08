@@ -1,0 +1,23 @@
+2026-10-07 17:05:51,060- INFO-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-10-07 17:05:51,060- INFO-[33mPress CTRL+C to quit[0m
+2026-10-07 17:05:51,061- INFO- * Restarting with stat
+2026-10-07 17:05:51,589- WARNING- * Debugger is active!
+2026-10-07 17:05:51,593- INFO- * Debugger PIN: 800-452-244
+2026-10-07 17:06:13,048- INFO-User in home page
+2026-10-07 17:06:13,049- INFO-127.0.0.1 - - [07/Oct/2026 17:06:13] "GET / HTTP/1.1" 200 -
+2026-10-07 17:06:17,911- INFO-User in home page
+2026-10-07 17:06:17,911- INFO-127.0.0.1 - - [07/Oct/2026 17:06:17] "GET / HTTP/1.1" 200 -
+2026-10-07 17:06:17,998- INFO-127.0.0.1 - - [07/Oct/2026 17:06:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-10-07 17:06:29,452- INFO-127.0.0.1 - - [07/Oct/2026 17:06:29] "[33mGET /students/1 HTTP/1.1[0m" 404 -
+2026-10-07 17:06:36,310- INFO-this is students page
+2026-10-07 17:06:36,311- INFO-studnets data:{1: {'name': 'srinu', 'class': 5}, 2: {'name': 'mahi', 'class': 6}, 3: {'name': 'prajwal', 'class': 5}, 4: {'name': 'geethu', 'class': 7}, 5: {'name': 'prerana', 'class': 8}}
+2026-10-07 17:06:36,311- INFO-127.0.0.1 - - [07/Oct/2026 17:06:36] "GET /students HTTP/1.1" 200 -
+2026-10-07 17:08:07,435- WARNING-User in contact page
+2026-10-07 17:08:07,436- INFO-127.0.0.1 - - [07/Oct/2026 17:08:07] "GET /contact HTTP/1.1" 200 -
+2026-10-07 17:21:56,450- INFO-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-10-07 17:21:56,450- INFO-[33mPress CTRL+C to quit[0m
+2026-10-07 17:21:56,452- INFO- * Restarting with stat
+2026-10-07 17:21:56,712- WARNING- * Debugger is active!
+2026-10-07 17:21:56,728- INFO- * Debugger PIN: 892-397-380

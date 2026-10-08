@@ -10,6 +10,14 @@ from database import createTables, AdminDBQueries, UserDBQueries
 from database.authDB import getUserByEmail, createUser
 import uuid
 
+import logging
+
+logging.basicConfig(
+    filename="app.log",
+    level="INFO",
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
 load_dotenv()
 app=Flask(__name__)
 app.secret_key=os.getenv('FLASK_SECRET_KEY','dev-only-change-this-secret')
@@ -53,45 +61,61 @@ def razorpay_client():
 
 @app.route('/')
 def home():
+    logging.info("user in home page")
     _,items=UserDBQueries.getAllProducts()
     return render_template('home.html',products=items if isinstance(items,list) else [])
 
 @app.route('/register',methods=['GET','POST'])
 def register():
     if request.method=='GET': 
+        logging.info("register GET request")
         return render_template('register.html')
+
+    logging.info("register POST request")
     username=request.form.get('username',request.form.get('name','')).strip()
     email=request.form.get('email','').strip().lower()
     password=request.form.get('password','')
     confirm=request.form.get('confirm_password','')
     phone=request.form.get('phone','').strip()
+    logging.info(f'register user crediantials are {email} and {username}')
     if not username or not email or len(password)<8:
+        logging.warning("Enter a name, valid email and password with at least 8 characters.")
         flash('Enter a name, valid email and password with at least 8 characters.','err'); return redirect(url_for('register'))
     if password != confirm:
+        logging.warning('Passwords do not match.')
         flash('Passwords do not match.','err')
         return redirect(url_for('register'))
     ok,result=createUser(username,email,password,phone)
     if ok:
+        logging.info("Registration successful. Your account has been created in the users table. Please log in.")
         flash('Registration successful. Your account has been created in the users table. Please log in.','msg')
+        logging.info("User redirecting to login page")
         return redirect(url_for('login'))
     flash(result,'err')
+    logging.info("User redirecting to register page")
     return redirect(url_for('register'))
 
 @app.route('/login',methods=['GET','POST'])
 def login():
-    if request.method=='GET': return render_template('login.html')
+    if request.method=='GET': 
+        logging.info('user entered login page')
+        return render_template('login.html')
+    logging.info("Register page -POST request")
     email=request.form.get('email','').strip().lower()
     password=request.form.get('password','')
     ok,user=getUserByEmail(email)
     if not ok or not user or not check_password_hash(user['hashpassword'],password):
+        logging.warning('Invalid email or password.')
         flash('Invalid email or password.','err')
         return redirect(url_for('login'))
+    
     session.clear()
     session['id']=user['userid']
     session['role']=user['role']
     session['username']=user['username']
     session['email']=user['email']
     target=request.args.get('next','')
+    logging.info(f"{session['username']} enter to {session['role']} dashboard")
     if target.startswith('/') and not target.startswith('//'):
         return redirect(target)
     return redirect(url_for('admin_dashboard' if user['role']=='admin' else 'products'))
