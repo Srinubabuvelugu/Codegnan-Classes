@@ -27,12 +27,7 @@ def login():
     id = data['id']
     session['id'] = id
     return f"Id {id } stoerd in session "
-    
 
-# # return all fruits
-# @app.route("/fruits")
-# def all_fruits():
-#     return fruits
 
 # return the fruit  based on id
 @app.route("/fruits")
@@ -88,11 +83,7 @@ def update_stock(id):
 
 
 
-#reset session
-@app.route('/reset')
-def reset_session():
-    session.clear()
-    return "ression is creared"
+
 
 
 
