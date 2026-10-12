@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    Notes
+{% endblock %}
+
+{% block navmenu %}
+    <a href="/dashboard">Home</a>
+    <a href="#">Files</a>
+    <a href="{{ url_for('mynotes') }}">Notes</a>
+    <a href="#">Profile</a>
+    <a href="#">Logout</a>
+{% endblock %}
+
+{% block content %}
+    <div style="text-align: center;">
+        <div>
+            <h2>SNS Notes</h2>
+        </div>
+        <div>            
+            <p>Here you can mange your notes start by creating first notes</p>
+        </div>
+        <div>
+            <button><a href="#">New Notes</a></button>   
+        </div>
+        <div>
+            {% if notes %}
+                <p></p>
+            {% else %}
+                <p><i>Start creating your first note by click on New Notes</i></p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
