@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+<title>
+    {% block title %}
+        Home
+    {% endblock %}
+</title>
+
+
+<body>
+{% block navmenu %}
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>SNS Appication</h2>
+        <p>
+            This appication can manage the students Notes and Files
+        </p>
+
+        <div>
+            <button><a href="/login">Login</a></button>
+            <button><a href="/register">Register</a></button>
+        </div>
+    </div>
+{% endblock %}
+</body>

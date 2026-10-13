@@ -214,6 +214,20 @@ def dashboard():
 def mynotes():
     return render_template('notes.html')
 
+# new notes
+@app.route('/dashboard/notes/new-notes', methods=['GET','POST'])
+def new_notes():
+    if request.method == 'GET':
+        return render_template('new_notes.html')
+    if request.method == 'POST':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        userid = session['id']
+        # stored notes in  database
+
+
+        
+
 #main
 if __name__ == "__main__":
     print(createTables())

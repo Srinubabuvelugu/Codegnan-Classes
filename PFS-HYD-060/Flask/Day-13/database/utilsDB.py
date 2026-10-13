@@ -59,3 +59,10 @@ class AuthQueries:
         except Exception as e:
             return False, f"Something wrong in \
         database/utilsDB.py-AuthQueries.updatePassword():{e}"
+
+
+# notes queries
+class NotesQueries:
+    @staticmethod
+    def insertNotesRecord(userid:int, title:str, content:str):
+        
