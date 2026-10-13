@@ -78,3 +78,27 @@ class NotesQueries:
         except Exception as e:
             return False, f"Something wrong in \
         database/utilsDB.py-NotesQueries.insertNotesRecord():{e}"
+
+# get all notes
+    @staticmethod
+    def getAllNotes(userid:int, notesid:int=None):
+        try:
+            db_config = DatabaseConnection()
+            cursor = db_config.cursor(dictionary=True)
+            query = """select * from notes where userid = %s"""
+            values = [userid]
+            if notesid:
+                query += " and notesid = %s"
+                values.append(notesid)
+                cursor.execute(query, tuple(values))
+                notes = cursor.fetchone()
+            else:
+                cursor.execute(query, (userid,))
+                notes = cursor.fetchall()
+            db_config.close()
+            cursor.close()
+            return True, notes
+
+        except Exception as e:
+            return False, f"Something wrong in \
+        database/utilsDB.py-NotesQueries.getAllNotes():{e}"

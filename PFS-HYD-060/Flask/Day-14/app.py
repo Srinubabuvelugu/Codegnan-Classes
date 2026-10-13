@@ -212,7 +212,9 @@ def dashboard():
 # =============================================================================
 @app.route('/dashboard/notes')
 def mynotes():
-    return render_template('notes.html')
+    userid = session['id']
+    status, all_notes = NotesQueries.getAllNotes(userid=userid)
+    return render_template('notes.html', notes = all_notes)
 
 # new notes
 @app.route('/dashboard/notes/new-notes', methods=['GET','POST'])
@@ -230,8 +232,15 @@ def new_notes():
         print(msg)
         return redirect(url_for('mynotes'))
 
-
-        
+# view notes
+@app.route('/dashboard/notes/view/<int:id>')
+def view_notes(id):
+    # get notes by notes id
+    status, note = NotesQueries.getAllNotes(userid=session['id'], 
+                                            notesid=id)
+    return render_template('view_notes.html', 
+                           title=note['title'], 
+                           content = note['content'])
 
 #main
 if __name__ == "__main__":

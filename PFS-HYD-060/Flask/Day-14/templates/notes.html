@@ -26,7 +26,28 @@
         </div>
         <div>
             {% if notes %}
-                <p></p>
+                {% for note in notes %}
+                    <div>
+                        <div>
+                            <strong>Title:</strong>
+                            {{ note.title }}
+                        </div>
+                        <div>
+                            <strong>Content:</strong>
+                            {% if note.content|length > 100 %}
+                                {{ note.content[:100]+"...." }}
+                            {% else %}
+                                {{ note.content }}
+                            {% endif %}
+
+                        </div>
+                        <div>
+                            <button><a href="/dashboard/notes/view/{{ note.notesid }}">View</a></button>
+                            <button><a href="#">Edit</a></button>
+                            <button><a href="#">Delete</a></button>
+                        </div>
+                    </div>
+                {% endfor %}
             {% else %}
                 <p><i>Start creating your first note by click on New Notes</i></p>
             {% endif %}
