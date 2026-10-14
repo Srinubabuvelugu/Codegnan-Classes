@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    Update Notes
+{% endblock %}
+
+
+
+
+{% block navmenu %}
+    <a href="/dashboard">Home</a>
+    <a href="#">Files</a>
+    <a href="{{ url_for('mynotes') }}">Notes</a>
+    <a href="#">Profile</a>
+    <a href="#">Logout</a>
+{% endblock %}
+
+
+{% block content %}
+    <div>
+        <h2>Update Notes</h2>
+        <p>
+            Here you can update notes
+        </p>
+
+        <div>
+            <form action="{{ url_for('update_notes', notesid=id) }}" method="POST">
+                
+                <div>
+                    <label for="title">Title</label>
+                    <input type="text" name="title" value="{{ title }}">
+                </div>
+                <div>
+                    <label for="content">Content</label>
+                    <textarea name="content" id="">{{ content }}</textarea>
+                </div>
+                
+                <div>
+                    <button type="submit">Submit</button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+{% endblock %}
