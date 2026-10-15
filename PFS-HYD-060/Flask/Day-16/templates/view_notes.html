@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    View Notes
+{% endblock %}
+
+
+
+
+{% block navmenu %}
+    <a href="/dashboard">Home</a>
+    <a href="#">Files</a>
+    <a href="{{ url_for('mynotes') }}">Notes</a>
+    <a href="#">Profile</a>
+    <a href="#">Logout</a>
+{% endblock %}
+
+
+{% block content %}
+    <div>
+        <h2>View Notes</h2>
+        <p>
+            start creating new notes to manage your notes
+        </p>
+        <button><a href="{{ url_for('mynotes') }}">Back</a></button>
+        <div>
+            <div><strong>Title:</strong> {{ title }}</div>
+            <div><strong>Content:</strong>{{ content }}</div>
+        </div>
+    </div>
+{% endblock %}
