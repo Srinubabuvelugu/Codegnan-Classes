@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+<title>
+    {% block title %}
+        Dashboard
+    {% endblock %}
+</title>
+
+
+
+{% block navmenu %}
+    <a href="/dashboard">Home</a>
+    <a href="#">Files</a>
+    <a href="{{ url_for('mynotes') }}">Notes</a>
+    <a href="#">Profile</a>
+    <a href="/logout">Logout</a>
+{% endblock %}
+
+{% block content %}
+    <div style="text-align: center;">
+        <div>
+            <h2>SNS</h2>
+        </div>
+        <div>
+            <h4>Welcome {{ username }}</h4>
+            <p>Here you can mange your files and notes</p>
+        </div>
+        <div>
+            <button><a href="/dashboard/files">My Files</a></button>
+            <button><a href="/dashboard/notes">My Notes</a></button>
+        </div>
+        <div>
+            
+            <div>
+                <strong>Totla Files</strong>
+                <h4>{{ total_files }}</h4>
+            </div>
+            <div>
+                <strong>Total Notes</strong>
+                <h4>{{ total_notes }}</h4>
+            </div>
+        </div>
+    </div>
+{% endblock %}
