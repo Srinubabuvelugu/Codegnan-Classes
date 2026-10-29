@@ -141,7 +141,19 @@ def add_to_cart(product_id):
 def cart():
     _, items = UserQueries.cartItems(user_id=session['id'])
     print(items)
-    return render_template('user/cart.html', cart_items = items)
+    sub_total = 0
+    for item in items:
+        sub_total += item['subtotal']
+
+    shipping = sub_total * 0.01
+    total = sub_total + shipping
+
+    return render_template('user/cart.html',
+                            cart_items = items,
+                            subtotal = sub_total,
+                            shipping = shipping,
+                            total = total
+                            )
 
 # update cart qauntity
 @app.route('/cart/<int:cartid>/update-quantity')
@@ -149,9 +161,39 @@ def update_cart_quantity(cartid):
     pass
 
 #checkout 
-@app.route('/checkout')
+@app.route('/checkout', methods = ['GET','POST'])
 def checkout():
-    pass
+    if request.method == 'GET':
+        _, items = UserQueries.cartItems(user_id=session['id'])
+           
+        sub_total = 0
+        for item in items:
+            sub_total += item['subtotal']
+        
+        shipping = sub_total * 0.01
+        total = sub_total + shipping
+        return render_template('user/checkout.html',
+                                    cart_items = items,
+                                    subtotal = sub_total,
+                                    shipping = shipping,
+                                    total = total
+                                    )
+    if request.method == 'POST':
+        name = request.form.get('name')
+        phone = request.form.get('phone')
+        address = request.form.get('address')
+        city = request.form.get('city')
+        state = request.form.get('state')
+        pincode = request.form.get('pincode')
+        payment_method = request.form.get('payment_method').upper()
+
+        if payment_method == 'COD':
+            # place order
+            # add cart items to order details
+            # 
+
+        
+    
 
 # ===============================================================
 #                       Admin Routes
