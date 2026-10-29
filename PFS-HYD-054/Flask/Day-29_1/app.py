@@ -540,152 +540,35 @@ def product_details(product_id):
     return render_template('user/product_details.html',product=p)
 @app.route('/products/cart')
 @user_required
-def cart():return redirect(url_for('viewcart'))
+def cart():
+    return redirect(url_for('viewcart'))
+
+
 @app.route('/products/cart/add-to-cart/<int:product_id>',methods=['POST'])
 @user_required
 def add_to_cart(product_id):
     try:q=int(request.form.get('quantity',1))
     except ValueError:q=0
     ok,msg=UserDBQueries.addToCart(session['id'],product_id,q);flash(msg,'msg' if ok else 'err');return redirect(url_for('product_details',product_id=product_id))
+
+
 @app.route('/cart')
 @user_required
 def viewcart():
-    items,subtotal,shipping,total=cart_summary(session['id']);return render_template('user/cart.html',cart_items=items,subtotal=subtotal,shipping=shipping,total=total)
+    items,subtotal,shipping,total=cart_summary(session['id'])
+    return render_template('user/cart.html',cart_items=items,subtotal=subtotal,shipping=shipping,total=total)
+
+
 @app.route('/cart/update-quantity/<int:cartid>',methods=['POST'])
 @user_required
 def update_cart_quantity(cartid):
-    ok,msg=UserDBQueries.updateCartQuantity(cartid,request.form.get('quantity'),session['id']);flash(msg,'msg' if ok else 'err');return redirect(url_for('viewcart'))
+    ok,msg=UserDBQueries.updateCartQuantity(cartid,request.form.get('quantity'),session['id'])
+    flash(msg,'msg' if ok else 'err')
+    return redirect(url_for('viewcart'))
+
 @app.route('/cart/remove/<int:cartid>',methods=['POST'])
 @user_required
 def remove_cart_item(cartid):
     ok,msg=UserDBQueries.removeCartItem(cartid,session['id']);flash(msg,'msg' if ok else 'err');return redirect(url_for('viewcart'))
 
-@app.route('/checkout',methods=['GET','POST'])
-@user_required
-def checkout():
-    items,subtotal,shipping,total=cart_summary(session['id'])
-    if not items:flash('Your cart is empty.','err');return redirect(url_for('viewcart'))
-    if request.method=='GET':return render_template('user/checkout.html',cart_items=items,subtotal=subtotal,shipping=shipping,total=total)
-    fields=['name','phone','address','city','state','pincode'];data={k:request.form.get(k,'').strip() for k in fields}
-    if any(not v for v in data.values()):flash('Complete all delivery address fields.','err');return redirect(url_for('checkout'))
-    address=', '.join([data['name'],data['phone'],data['address'],data['city'],data['state'],data['pincode']]);method=request.form.get('payment_method','COD').upper()
-    if method=='COD':
-        ok,order=UserDBQueries.createOrder(session['id'],address,'COD')
-        if not ok:flash(str(order),'err');return redirect(url_for('checkout'))
-        ok,msg=UserDBQueries.completeCOD(session['id'],order['order_id']);flash(msg,'msg' if ok else 'err');return redirect(url_for('orders'))
-    if method!='RAZORPAY':flash('Invalid payment method.','err');return redirect(url_for('checkout'))
-    client=razorpay_client()
-    if not client:flash('Razorpay is not configured. Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.','err');return redirect(url_for('checkout'))
-    try:rp=client.order.create(data={'amount':int(total*100),'currency':'INR','receipt':f'user{session["id"]}-{os.urandom(4).hex()}'})
-    except Exception:app.logger.exception('Razorpay order creation failed');flash('Could not start payment. Please try again.','err');return redirect(url_for('checkout'))
-    ok,order=UserDBQueries.createOrder(session['id'],address,'RAZORPAY',rp['id'])
-    if not ok:flash(str(order),'err');return redirect(url_for('checkout'))
-    session['pending_order_id']=order['order_id']
-    _,user=UserDBQueries.getUser(session['id'])
-    return render_template('user/payment.html',amount=order['amount'],razorpay_key_id=os.getenv('RAZORPAY_KEY_ID'),razorpay_order=rp,user=user or {})
-
-@app.route('/verify-payment',methods=['POST'])
-@user_required
-def verify_payment():
-    payment_id=request.form.get('razorpay_payment_id','');rp_order_id=request.form.get('razorpay_order_id','');signature=request.form.get('razorpay_signature','');oid=session.get('pending_order_id')
-    client=razorpay_client()
-    if not client or not all([payment_id,rp_order_id,signature,oid]):flash('Payment verification details are missing.','err');return redirect(url_for('payment_failed'))
-    try:client.utility.verify_payment_signature({'razorpay_order_id':rp_order_id,'razorpay_payment_id':payment_id,'razorpay_signature':signature})
-    except Exception:app.logger.warning('Razorpay signature verification failed');flash('Payment could not be verified.','err');return redirect(url_for('payment_failed'))
-    ok,msg=UserDBQueries.markPaid(session['id'],oid,rp_order_id,payment_id)
-    if not ok:flash(msg,'err');return redirect(url_for('payment_failed'))
-    return redirect(url_for('payment_success'))
-@app.route('/payment/success')
-@user_required
-def payment_success():
-    oid=session.get('pending_order_id'); ok,order=UserDBQueries.getOrderDetails(oid,session['id']) if oid else (False,None)
-    session.pop('pending_order_id',None)
-    return render_template('user/payment_success.html',order=order if ok else None)
-@app.route('/payment/failed',methods=['GET','POST'])
-@user_required
-def payment_failed():
-    if request.method == 'POST':
-        oid=request.form.get('order_id') or session.get('pending_order_id')
-        reason=request.form.get('reason','Payment failed')
-        if oid:
-            ok,msg=UserDBQueries.failPayment(session['id'],int(oid),reason)
-            flash(msg,'msg' if ok else 'err')
-        session.pop('pending_order_id',None)
-        return redirect(url_for('payment_failed'))
-    return render_template('user/payment_failed.html',message=request.args.get('message'))
-
-@app.route('/payment/cancel',methods=['POST'])
-@user_required
-def payment_cancel():
-    oid=session.get('pending_order_id')
-    if oid:
-        ok,msg=UserDBQueries.cancelPendingOrder(session['id'],oid)
-        flash(msg,'msg' if ok else 'err')
-        session.pop('pending_order_id',None)
-    return redirect(url_for('viewcart'))
-
-@app.route('/orders')
-@user_required
-def orders():
-    _,rows=UserDBQueries.getOrders(session['id']);return render_template('user/orders.html',orders=rows or [])
-@app.route('/orders/<int:order_id>')
-@user_required
-def order_details(order_id):
-    ok,order=UserDBQueries.getOrderDetails(order_id,session['id'])
-    if not ok:abort(404)
-    return render_template('user/order_details.html',order=order)
-@app.route('/orders/<int:order_id>/invoice')
-@user_required
-def invoice(order_id):
-    ok,order=UserDBQueries.getOrderDetails(order_id,session['id'])
-    if not ok:abort(404)
-    return render_template('user/invoice.html',order=order)
-@app.route('/orders/<int:order_id>/invoice/download')
-@user_required
-def download_invoice(order_id):return redirect(url_for('invoice',order_id=order_id))
-@app.route('/profile')
-@user_required
-def profile():
-    _,user=UserDBQueries.getUser(session['id']);return render_template('user/profile.html',user=user or {})
-@app.route('/profile/edit',methods=['GET','POST'])
-@user_required
-def edit_profile():
-    from database.connection import DatabaseConnction
-    if request.method=='GET':_,user=UserDBQueries.getUser(session['id']);return render_template('user/edit_profile.html',user=user or {})
-    name=request.form.get('username','').strip();phone=request.form.get('phone','').strip();db=DatabaseConnction();cur=db.cursor()
-    try:cur.execute('UPDATE users SET username=%s,phone=%s WHERE userid=%s',(name,phone,session['id']));db.commit();session['username']=name;flash('Profile updated.','msg')
-    except Exception:db.rollback();flash('Could not update profile.','err')
-    finally:cur.close();db.close()
-    return redirect(url_for('profile'))
-
-@app.route('/change-password',methods=['GET','POST'])
-@user_required
-def change_password():
-    if request.method=='GET':
-        return render_template('user/change_password.html')
-    from database.connection import DatabaseConnction
-    old=request.form.get('current_password','');
-    new=request.form.get('new_password','')
-    ok,user=getUserByEmail(session['email'])
-    if not ok or not check_password_hash(user['hashpassword'],old) or len(new)<8:
-        flash('Current password is incorrect or new password is too short.','err')
-        return redirect(url_for('change_password'))
-    db=DatabaseConnction()
-    cur=db.cursor()
-    try:
-        cur.execute('UPDATE users SET hashpassword=%s WHERE userid=%s',(generate_password_hash(new),session['id']))
-        db.commit()
-        flash('Password changed.','msg')
-    finally:
-        cur.close()
-        db.close()
-    return redirect(url_for('profile'))
-
-@app.errorhandler(403)
-def forbidden(e):
-    return render_template('base.html'),403
-
-if __name__=='__main__':
-    try: print(createTables())
-    except Exception as e: print(f'Database setup failed: {e}')
-    app.run(debug=True)
+  

@@ -115,9 +115,13 @@ def register():
 @app.route('/products')
 def products():
     if request.method == 'GET':
-        return render_template('user/products.html')
+        #get products
+        _, all_products = AdminQueries.getAllProducts()
+        return render_template('user/products.html', products=all_products)
 
-
+@app.route('/prodducts/<int:product_id>/details')
+def product_details(product_id):
+    pass
 # ===============================================================
 #                       Admin Routes
 # ===============================================================
@@ -191,7 +195,7 @@ def admin_edit_product(product_id):
         image = request.files.get('image')
         img_name = image.filename
         
-        if img_name is not "":
+        if img_name != "":
             
             stored_name = str(uuid.uuid1()) + "_" + img_name
             img_path = os.path.join('static','images','products',stored_name)
@@ -248,7 +252,8 @@ def admin_edit_user(user_id):
 
 @app.route('/logout')
 def logout():
-    pass
+    session.clear()
+    return redirect('/')
 
 #main
 if __name__ == "__main__":
