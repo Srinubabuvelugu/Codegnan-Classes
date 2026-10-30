@@ -307,7 +307,8 @@ class UserQueries:
 
     @staticmethod
     def completeCOD(userid, orderid):
-        db = DatabaseConnction(); cur = db.cursor(dictionary=True)
+        db = DatabaseConnction(); 
+        cur = db.cursor(dictionary=True)
         try:
             cur.execute('''SELECT orderid,status,payment_status FROM orders
                            WHERE orderid=%s AND userid=%s AND payment_method='COD' FOR UPDATE''', (orderid, userid))

@@ -1,8 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session, make_response, redirect
 
 
 app = Flask(__name__)
-
+app.secret_key = "srinubabu@342243qeibgjrknafdv"
 
 data = {
     1:{'name':"srinu", "class":7},
@@ -15,6 +15,24 @@ data = {
 @app.route('/')
 def home():
     return {"msg":"This is student application"}
+
+
+
+@app.route('/login')
+def login():
+    response = make_response("Here data can store in cookie format")
+    response.set_cookie("username","Srinu")
+    session['id'] = 5
+    return response
+
+# get data from cookies
+@app.route("/readcookie")
+def read_cookie():
+    if "id" not in session:
+        return redirect('/')
+    username = request.cookies.get('username')
+    return f"This browser using user is :{username}, id: {session['id']}"
+
 
 @app.route('/students', methods = ['GET'])
 def Get_all_students():
