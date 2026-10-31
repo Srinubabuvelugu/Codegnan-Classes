@@ -201,14 +201,61 @@ def checkout():
         pincode = request.form.get('pincode')
         payment_method = request.form.get('payment_method').upper()
 
+        # Validate required fields
+        if not all([name, phone, address, city, state, pincode, payment_method]):
+            flash("All fields are required", "danger")
+            return redirect(url_for('checkout'))
+
+        full_address = f"{name}, {phone}, {address}, {city}, {state}, {pincode}"
+
+        userid = session['id']
+
+        # COD Payment
         if payment_method == 'COD':
-            # place order
-            # add cart items to order details
-            pass
-            # 
+
+            status, result = UserQueries.createOrder(
+                userid=userid,
+                address=full_address,
+                payment_method='COD'
+            )
+        if status == False:
+            flash(result, 'err')
+        flash("Order placed successfully", "success")
+        return redirect('/orders')
+    # Razorpay Payment
+    elif payment_method == 'RAZORPAY':
+        client = razorpay_client()
+        rp = client.order.create(data={'amount':int(total*100),'currency':'INR','receipt':f'user{session["id"]}-{os.urandom(4).hex()}'})
+        status,order=UserQueries.createOrder(userid=session['id'],
+                                             address=address,
+                                             payment_method='RAZORPAY',
+                                             razorpay_payment_id=rp['id'])
+        
+        if not status:
+            flash(str(order),'err');
+            return redirect(url_for('checkout'))
+        session['pending_order_id']=order['order_id']
+        _,user=AuthQueries.getUserData(session['email'])
+        return render_template('user/payment.html',amount=order['amount'],razorpay_key_id=os.getenv('RAZORPAY_KEY_ID'),razorpay_order=rp,user=user or {})
 
         
-    
+
+                                 
+
+            # Create Razorpay order and continue checkout
+            # Payment implementation will be added here
+
+            pass
+
+    else:
+        flash("Invalid payment method", "danger")
+        return redirect(url_for('checkout'))
+        
+
+#orders
+@app.route('/orders')
+def orders():
+    pass
 
 # ===============================================================
 #                       Admin Routes

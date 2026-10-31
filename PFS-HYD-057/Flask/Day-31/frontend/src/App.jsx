@@ -1,38 +1,78 @@
 import React, { useState } from "react";
 import Demo from "./demo";
 import axios from "axios";
+
+// import React, { useState } from "react";
+// import axios from "axios";
+
 function App() {
-    let count = 0;
-    const [res,setResult] = useState('')
-    const [student,setStudent] = useState([])
-    async function fun(){
-        let response = await axios.get('http://127.0.0.1:5000/api/students')
-        setStudent(response.data)
-        console.log(student)
+
+    const [name, setName] = useState("");
+    const [course, setCourse] = useState("");
+    const [message, setMessage] = useState("");
+
+    async function registerStudent(e) {
+
+        e.preventDefault();
+
+        try {
+            let response = await axios.post(
+                "http://127.0.0.1:5000/api/students",
+                {
+                    name: name,
+                    course: course
+                }
+            );
+
+            setMessage(response.data.message);
+
+            console.log(response.data);
+
+            setName("");
+            setCourse("");
+
+        }
+        catch (error) {
+            console.log(error);
+            setMessage("Registration failed");
+        }
     }
-    function inc(){
-        let refele1 = document.getElementById('ref1')
-        count += 1
-        refele1.innerText = count
-    }
+
     return (
         <div>
-            <h1>Student Details</h1>
+            <h1>Student Registration</h1>
 
-            <button onClick={fun}>Details</button>
+            <form onSubmit={registerStudent}>
 
-            {student.map((s) => (
-                <div key={s.id}>
-                    <p>ID: {s.id}</p>
-                    <p>Name: {s.name}</p>
-                    <p>Course: {s.course}</p>
-                    <hr />
-                </div>
-            ))}
-            <h1 id="ref1">{count}</h1>
-            <button onClick={inc}>inc</button>
+                <label>Student Name</label>
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+
+                <br /><br />
+
+                <label>Course</label>
+                <input
+                    type="text"
+                    value={course}
+                    onChange={(e) => setCourse(e.target.value)}
+                    required
+                />
+
+                <br /><br />
+
+                <button type="submit">
+                    Register Student
+                </button>
+
+            </form>
+
+            <h3>{message}</h3>
+
         </div>
-        
     );
 }
 

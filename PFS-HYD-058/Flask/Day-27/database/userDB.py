@@ -52,13 +52,13 @@ class UserQueries:
 
     # create order
     @staticmethod
-    def createOrder(userid:int, address:str, razorpay_order_id:str=None, razorpay_payment_id:str=None):
+    def createOrder(userid:int, address:str,payment_method:str, razorpay_order_id:str=None, razorpay_payment_id:str=None):
         try:
             db_config = DatabaseConnction()
             cursor = db_config.cursor(dictionary=True)
 
             query = """select c.cartid, c.userid, c.quantity, p.productname, 
-                        p.productid, p.quantity as stock p.saleprice from cart c
+                        p.productid, p.quantity as stock, p.saleprice from cart c
                         join products p on c.productid = p.productid
                         where c.userid = %s FOR UPDATE"""
             items = cursor.execute(query, (userid, ))
@@ -80,9 +80,10 @@ class UserQueries:
             query = """insert into orders(userid, status, address, total)
                         values(%s, %s, %s, %s)"""
             cursor.execute(query, (userid,"pending", address, sub_total))
-            cursor.execute("select orderid from orders where userid = %s order by orderid desc", (userid,))
-            # add payment record
-            orderid = cursor.fetchone()[0]
+            # cursor.execute("select orderid from orders where userid = %s order by orderid desc", (userid,))
+            # # add payment record
+            # orderid = cursor.fetchone()[0]
+            orderid = cursor.lastrowid
 
             #add items to order details
             for item in items:
@@ -98,6 +99,12 @@ class UserQueries:
             query = """insert into payments(userid, orderid, status, method, amount, razorpay_order_id, razorpay_payment_id)
                     values(%s, %s, %s, %s, %s, %s, %s)"""
             cursor.execute(query, (userid, orderid,status, method, sub_total +shipping,razorpay_order_id, razorpay_payment_id ))
+
+             # Clear cart
+            cursor.execute(
+                "DELETE FROM cart WHERE userid = %s",
+                (userid,)
+            )
 
             db_config.commit()
             cursor.close()
