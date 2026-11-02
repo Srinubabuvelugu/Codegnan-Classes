@@ -1,0 +1,213 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}Invoice #{{ order.id }} | ShopZone{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/user.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="invoice">
+
+        <div class="invoice-header">
+
+            <div>
+                <h1>ShopZone</h1>
+                <p>Online Shopping Store</p>
+            </div>
+
+            <div class="invoice-title">
+                <h2>INVOICE</h2>
+                <p>
+                    Invoice #{{ order.id }}
+                </p>
+                <p>
+                    {{ order.created_at }}
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="invoice-info">
+
+            <div>
+
+                <h3>Bill To</h3>
+
+                <p>
+                    {{ order.customer_name }}
+                </p>
+
+                <p>
+                    {{ order.customer_email }}
+                </p>
+
+                <p>
+                    {{ order.customer_phone }}
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h3>Delivery Address</h3>
+
+                <p>
+                    {{ order.address }}
+                </p>
+
+                <p>
+                    {{ order.city }},
+                    {{ order.state }}
+                </p>
+
+                <p>
+                    {{ order.pincode }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <table class="invoice-table">
+
+            <thead>
+
+                <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in order_items %}
+
+                <tr>
+
+                    <td>
+                        {{ loop.index }}
+                    </td>
+
+                    <td>
+                        {{ item.product_name }}
+                    </td>
+
+                    <td>
+                        {{ item.quantity }}
+                    </td>
+
+                    <td>
+                        ₹{{ item.price }}
+                    </td>
+
+                    <td>
+                        ₹{{ item.subtotal }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        <div class="invoice-summary">
+
+            <div>
+                <span>Subtotal</span>
+                <strong>₹{{ order.subtotal }}</strong>
+            </div>
+
+            <div>
+                <span>Shipping</span>
+                <strong>₹{{ order.shipping_charge }}</strong>
+            </div>
+
+            <div class="invoice-total">
+                <span>Total</span>
+                <strong>₹{{ order.total_amount }}</strong>
+            </div>
+
+        </div>
+
+
+        <div class="invoice-payment">
+
+            <p>
+                <strong>Payment Method:</strong>
+                {{ order.payment_method }}
+            </p>
+
+            <p>
+                <strong>Payment Status:</strong>
+                {{ order.payment_status }}
+            </p>
+
+            {% if order.payment_id %}
+
+            <p>
+                <strong>Payment ID:</strong>
+                {{ order.payment_id }}
+            </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="invoice-footer">
+
+            <p>
+                Thank you for shopping with ShopZone.
+            </p>
+
+            <div class="invoice-actions">
+
+                <a
+                    href="{{ url_for('download_invoice', order_id=order.id) }}"
+                    class="btn btn-primary"
+                >
+                    Download Invoice
+                </a>
+
+                <button
+                    type="button"
+                    onclick="window.print()"
+                    class="btn btn-secondary"
+                >
+                    Print Invoice
+                </button>
+
+                <a
+                    href="{{ url_for('orders') }}"
+                    class="btn btn-secondary"
+                >
+                    My Orders
+                </a>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
