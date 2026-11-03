@@ -450,133 +450,537 @@ def change_password():
 @app.errorhandler(403)
 def forbidden(e):
     return render_template('base.html'),403
-# ===============================================================
-#                       Admin Routes
-# ===============================================================
-# admin dashboard route
+# ============================================================
+# ADMIN ROUTES
+# Replace your existing admin routes section with this code.
+#
+# Required imports/dependencies in app.py:
+# from flask import request, render_template, redirect, url_for, flash, abort
+# from pathlib import Path
+# from decimal import InvalidOperation
+# from werkzeug.utils import secure_filename
+# import uuid
+# from database.adminDB import AdminQueries
+#
+# This code also expects your existing:
+# app, admin_required, money, ALLOWED_EXTENSIONS
+# ============================================================
+
+
+# ------------------------------------------------------------
+# ADMIN DASHBOARD
+# ------------------------------------------------------------
 @app.route('/admin/dashboard')
+@admin_required
 def admin_dashboard():
-    if request.method == 'GET':
-        return render_template('admin/dashboard.html')
+
+    _, products = AdminQueries.getAllProducts()
+    _, users = AdminQueries.getUsers()
+    _, orders = AdminQueries.getOrders()
+
+    products = products if isinstance(products, list) else []
+    users = users if isinstance(users, list) else []
+    orders = orders if isinstance(orders, list) else []
+
+    total_products = len(products)
+    total_users = len(users)
+    total_orders = len(orders)
+
+    categories = set()
+
+    for product in products:
+        category = product.get('category')
+        if category:
+            categories.add(category)
+
+    total_categories = len(categories)
+    recent_orders = orders[:5]
+
+    return render_template(
+        'admin/dashboard.html',
+        total_products=total_products,
+        total_categories=total_categories,
+        total_orders=total_orders,
+        total_users=total_users,
+        recent_orders=recent_orders
+    )
 
 
+# ------------------------------------------------------------
+# VIEW PRODUCTS
+# ------------------------------------------------------------
 @app.route('/admin/products')
+@admin_required
 def admin_products():
-    if request.method == 'GET':
-        prodcut_name = request.args.get('search')
-        category = request.args.get('category')
-        status, products = AdminQueries.getAllProducts(productname=prodcut_name,
-                                                    category=category)
-        total_products_count = len(products)
-        total_pages_count = total_products_count // 7 + 1
 
-        return render_template('admin/products.html', 
-                               products = products,
-                               total_pages = total_pages_count,
-                               page=1,
-                               total = total_products_count,
-                               per_page= 7)
+    search = request.args.get('search', '').strip()
+    category = request.args.get('category', '').strip()
+    status = request.args.get('status', '').strip()
+    stock = request.args.get('stock', '').strip()
 
-@app.route('/admin/products/add-product', methods = ['GET','POST'])
+    try:
+        min_price = float(request.args.get('min_price', 0))
+    except (ValueError, TypeError):
+        min_price = 0
+
+    try:
+        max_price = float(request.args.get('max_price', 0))
+    except (ValueError, TypeError):
+        max_price = 0
+
+    page = request.args.get('page', 1, type=int)
+    if page < 1:
+        page = 1
+
+    per_page = 10
+
+    result = AdminQueries.getProducts(
+        search=search,
+        category=category,
+        status=status,
+        stock=stock,
+        min_price=min_price,
+        max_price=max_price,
+        page=page,
+        per_page=per_page
+    )
+
+    products = result['products']
+    total = result['total']
+    categories = result['categories']
+
+    total_pages = (total + per_page - 1) // per_page
+
+    if total_pages > 0 and page > total_pages:
+        return redirect(url_for(
+            'admin_products',
+            page=total_pages,
+            search=search,
+            category=category,
+            status=status,
+            stock=stock,
+            min_price=min_price,
+            max_price=max_price
+        ))
+
+    return render_template(
+        'admin/products.html',
+        products=products,
+        categories=categories,
+        page=page,
+        total_pages=total_pages,
+        total=total,
+        search=search,
+        category=category,
+        status=status,
+        stock=stock,
+        min_price=min_price,
+        max_price=max_price,
+        per_page=per_page
+    )
+
+
+# ------------------------------------------------------------
+# ADD PRODUCT
+# ------------------------------------------------------------
+@app.route('/admin/products/add', methods=['GET', 'POST'])
+@admin_required
 def admin_add_product():
+
     if request.method == 'GET':
-        _, categories = AdminQueries.getAllCategories()
-        return render_template('admin/add_product.html', categories=categories)
-    if request.method == 'POST':
-        name = request.form.get('name')
-        category = request.form.get('category')
-        new_categoy = request.form.get('new_category')
-        category = category or new_categoy
-        price = request.form.get('price')
-        stock = request.form.get('stock')
-        description = request.form.get('description')
-        image = request.files.get('image')
-        img_name = image.filename
-        stored_name = str(uuid.uuid1()) + "_" + img_name
-        img_path = os.path.join('static','images','products',stored_name)
-        image.save(img_path)
-        # store data in table
-        data = (name, description, category, stock, price, stored_name, img_path)
-        stutus, msg = AdminQueries.insertProductRecord(product_data=data)
-        flash(msg)
-        return redirect(url_for('admin_products'))
+        return render_template('admin/add_product.html')
+
+    name = request.form.get('name', '').strip()
+    category = (
+        request.form.get('category', '').strip()
+        or request.form.get('new_category', '').strip()
+    )
+    description = request.form.get('description', '')
+    image = request.files.get('image')
+
+    try:
+        buy = money(request.form.get('buyprice', '0'))
+        price = money(request.form.get('price', '0'))
+        stock = int(request.form.get('stock', '0'))
+    except (InvalidOperation, ValueError, TypeError):
+        flash('Enter valid prices and stock.', 'err')
+        return redirect(url_for('admin_add_product'))
+
+    if (
+        not name or not category or stock < 0
+        or buy < 0 or price < 0
+        or not image or not image.filename
+        or '.' not in image.filename
+        or image.filename.rsplit('.', 1)[1].lower() not in ALLOWED_EXTENSIONS
+    ):
+        flash(
+            'Provide valid product details and a JPG, PNG, WEBP or GIF image.',
+            'err'
+        )
+        return redirect(url_for('admin_add_product'))
+
+    imgname = secure_filename(image.filename)
+
+    target = Path(app.root_path) / 'static' / 'images' / 'products'
+    target.mkdir(parents=True, exist_ok=True)
+
+    # Generate a unique filename to avoid overwriting another product image.
+    imgname = f'{uuid.uuid4().hex}_{imgname}'
+    storedpath = f'static/images/products/{imgname}'
+
+    product_data = (
+        name,
+        description,
+        category,
+        stock,
+        buy,
+        price,
+        imgname,
+        storedpath
+    )
+
+    ok, msg = AdminQueries.insertProductRecord(product_data)
+
+    if ok:
+        image.save(target / imgname)
+        flash(msg, 'msg')
+    else:
+        flash(msg, 'err')
+
+    return redirect(url_for('admin_products'))
 
 
+# ------------------------------------------------------------
+# DELETE / DEACTIVATE PRODUCT
+# Soft delete is used because order_details may reference products.
+# ------------------------------------------------------------
+@app.route('/admin/products/delete/<int:product_id>', methods=['POST', 'GET'])
+@admin_required
+def admin_delete_product(product_id):
 
-@app.route('/admin/products/<int:product_id>/edit-product', methods = ['GET', 'POST'])
-def admin_edit_product(product_id):
-    if request.method == 'GET':
-        _, product = AdminQueries.getAllProducts(product_id=product_id)
-        _, categories = AdminQueries.getAllCategories()
-        print(categories)
-        return render_template('admin/edit_product.html', 
-                               product = product,
-                               categories = categories)
-    if request.method == 'POST':
-        name = request.form.get('name')
-        category = request.form.get('category')
-        
-        price = request.form.get('price')
-        stock = request.form.get('stock')
-        description = request.form.get('description')
+    ok, msg = AdminQueries.deleteProduct(product_id)
+    flash(msg, 'msg' if ok else 'err')
 
-        image = request.files.get('image')
-        img_name = image.filename
-        
-        if img_name != "":
-            
-            stored_name = str(uuid.uuid1()) + "_" + img_name
-            img_path = os.path.join('static','images','products',stored_name)
-            image.save(img_path)
-        else:
-            _, product = AdminQueries.getAllProducts(product_id=product_id)
-            print(product)
-            stored_name = product['imgname']
-            img_path = product['storedpath']
-            print(stored_name, img_path)
-        
-        # store data in table
-        data = (name, description, category, stock, price, stored_name, img_path, product_id)
-        print(data)
-        # update product data in database
-        status, msg = AdminQueries.updateProductRecord(product_data=data)
+    return redirect(url_for('admin_products'))
 
-        flash(msg)
-        return redirect(url_for('admin_products'))
-    
 
-    
-
-@app.route('/admin/products/<int:product_id>/deactivate')
+@app.route('/admin/products/deactivate/<int:product_id>', methods=['POST'])
+@admin_required
 def admin_deactivate_product(product_id):
-    pass
-        
-        
+
+    success = AdminQueries.deactivateProduct(product_id)
+
+    if success:
+        flash('Product deactivated successfully.', 'msg')
+    else:
+        flash('Unable to deactivate product.', 'err')
+
+    return redirect(url_for('admin_products'))
+
+
+@app.route('/admin/products/activate/<int:product_id>', methods=['POST'])
+@admin_required
+def admin_activate_product(product_id):
+
+    success = AdminQueries.activateProduct(product_id)
+
+    if success:
+        flash('Product activated successfully.', 'msg')
+    else:
+        flash('Unable to activate product.', 'err')
+
+    return redirect(url_for('admin_products'))
+
+
+# ------------------------------------------------------------
+# EDIT PRODUCT
+# ------------------------------------------------------------
+@app.route('/admin/products/edit/<int:product_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_product(product_id):
+
+    if request.method == 'GET':
+        ok, product = AdminQueries.getAllProducts(product_id)
+
+        if not ok:
+            abort(404)
+
+        return render_template(
+            'admin/edit_product.html',
+            product=product
+        )
+
+    try:
+        data = (
+            request.form['name'].strip(),
+            request.form.get('description', ''),
+            request.form['category'].strip(),
+            int(request.form['stock']),
+            money(request.form.get('buyprice', '0')),
+            money(request.form.get('price', '0'))
+        )
+
+        if (
+            not data[0] or not data[2]
+            or data[3] < 0 or data[4] < 0 or data[5] < 0
+        ):
+            raise ValueError
+
+    except (ValueError, KeyError, InvalidOperation, TypeError):
+        flash('Invalid product values.', 'err')
+        return redirect(url_for(
+            'admin_edit_product',
+            product_id=product_id
+        ))
+
+    ok, msg = AdminQueries.updateProduct(product_id, data)
+    flash(msg, 'msg' if ok else 'err')
+
+    return redirect(url_for('admin_products'))
+
+
+# ------------------------------------------------------------
+# CATEGORIES
+# Category values are stored in products.category.
+# There is no separate categories table in this database.
+# ------------------------------------------------------------
 @app.route('/admin/category')
+@admin_required
 def admin_category():
-    if request.method == 'GET':
-        return render_template('admin/category.html')
 
-@app.route('/admin/orders')
-def admin_orders():
-    if request.method == 'GET':
-        return render_template('admin/orders.html')
+    _, products = AdminQueries.getAllProducts()
 
+    if not isinstance(products, list):
+        products = []
+
+    categories = sorted({
+        product['category']
+        for product in products
+        if product.get('category')
+    })
+
+    return render_template(
+        'admin/category.html',
+        categories=categories
+    )
+
+
+@app.route('/admin/category/add-category', methods=['GET', 'POST'])
+@admin_required
+def admin_add_category():
+
+    flash(
+        'Categories are stored in products.category. '
+        'Add a category while creating or editing a product.',
+        'msg'
+    )
+
+    return redirect(url_for('admin_category'))
+
+
+# ------------------------------------------------------------
+# USERS
+# ------------------------------------------------------------
 @app.route('/admin/users')
+@admin_required
 def admin_users():
-    if request.method == 'GET':
-        # get all users for users table
-        _, users = AdminQueries.getAllUsers()
-        return render_template('admin/users.html', users= users)
 
-@app.route('/admin/users/<int:user_id>/details')
+    _, users = AdminQueries.getUsers()
+
+    return render_template(
+        'admin/users.html',
+        users=users if isinstance(users, list) else []
+    )
+
+
+@app.route('/admin/users/<int:user_id>')
+@admin_required
 def admin_user_details(user_id):
-    pass
+
+    ok, user = AdminQueries.getUserDetails(user_id)
+
+    if not ok:
+        abort(404)
+
+    return render_template(
+        'admin/user_details.html',
+        user=user
+    )
 
 
-@app.route('/admin/users/<int:user_id>/edit')
+@app.route('/admin/users/<int:user_id>/edit', methods=['GET', 'POST'])
+@admin_required
 def admin_edit_user(user_id):
-    pass
+
+    if request.method == 'GET':
+        ok, user = AdminQueries.getUserById(user_id)
+
+        if not ok:
+            abort(404)
+
+        return render_template(
+            'admin/edit_user.html',
+            user=user
+        )
+
+    data = {
+        'username': request.form.get('name', '').strip(),
+        'email': request.form.get('email', '').strip().lower(),
+        'phone': request.form.get('phone', '').strip(),
+        'role': request.form.get('role', 'user').strip().lower()
+    }
+
+    ok, msg = AdminQueries.updateUser(user_id, data)
+    flash(msg, 'msg' if ok else 'err')
+
+    if ok:
+        return redirect(url_for(
+            'admin_user_details',
+            user_id=user_id
+        ))
+
+    return redirect(url_for(
+        'admin_edit_user',
+        user_id=user_id
+    ))
+
+
+# ------------------------------------------------------------
+# ADMIN ORDERS
+# payments information is stored in payments, not orders.
+# getOrders() in adminDB.py returns (success, list_of_orders).
+# ------------------------------------------------------------
+@app.route('/admin/orders')
+@admin_required
+def admin_orders():
+
+    search = request.args.get('search', '').strip()
+    status = request.args.get('status', '').strip()
+
+    page = request.args.get('page', 1, type=int)
+    if page < 1:
+        page = 1
+
+    per_page = 10
+
+    ok, result = AdminQueries.getOrders(
+        search=search,
+        status=status
+    )
+
+    orders = result if ok and isinstance(result, list) else []
+
+    total = len(orders)
+    total_pages = (total + per_page - 1) // per_page
+
+    if total_pages > 0 and page > total_pages:
+        return redirect(url_for(
+            'admin_orders',
+            page=total_pages,
+            search=search,
+            status=status
+        ))
+
+    # Pagination is applied here because getOrders() returns a list.
+    start = (page - 1) * per_page
+    end = start + per_page
+    paginated_orders = orders[start:end]
+
+    return render_template(
+        'admin/orders.html',
+        orders=paginated_orders,
+        total=total,
+        page=page,
+        per_page=per_page,
+        total_pages=total_pages,
+        search=search,
+        status=status
+    )
+
+
+# ------------------------------------------------------------
+# VIEW ORDER DETAILS
+# ------------------------------------------------------------
+@app.route('/admin/orders/<int:order_id>')
+@admin_required
+def admin_order_details(order_id):
+
+    order = AdminQueries.getOrderById(order_id)
+
+    if not order:
+        flash('Order not found.', 'err')
+        return redirect(url_for('admin_orders'))
+
+    items = AdminQueries.getOrderItems(order_id)
+
+    subtotal = sum(float(item['subtotal']) for item in items)
+    shipping = round(float(order['total']) - subtotal, 2)
+
+    order['items'] = items
+    order['subtotal'] = subtotal
+    order['shipping'] = shipping
+
+    return render_template(
+        'admin/order_details.html',
+        order=order,
+        items=items
+    )
+
+
+# ------------------------------------------------------------
+# EDIT ORDER STATUS
+# Valid orders.status enum values:
+# pending, shipped, delivered, cancelled
+# ------------------------------------------------------------
+@app.route('/admin/orders/<int:order_id>/edit', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_order(order_id):
+
+    order = AdminQueries.getOrderById(order_id)
+
+    if not order:
+        flash('Order not found.', 'err')
+        return redirect(url_for('admin_orders'))
+
+    if request.method == 'POST':
+
+        status = request.form.get('status', '').strip().lower()
+
+        allowed_statuses = [
+            'pending',
+            'shipped',
+            'delivered',
+            'cancelled'
+        ]
+
+        if status not in allowed_statuses:
+            flash('Invalid order status.', 'err')
+            return redirect(url_for(
+                'admin_edit_order',
+                order_id=order_id
+            ))
+
+        success = AdminQueries.updateOrderStatus(
+            order_id,
+            status
+        )
+
+        if success:
+            flash('Order status updated successfully.', 'msg')
+            return redirect(url_for(
+                'admin_order_details',
+                order_id=order_id
+            ))
+
+        flash(
+            'Failed to update order status. Check the order status and database.',
+            'err'
+        )
+
+    return render_template(
+        'admin/order_edit.html',
+        order=order
+    )
 
 @app.route('/logout')
 def logout():

@@ -97,7 +97,7 @@ class UserQueries:
 
             # insert payment in payments table
             status = "pending"
-            method = method = payment_method.upper()
+            method = payment_method.upper()
             
             query = """insert into payments(userid, orderid, status, method, amount, razorpay_order_id, razorpay_payment_id)
                     values(%s, %s, %s, %s, %s, %s, %s)"""
