@@ -165,7 +165,7 @@
 
                     <td>
                         <strong>
-                            #{{ order.id }}
+                            #{{ order.orderid }}
                         </strong>
                     </td>
 
@@ -182,7 +182,7 @@
                     <td>
 
                         <strong>
-                            ₹{{ order.total_amount }}
+                            ₹{{ order.total }}
                         </strong>
 
                     </td>
@@ -208,7 +208,7 @@
 
                     <td>
 
-                        <a href="{{ url_for('admin_order_details', order_id=order.id) }}"
+                        <a href="{{ url_for('admin_order_details', order_id=order.orderid) }}"
                            class="btn btn-sm btn-outline-primary">
 
                             <i class="bi bi-eye"></i>

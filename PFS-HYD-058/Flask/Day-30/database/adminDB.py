@@ -335,7 +335,7 @@ class AdminQueries:
         try:
             cur.execute("""
                 SELECT
-                    userid AS id,
+                    userid,
                     username AS name,
                     email,
                     role,
@@ -363,7 +363,7 @@ class AdminQueries:
             cur.execute("""
                 SELECT
                     userid AS id,
-                    username AS name,
+                    username,
                     email,
                     phone,
                     role,
@@ -441,7 +441,7 @@ class AdminQueries:
         try:
             query = """
                 SELECT
-                    o.orderid AS id,
+                    o.orderid ,
                     o.userid,
                     u.username AS customer_name,
                     u.email AS customer_email,

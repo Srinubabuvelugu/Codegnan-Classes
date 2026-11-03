@@ -602,7 +602,7 @@ def admin_add_product():
         buy = money(request.form.get('buyprice', '0'))
         price = money(request.form.get('price', '0'))
         stock = int(request.form.get('stock', '0'))
-    except (InvalidOperation, ValueError, TypeError):
+    except (ValueError, TypeError):
         flash('Enter valid prices and stock.', 'err')
         return redirect(url_for('admin_add_product'))
 
@@ -726,7 +726,7 @@ def admin_edit_product(product_id):
         ):
             raise ValueError
 
-    except (ValueError, KeyError, InvalidOperation, TypeError):
+    except (ValueError, KeyError, TypeError):
         flash('Invalid product values.', 'err')
         return redirect(url_for(
             'admin_edit_product',
