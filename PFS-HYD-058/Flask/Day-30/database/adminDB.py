@@ -39,15 +39,15 @@ class AdminQueries:
             db.close()
 
     @staticmethod
-    def getAllProducts(productid=None):
+    def getAllProducts(product_id=None):
         db = DatabaseConnction()
         cur = db.cursor(dictionary=True)
 
         try:
-            if productid:
+            if product_id:
                 cur.execute(
                     "SELECT * FROM products WHERE productid=%s",
-                    (productid,)
+                    (product_id,)
                 )
                 product = cur.fetchone()
                 return (True, product) if product else (False, "Product not found")
