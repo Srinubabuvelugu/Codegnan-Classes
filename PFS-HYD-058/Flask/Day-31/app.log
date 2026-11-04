@@ -1,0 +1,45 @@
+2026-11-04 10:10:51,886-INFO: WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+2026-11-04 10:10:51,886-INFO: Press CTRL+C to quit
+2026-11-04 10:10:51,889-INFO:  * Restarting with stat
+2026-11-04 10:10:52,568-WARNING:  * Debugger is active!
+2026-11-04 10:10:52,573-INFO:  * Debugger PIN: 687-988-537
+2026-11-04 10:12:08,959-INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-058\\Flask\\Day-31\\app.py', reloading
+2026-11-04 10:12:09,017-INFO:  * Restarting with stat
+[2026-11-04 10:12:09,496]-WARNING:  * Debugger is active!
+[2026-11-04 10:12:09,499]-INFO:  * Debugger PIN: 687-988-537
+[2026-11-04 10:12:58,893]-INFO: This is Home page
+[2026-11-04 10:12:58,893]-INFO: This is fruit managment application
+[2026-11-04 10:12:58,896]-INFO: 127.0.0.1 - - [04/Nov/2026 10:12:58] "GET / HTTP/1.1" 200 -
+[2026-11-04 10:13:07,838]-INFO: This is Home page
+[2026-11-04 10:13:07,838]-INFO: This is fruit managment application
+[2026-11-04 10:13:07,838]-INFO: 127.0.0.1 - - [04/Nov/2026 10:13:07] "GET / HTTP/1.1" 200 -
+[2026-11-04 10:13:08,864]-INFO: This is Home page
+[2026-11-04 10:13:08,864]-INFO: This is fruit managment application
+[2026-11-04 10:13:08,865]-INFO: 127.0.0.1 - - [04/Nov/2026 10:13:08] "GET / HTTP/1.1" 200 -
+[2026-11-04 10:13:08,936]-INFO: 127.0.0.1 - - [04/Nov/2026 10:13:08] "GET /favicon.ico HTTP/1.1" 404 -
+[2026-11-04 10:13:57,751]-INFO: 127.0.0.1 - - [04/Nov/2026 10:13:57] "GET /fruits HTTP/1.1" 500 -
+[2026-11-04 10:13:57,920]-INFO: 127.0.0.1 - - [04/Nov/2026 10:13:57] "GET /fruits?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+[2026-11-04 10:13:57,947]-INFO: 127.0.0.1 - - [04/Nov/2026 10:13:57] "GET /fruits?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+[2026-11-04 10:13:58,001]-INFO: 127.0.0.1 - - [04/Nov/2026 10:13:58] "GET /fruits?__debugger__=yes&cmd=resource&f=console.png&s=icPmPWpLnNCNH84xwi0U HTTP/1.1" 200 -
+[2026-11-04 10:13:58,010]-INFO: 127.0.0.1 - - [04/Nov/2026 10:13:58] "GET /fruits?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[2026-11-04 10:15:40,736]-INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-058\\Flask\\Day-31\\app.py', reloading
+2026-11-04 10:15:40,806-INFO:  * Restarting with stat
+[2026-11-04 10:15:41,278]-WARNING:  * Debugger is active!
+[2026-11-04 10:15:41,281]-INFO:  * Debugger PIN: 687-988-537
+[2026-11-04 10:15:41,706]-INFO: Fruits data with min price 0 and max price 100000: {1: {'name': 'appple', 'price': 100, 'stock': 20}, 2: {'name': 'banana', 'price': 50, 'stock': 0}, 3: {'name': 'cherry', 'price': 80, 'stock': 40}, 4: {'name': 'pappaya', 'price': 30, 'stock': 30}, 5: {'name': 'orange', 'price': 70, 'stock': 60}}
+[2026-11-04 10:15:41,708]-INFO: 127.0.0.1 - - [04/Nov/2026 10:15:41] "GET /fruits HTTP/1.1" 200 -
+[2026-11-04 10:16:27,070]-INFO: Fruits data with min price 60 and max price 100000: {1: {'name': 'appple', 'price': 100, 'stock': 20}, 3: {'name': 'cherry', 'price': 80, 'stock': 40}, 5: {'name': 'orange', 'price': 70, 'stock': 60}}
+[2026-11-04 10:16:27,071]-INFO: 127.0.0.1 - - [04/Nov/2026 10:16:27] "GET /fruits?min_price=60 HTTP/1.1" 200 -
+[2026-11-04 10:17:44,568]-INFO: Fruits data with min price 60 and max price 90: {3: {'name': 'cherry', 'price': 80, 'stock': 40}, 5: {'name': 'orange', 'price': 70, 'stock': 60}}
+[2026-11-04 10:17:44,568]-INFO: 127.0.0.1 - - [04/Nov/2026 10:17:44] "GET /fruits?min_price=60&max_price=90 HTTP/1.1" 200 -
+[2026-11-04 10:18:13,842]-INFO: Fruit 1 data:{'name': 'appple', 'price': 100, 'stock': 20}
+[2026-11-04 10:18:13,842]-INFO: 127.0.0.1 - - [04/Nov/2026 10:18:13] "GET /fruits/1 HTTP/1.1" 200 -
+[2026-11-04 10:18:39,099]-WARNING: Fruit id 10 not found
+[2026-11-04 10:18:39,099]-INFO: 127.0.0.1 - - [04/Nov/2026 10:18:39] "GET /fruits/10 HTTP/1.1" 404 -
+[2026-11-04 10:19:16,510]-INFO: WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+[2026-11-04 10:19:16,510]-INFO: Press CTRL+C to quit
+[2026-11-04 10:19:16,511]-INFO:  * Restarting with stat
+[2026-11-04 10:19:16,848]-WARNING:  * Debugger is active!
+[2026-11-04 10:19:16,850]-INFO:  * Debugger PIN: 687-988-537
