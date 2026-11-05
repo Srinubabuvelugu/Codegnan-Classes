@@ -143,17 +143,56 @@ def admin_products():
     print(products)
     total = len(products)
     total_pages = len(products) // per_page + 1
+    _, categories = AdminQueries.getAllCategories()
     return render_template('admin/products.html',
                            products = products,
+                           categories = categories,
                            total_pages = total_pages,
                            page = page,
                            total = total,
                            per_page=per_page)     
 
 
-@app.route('/admin/products/<int:product_id>/edit-product')
+@app.route('/admin/products/<int:product_id>/edit-product', methods = ['GET','POST'])
 def admin_edit_product(product_id):
-    pass
+    if request.method == 'GET':
+        # get the product info by using product_id
+        _, product = AdminQueries.getAllProducts(product_id = product_id)
+        _, categories = AdminQueries.getAllCategories()
+        return render_template('admin/edit_product.html', 
+                               product = product, categories = categories)
+    if request.method == 'POST':
+        product_name = request.form.get('name')
+        category = request.form.get('category')
+        
+        price = request.form.get('price')
+        stock = request.form.get('stock')
+        description = request.form.get('description')
+        image = request.files.get('image')
+        if image:
+            img_name = image.filename
+            secure_img_name = secure_filename(img_name)
+            unique_img_name = str(uuid.uuid1()) + "_" + secure_img_name
+
+            # save image
+            img_path = os.path.join('static', 'images', 'products', unique_img_name)
+
+            image.save(img_path)
+        else:
+            _, product = AdminQueries.getAllProducts(product_id=product_id)
+            unique_img_name = product['imgname']
+            img_path = product['storedpath']
+        data = (product_name, description, category,price, stock ,unique_img_name, img_path, product_id)
+        status, msg = AdminQueries.updateProductRecord(product_data=data)
+        flash(msg, 'msg' if status == True else 'err')
+        return redirect(url_for('admin_products'))
+
+
+
+        
+    
+
+    
 
 
 @app.route('/admin/products/<int:product_id>/deactivate')
@@ -165,7 +204,9 @@ def admin_deactivate_product(product_id):
 @app.route('/admin/products/add-product',methods = ['GET','POST'])
 def admin_add_product():
     if request.method == 'GET':
-        return render_template('admin/add_product.html')
+        _, categories = AdminQueries.getAllCategories()
+        print(categories)
+        return render_template('admin/add_product.html', categories = categories)
     if request.method == 'POST':
         product_name = request.form.get('name')
         category = request.form.get('category')
@@ -209,9 +250,20 @@ def admin_orders():
 
 @app.route('/admin/users')
 def admin_users():
-    pass   
+    # get all users 
+    _, users = AdminQueries.getAllUsers()
+    return render_template('admin/users.html', users =users)   
 
 
+# user details
+@app.route('/admin/users/int:user_id>/details')
+def admin_user_details(user_id):
+    pass
+
+# user details
+@app.route('/admin/users/int:user_id>/edit')
+def admin_edit_user(user_id):
+    pass
 
 @app.route('/logout')
 def logout():
