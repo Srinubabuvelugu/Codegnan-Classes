@@ -1,6 +1,6 @@
 from flask import Flask, redirect, render_template, url_for, session, request, flash
 
-from database import createTables, AuthQueries, AdminQueries
+from database import createTables, AuthQueries, AdminQueries, UserQueries
 
 import bcrypt
 from werkzeug.utils import secure_filename
@@ -117,8 +117,50 @@ def login():
 # ===============================================================================
 @app.route('/products')
 def products():
-    return "User dashboard"
+    _, products = AdminQueries.getAllProducts()
+    _, categories = AdminQueries.getAllCategories()
+    print(categories)
+    return render_template('user/products.html', products=products, categories = categories)
 
+
+@app.route('/products/<int:product_id>/details')
+def product_details(product_id):
+    _, product = AdminQueries.getAllProducts(product_id=product_id)
+    return render_template('user/product_details.html', product= product)
+
+@app.route('/cart')
+def cart():
+    cart_items = [{'cartid':1,
+                   'productid':1,
+                   'productname':'apple',
+                   'category':'Fruits',
+                   'storedpath':None,
+                   'saleprice':50,
+                   'quantity':5,
+                   'subtotal':250
+                   }]
+    return render_template('user/cart.html', cart_items = cart_items)
+
+
+# update cart qunatity
+@app.route('/cart/<int:cartid>/update-quantity')
+def update_cart_quantity(cartid):
+    pass    
+
+# checkout
+@app.route('/checkout')
+def checkout():
+    pass    
+@app.route('/products/<int:product_id>/add-to-cart', methods = ['POST'])
+def add_to_cart(product_id):
+    quanity = int(request.form.get('quantity'))
+    status, msg = UserQueries.addCartItem(product_id=product_id,
+                                        userid=session['id'],
+                                        quantity=quanity)
+    flash(msg,'msg' if status else 'err')
+    return redirect('/products')
+
+    
 
 # ===============================================================================
 #                               Admin Routes
