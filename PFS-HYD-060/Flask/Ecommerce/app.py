@@ -2,6 +2,8 @@ from flask import Flask, redirect, render_template, url_for, session, request, f
 
 from database import createTables, AuthQueries, AdminQueries, UserQueries
 
+from database.tables import createTables
+
 import bcrypt
 from werkzeug.utils import secure_filename
 import uuid
@@ -130,27 +132,49 @@ def product_details(product_id):
 
 @app.route('/cart')
 def cart():
-    cart_items = [{'cartid':1,
-                   'productid':1,
-                   'productname':'apple',
-                   'category':'Fruits',
-                   'storedpath':None,
-                   'saleprice':50,
-                   'quantity':5,
-                   'subtotal':250
-                   }]
-    return render_template('user/cart.html', cart_items = cart_items)
+    
+    _,items = UserQueries.getCartItems(userid=session['id'])
+    print(items)
+    sub_total = sum([item['subtotal'] for item in items])
+    shipping = sub_total * 0.01
+    
+    return render_template('user/cart.html', cart_items = items,
+                            subtotal = sub_total,
+                            shipping = shipping,
+                            total = sub_total + shipping)
 
 
 # update cart qunatity
-@app.route('/cart/<int:cartid>/update-quantity')
+@app.route('/cart/<int:cartid>/update-quantity', methods = ['POST'])
 def update_cart_quantity(cartid):
-    pass    
+    quantity = int(request.form.get('quantity'))
+    status, msg = UserQueries.updateCartItemQuantity(cartid=cartid, quantity=quantity)
+    flash(msg, 'msg' if status else 'err')
+    return redirect('/cart')
+
+# remove cart item
+@app.route('/cart/<int:cartid>/remove', methods = ['POST'])
+def remove_cart_item(cartid):
+    status, msg = UserQueries.deleteCartItem(cartid=cartid)
+    flash(msg, 'msg' if status else 'err')
+    return redirect('/cart')
 
 # checkout
-@app.route('/checkout')
+@app.route('/checkout', methods = ['GET','POST'])
 def checkout():
-    pass    
+    if request.method == 'GET':
+        _,items = UserQueries.getCartItems(userid=session['id'])
+        # print(items)
+        sub_total = sum([item['subtotal'] for item in items])
+        shipping = sub_total * 0.01
+            
+        return render_template('user/checkout.html', cart_items = items,
+                                subtotal = sub_total,
+                                shipping = shipping,
+                                total = sub_total + shipping)
+
+
+
 @app.route('/products/<int:product_id>/add-to-cart', methods = ['POST'])
 def add_to_cart(product_id):
     quanity = int(request.form.get('quantity'))
