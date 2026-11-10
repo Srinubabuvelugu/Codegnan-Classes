@@ -173,6 +173,41 @@ def checkout():
                                 shipping = shipping,
                                 total = sub_total + shipping)
 
+    if request.method == 'POST':
+        name = request.form.get('name')
+        phone = request.form.get('phone')
+        address = request.form.get('address')
+        city = request.form.get('city')
+        state = request.form.get('state')
+        pincode = request.form.get('pincode')
+        payment_method = request.form.get('payment_method')
+
+        if not all([name, phone, address, city, state, pincode, payment_method]):
+            flash("Enter all details", 'err')
+            return redirect('/checkout')
+        full_address = f"{name}, {address},{city}, {state}, {pincode}, Phone: {phone}"
+        # if payment method is COD
+        if payment_method == 'COD':
+            # call create order 
+            status, msg = UserQueries.createOrder(userid=session['id'],
+                                                  address=full_address, 
+                                                  payment_method=payment_method)
+            if status == False:
+                flash(msg, 'err')
+                return redirect('/checkout')
+            return redirect('/orders')
+
+
+
+@app.route('/orders')
+def orders():
+    # get orders info from database
+
+    
+
+
+
+        
 
 
 @app.route('/products/<int:product_id>/add-to-cart', methods = ['POST'])
