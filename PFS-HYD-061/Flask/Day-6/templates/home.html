@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SM</title>
+</head>
+<body>
+    <div>
+        <div style="text-align: center;">
+            <h2>Student Management</h2>
+
+        </div>
+        <div>
+            {% if name %}
+                <strong>Welcome to SM {{ name }}, </strong>
+            {% else %}
+                <strong>Welcome Dear,</strong>
+            {% endif %}
+            
+            <p>Here you can manage students data</p>
+            <div>
+                <li>Register</li>
+                <li>All Students</li>
+                <li>Student data by id</li>
+
+            </div>
+            <div>
+                <p>Module Name: {{ module }}</p>
+                <p>Time: {{ time }}</p>
+                <p>Triner: {{ triner }}</p>
+            </div>
+            <a href="/students">All Students</a>
+            <a href="/register">Register</a>
+        </div>
+    </div>
+</body>
+</html>

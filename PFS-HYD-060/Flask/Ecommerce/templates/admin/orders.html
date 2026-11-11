@@ -185,7 +185,7 @@
                     <td>
 
                         <strong>
-                            #{{ order.orderid }}
+                            #{{ order.id }}
                         </strong>
 
                     </td>
@@ -286,7 +286,7 @@
                             <a
                                 href="{{ url_for(
                                     'admin_order_details',
-                                    order_id=order.orderid
+                                    order_id=order.id
                                 ) }}"
                                 class="action-view"
                             >
@@ -297,7 +297,7 @@
                             <a
                                 href="{{ url_for(
                                     'admin_edit_order',
-                                    order_id=order.orderid
+                                    order_id=order.id
                                 ) }}"
                                 class="action-edit"
                             >
