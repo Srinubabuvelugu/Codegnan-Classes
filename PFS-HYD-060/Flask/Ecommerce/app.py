@@ -9,6 +9,8 @@ from werkzeug.utils import secure_filename
 import uuid
 import os
 
+import logging
+
 from functools import wraps
 import razorpay
 from dotenv import load_dotenv
@@ -19,7 +21,12 @@ load_dotenv()
 app = Flask(__name__)
 
 app.secret_key = "srinubad;ofihbgp;w[R0IGNKA;OEP8EYQ0POHIENLKE,G]"
-
+# logging configuration
+logging.basicConfig(
+    filename='app.log',
+    level="INFO",
+    format="[%(asctime)s] - %(levelname)s: %(message)s"
+)
 
 
 # create images folder in static if not exists
@@ -84,6 +91,7 @@ def home():
 @app.route("/register", methods = ['GET', 'POST'])
 def register():
     if request.method == "GET":
+        logging.info("User in register page")
         return render_template('register.html')
     if request.method == 'POST':
         # get register data from form
@@ -101,12 +109,14 @@ def register():
         status, user = AuthQueries.getUserData(email=email)
         if status == True:
             flash("Email Already Exists", 'err')
+            logging.warning(f"{email} Email Already Exists")
             return redirect(url_for('register'))
 
         if password != confirm_password:
             flash("Password miss match", 'err')
+            logging.warning("Password missmatch")
             return redirect(url_for('register'))
-
+        logging.info('User email not exists and password also matched')
         hash_password = bcrypt.hashpw(password=password.encode('utf-8'),
                                       salt=bcrypt.gensalt(4))
 
@@ -114,8 +124,11 @@ def register():
                                                     password=hash_password,phone=phone)
         if status == False:
             flash(msg, 'err')
+            logging.warning(msg)
             return redirect(url_for('register'))        
         flash(msg, 'msg')
+        logging.info(msg)
+        logging.info("User redirecting to login page")
         return redirect(url_for('login'))
         
 
@@ -132,6 +145,7 @@ def register():
 @app.route("/login", methods = ['GET','POST'])
 def login():
     if request.method == 'GET':
+        logging.info("User in login page")
         return render_template('login.html')
     if request.method == 'POST':
         # get form data
@@ -143,11 +157,13 @@ def login():
         status, user = AuthQueries.getUserData(email=email)
         if status == False:
             flash(user, 'err')
+            logging.warning(user)
             return redirect('/login')
         verify_password_status = bcrypt.checkpw(password=password.encode('utf-8'),
                                     hashed_password=user['hashpassword'].encode('utf-8'))
         if verify_password_status == False:
             flash('Password incorrect','err')
+            logging.warning('Password incorrect')
             return redirect('/login')
         # store user data in session
         session['username'] = user['username']
@@ -156,8 +172,10 @@ def login():
         session['email'] = email
 
         if user['role'] == 'admin':
+            logging.info(f'{user['username']} user entering into admin dashboard page')
             return redirect(url_for('admin_dashboard'))
         else:
+            logging.info(f'{user['username']} user entering into products page')
             return redirect(url_for('products'))
 
 

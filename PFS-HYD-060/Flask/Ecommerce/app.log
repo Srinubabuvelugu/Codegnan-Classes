@@ -1,0 +1,41 @@
+[2026-11-16 14:55:54,374] - INFO: package: mysql.connector.plugins
+[2026-11-16 14:55:54,374] - INFO: plugin_name: caching_sha2_password
+[2026-11-16 14:55:54,374] - INFO: AUTHENTICATION_PLUGIN_CLASS: MySQLCachingSHA2PasswordAuthPlugin
+[2026-11-16 14:55:54,425] - WARNING:  * Debugger is active!
+[2026-11-16 14:55:54,431] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-16 14:56:00,173] - INFO: package: mysql.connector.plugins
+[2026-11-16 14:56:00,173] - INFO: plugin_name: caching_sha2_password
+[2026-11-16 14:56:00,173] - INFO: AUTHENTICATION_PLUGIN_CLASS: MySQLCachingSHA2PasswordAuthPlugin
+[2026-11-16 14:56:00,240] - INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2026-11-16 14:56:00,240] - INFO: [33mPress CTRL+C to quit[0m
+[2026-11-16 14:56:00,241] - INFO:  * Restarting with stat
+[2026-11-16 14:56:00,930] - INFO: package: mysql.connector.plugins
+[2026-11-16 14:56:00,930] - INFO: plugin_name: caching_sha2_password
+[2026-11-16 14:56:00,930] - INFO: AUTHENTICATION_PLUGIN_CLASS: MySQLCachingSHA2PasswordAuthPlugin
+[2026-11-16 14:56:00,976] - WARNING:  * Debugger is active!
+[2026-11-16 14:56:00,981] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-16 14:56:57,775] - INFO: 127.0.0.1 - - [16/Nov/2026 14:56:57] "GET / HTTP/1.1" 200 -
+[2026-11-16 14:56:57,890] - INFO: 127.0.0.1 - - [16/Nov/2026 14:56:57] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-16 14:56:58,175] - INFO: 127.0.0.1 - - [16/Nov/2026 14:56:58] "GET / HTTP/1.1" 200 -
+[2026-11-16 14:56:58,199] - INFO: 127.0.0.1 - - [16/Nov/2026 14:56:58] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-16 14:56:58,285] - INFO: 127.0.0.1 - - [16/Nov/2026 14:56:58] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[2026-11-16 14:57:01,264] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:01] "[32mGET /logout HTTP/1.1[0m" 302 -
+[2026-11-16 14:57:01,275] - INFO: User in login page
+[2026-11-16 14:57:01,310] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:01] "GET /login HTTP/1.1" 200 -
+[2026-11-16 14:57:01,321] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:01] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-16 14:57:04,192] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:04] "GET / HTTP/1.1" 200 -
+[2026-11-16 14:57:04,211] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:04] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-16 14:57:15,434] - INFO: User in register page
+[2026-11-16 14:57:15,454] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:15] "GET /register HTTP/1.1" 200 -
+[2026-11-16 14:57:15,466] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:15] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-16 14:57:56,491] - WARNING: user1@gmail.com Email Already Exists
+[2026-11-16 14:57:56,492] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:56] "[32mPOST /register HTTP/1.1[0m" 302 -
+[2026-11-16 14:57:56,499] - INFO: User in register page
+[2026-11-16 14:57:56,501] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:56] "GET /register HTTP/1.1" 200 -
+[2026-11-16 14:57:56,520] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:56] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-16 14:59:35,924] - WARNING: Password missmatch
+[2026-11-16 14:59:35,926] - INFO: 127.0.0.1 - - [16/Nov/2026 14:59:35] "[32mPOST /register HTTP/1.1[0m" 302 -
+[2026-11-16 14:59:35,932] - INFO: User in register page
+[2026-11-16 14:59:35,936] - INFO: 127.0.0.1 - - [16/Nov/2026 14:59:35] "GET /register HTTP/1.1" 200 -
+[2026-11-16 14:59:35,963] - INFO: 127.0.0.1 - - [16/Nov/2026 14:59:35] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
