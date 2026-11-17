@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+        SNS-Login
+{% endblock %}
+{% block navmenu %}
+<div>
+    <a href="#">Login</a>
+    <a href="#">Register</a>
+    <a href="#">Home</a>
+</div>
+    
+{% endblock %}
+
+
+{% block content %}
+    <div style="text-align: center;">
+        <div>
+            <h2>SNS Management</h2>
+        </div>
+        <div>
+            <p>Here students can login and manage notes and files data</p>
+        </div>
+        <div>
+            <form action="">
+                <div>
+                    <div>
+                        <label for="">Email</label>
+                        <input type="email" name="email" id="">
+                    </div>
+                    <div>
+                        <label for="">Password</label>
+                        <input type="password" name="password" id="">
+                        
+                    </div>
+                    <div>
+                        <button type="submit">Submit</button>
+                    </div>
+                    <div>
+                        Don't have account? <a href="#">Register</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+{% endblock %}

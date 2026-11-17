@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SNS</title>
+    <title>
+        {% block title %}
+        SNS
+        {% endblock %}
+    </title>
     {% block style %}
     {% endblock %}
 </head>
-<body>
-    {% block navmenu %}
-    {% endblock %}
+<body style="margin: auto; padding: 30px 0px 20px 0px;">
+    <div style="text-align: right;">
+        {% block navmenu %}
+        {% endblock %}
+
+    </div>
+    
 
     {% block content %}
     {% endblock %}

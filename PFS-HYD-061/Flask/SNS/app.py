@@ -15,6 +15,15 @@ def home():
     return render_template('home.html')
 
 
+# login route
+@app.route('/login', methods =['GET','POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+
+
+
+
 
 # main
 if __name__ == "__main__":

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+        SNS-Register
+{% endblock %}
+{% block navmenu %}
+<div>
+    <a href="#">Login</a>
+    <a href="#">Register</a>
+    <a href="#">Home</a>
+</div>
+    
+{% endblock %}
+
+
+{% block content %}
+    <div style="text-align: center;">
+        <div>
+            <h2>Register</h2>
+        </div>
+        <div>
+            <p>Register to sns to manage your files and notes</p>
+        </div>
+        <div>
+            <form action="">
+                <div>
+                    <div>
+                        <label for="">Username</label>
+                        <input type="text" name="username" id="">
+                    </div>
+                    <div>
+                        <label for="">Email</label>
+                        <input type="email" name="email" id="">
+                    </div>
+                    <div>
+                        <label for="">Password</label>
+                        <input type="password" name="password" id="">
+                    </div>
+                    <div>
+                        <label for="">Confirm Password</label>
+                        <input type="email" name="confirm_password" id="">
+                    </div>
+                    <div>
+                        <button type="submit">Submit</button>
+                    </div>
+                    <div>
+                        Do you have account? <a href="#">Login</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+{% endblock %}

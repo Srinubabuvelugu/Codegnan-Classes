@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 
 {% block navmenu %}
+<div style="text-align: right;">
     <a href="#">Login</a>
     <a href="#">Register</a>
     <a href="#">Home</a>
+
+</div>
+    
 {% endblock %}
 
 
@@ -14,6 +18,28 @@
         </div>
         <div>
             <p>Here students can manage their notes and files data</p>
+        </div>
+        <div style="display: flex; background-color: antiquewhite;">
+            <div
+            style="margin: auto; padding: 15px;">
+                This application can provide operations on Note
+                <div style="text-align: left; padding: 10px 15px 0px 0px;">
+                    <li>Create New Notes</li>
+                    <li>View Notes</li>
+                    <li>Update Notes</li>
+                    <li>Delete Notes</li>
+                </div>
+                
+            </div>
+            <div style="margin: auto; padding: 15px;">
+                This Application can provide operations on files
+                <div style="text-align: left; padding: 10px 15px 0px 0px;" >
+                    <li>Upload File</li>
+                    <li>View File on Browser</li>
+                    <li>Download File</li>
+                    <li>Delete File</li>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
