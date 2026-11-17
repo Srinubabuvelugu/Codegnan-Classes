@@ -1,0 +1,157 @@
+
+{% extends "admin/base.html" %}
+
+{% block title %}
+Update Order #{{ order.orderid }} | ShopZone Admin
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+            Update Order #{{ order.orderid }}
+        </h1>
+
+        <p>
+            Change the current order status.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- Flash Messages -->
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+    {% if messages %}
+
+        {% for category, message in messages %}
+
+            <div class="alert {{ category }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+{% endwith %}
+
+
+<div class="details-card">
+
+    <h2>
+        Order Status
+    </h2>
+
+
+    <form
+        method="POST"
+        action="{{ url_for(
+            'admin_edit_order',
+            order_id=order.orderid
+        ) }}"
+    >
+
+
+        <div class="form-group">
+
+            <label for="status">
+                Order Status
+            </label>
+
+
+            <select
+                name="status"
+                id="status"
+                required
+            >
+
+                <option
+                    value="PENDING"
+                    {% if order.status == 'PENDING' %}
+                        selected
+                    {% endif %}
+                >
+                    Pending
+                </option>
+
+
+                <option
+                    value="PROCESSING"
+                    {% if order.status == 'PROCESSING' %}
+                        selected
+                    {% endif %}
+                >
+                    Processing
+                </option>
+
+
+                <option
+                    value="SHIPPED"
+                    {% if order.status == 'SHIPPED' %}
+                        selected
+                    {% endif %}
+                >
+                    Shipped
+                </option>
+
+
+                <option
+                    value="DELIVERED"
+                    {% if order.status == 'DELIVERED' %}
+                        selected
+                    {% endif %}
+                >
+                    Delivered
+                </option>
+
+
+                <option
+                    value="CANCELLED"
+                    {% if order.status == 'CANCELLED' %}
+                        selected
+                    {% endif %}
+                >
+                    Cancelled
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Update Status
+            </button>
+
+
+            <a
+                href="{{ url_for(
+                    'admin_order_details',
+                    order_id=order.orderid
+                ) }}"
+                class="btn"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+

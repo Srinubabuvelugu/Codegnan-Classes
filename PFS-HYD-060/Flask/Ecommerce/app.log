@@ -39,3 +39,29 @@
 [2026-11-16 14:59:35,932] - INFO: User in register page
 [2026-11-16 14:59:35,936] - INFO: 127.0.0.1 - - [16/Nov/2026 14:59:35] "GET /register HTTP/1.1" 200 -
 [2026-11-16 14:59:35,963] - INFO: 127.0.0.1 - - [16/Nov/2026 14:59:35] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-17 15:23:26,778] - INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2026-11-17 15:23:26,778] - INFO: [33mPress CTRL+C to quit[0m
+[2026-11-17 15:23:26,780] - INFO:  * Restarting with stat
+[2026-11-17 15:23:28,112] - WARNING:  * Debugger is active!
+[2026-11-17 15:23:28,116] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-17 15:35:11,894] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\database\\utilsDB.py', reloading
+[2026-11-17 15:35:12,018] - INFO:  * Restarting with stat
+[2026-11-17 15:35:14,239] - WARNING:  * Debugger is active!
+[2026-11-17 15:35:14,242] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-17 15:37:43,956] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\database\\adminDB.py', reloading
+[2026-11-17 15:37:44,058] - INFO:  * Restarting with stat
+[2026-11-17 15:37:45,465] - WARNING:  * Debugger is active!
+[2026-11-17 15:37:45,468] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-17 15:41:32,362] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\database\\adminDB.py', reloading
+[2026-11-17 15:41:32,471] - INFO:  * Restarting with stat
+[2026-11-17 15:41:34,196] - WARNING:  * Debugger is active!
+[2026-11-17 15:41:34,199] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-17 15:41:56,068] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\database\\adminDB.py', reloading
+[2026-11-17 15:41:56,172] - INFO:  * Restarting with stat
+[2026-11-17 15:41:57,738] - WARNING:  * Debugger is active!
+[2026-11-17 15:41:57,740] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-17 15:46:52,320] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\database\\userDB.py', reloading
+[2026-11-17 15:46:52,442] - INFO:  * Restarting with stat
+[2026-11-17 15:46:53,952] - WARNING:  * Debugger is active!
+[2026-11-17 15:46:53,954] - INFO:  * Debugger PIN: 800-452-244

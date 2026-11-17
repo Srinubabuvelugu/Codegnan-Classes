@@ -16,6 +16,9 @@ import razorpay
 from dotenv import load_dotenv
 from decimal import Decimal
 
+from database.storage import supabase
+
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -571,9 +574,19 @@ def admin_edit_product(product_id):
             unique_img_name = str(uuid.uuid1()) + "_" + secure_img_name
 
             # save image
-            img_path = os.path.join('static', 'images', 'products', unique_img_name)
+            # upload image to Supabase Storage
+            supabase.storage.from_("product-images").upload(
+                path=unique_img_name,
+                file=image.read(),
+                file_options={
+                    "content-type": image.mimetype,
+                    "upsert": "true"
+                }
+            )
 
-            image.save(img_path)
+            img_path = supabase.storage.from_("product-images").get_public_url(
+                unique_img_name
+            )
         else:
             _, product = AdminQueries.getAllProducts(product_id=product_id)
             unique_img_name = product['imgname']
@@ -616,9 +629,19 @@ def admin_add_product():
         unique_img_name = str(uuid.uuid1()) + "_" + secure_img_name
 
         # save image
-        img_path = os.path.join('static', 'images', 'products', unique_img_name)
+        # upload image to Supabase Storage
+        supabase.storage.from_("product-images").upload(
+            path=unique_img_name,
+            file=image.read(),
+            file_options={
+                "content-type": image.mimetype,
+                "upsert": "true"
+            }
+        )
 
-        image.save(img_path)
+        img_path = supabase.storage.from_("product-images").get_public_url(
+            unique_img_name
+        )
 
         data = (product_name, description, category,price, stock ,unique_img_name, img_path)
 
