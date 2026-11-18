@@ -7,9 +7,9 @@
 {% endblock %}
 {% block navmenu %}
 <div>
-    <a href="#">Login</a>
-    <a href="#">Register</a>
-    <a href="#">Home</a>
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+    <a href="/">Home</a>
 </div>
     
 {% endblock %}
@@ -39,7 +39,10 @@
                         <button type="submit">Submit</button>
                     </div>
                     <div>
-                        Don't have account? <a href="#">Register</a>
+                        Don't have account? <a href="/register">Register</a>
+                    </div>
+                    <div>
+                        Don't know password?<a href="#">Forgot Password</a>
                     </div>
                 </div>
             </form>

@@ -7,9 +7,9 @@
 {% endblock %}
 {% block navmenu %}
 <div>
-    <a href="#">Login</a>
-    <a href="#">Register</a>
-    <a href="#">Home</a>
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+    <a href="/">Home</a>
 </div>
     
 {% endblock %}
@@ -24,7 +24,7 @@
             <p>Register to sns to manage your files and notes</p>
         </div>
         <div>
-            <form action="">
+            <form action="/register" method="POST">
                 <div>
                     <div>
                         <label for="">Username</label>
@@ -40,14 +40,15 @@
                     </div>
                     <div>
                         <label for="">Confirm Password</label>
-                        <input type="email" name="confirm_password" id="">
+                        <input type="password" name="confirm_password" id="">
                     </div>
                     <div>
                         <button type="submit">Submit</button>
                     </div>
                     <div>
-                        Do you have account? <a href="#">Login</a>
+                        Do you have account? <a href="/login">Login</a>
                     </div>
+                    
                 </div>
             </form>
         </div>

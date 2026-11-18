@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect
 
 
-from database import createTables
+from database import createTables, AuthenticationQuaries
 
 
 # flask instance
@@ -21,6 +21,30 @@ def login():
     if request.method == 'GET':
         return render_template('login.html')
 
+
+# register route
+@app.route('/register', methods =['GET','POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+        print(username, email, password, confirm_password)
+
+        # check password and confirm_password both are same or not
+        if password != confirm_password:
+            print("Password missmatch")
+            return redirect('/register')
+
+        # check user email already exists in database or not
+        user = AuthenticationQuaries.getUserData(email= email)
+        if isinstance(user, dict) and user.get('userid'):
+            print("Email Already Exists")
+            return redirect('/register')
+        
 
 
 
