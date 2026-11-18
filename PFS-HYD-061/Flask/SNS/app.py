@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect
 
 
 from database import createTables, AuthenticationQuaries
-
+from utils import sendEmail, generateOTP, generateHashPassword, verifyHashPassword
 
 # flask instance
 app = Flask(__name__)
@@ -44,7 +44,34 @@ def register():
         if isinstance(user, dict) and user.get('userid'):
             print("Email Already Exists")
             return redirect('/register')
-        
+
+        # generate otp 
+        otp = generateOTP()
+        # send otp via email
+        content = f"""Hi {username},
+
+Welcome to SNM!  
+To complete your registration, please use the One-Time Password (OTP) below:
+
+🔑 OTP: {otp}
+
+This code will expire in **10 minutes** for security purposes.
+
+If you did not request this code, please ignore this email.
+
+Thank you for joining us,  
+The SNM Team"""
+
+        status, msg = sendEmail(to_email=email,
+                                subject="OTP Verification for SNM Register!!!",
+                                body =content )
+        if status == False:
+            print(msg)
+            return redirect('/register')
+        # store user data in session
+        # redirect to verify otp
+        return msg
+
 
 
 
