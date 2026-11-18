@@ -1,6 +1,7 @@
 
 from database.connection import DatabaseConnection
 from psycopg2.extras import RealDictCursor
+from decimal import Decimal
 
 
 class UserQueries:
@@ -189,7 +190,7 @@ class UserQueries:
                 cursor.execute(query, (item['quantity'], item['productid']))
 
             # calculate shipping
-            shipping = sub_total * 0.01
+            shipping = sub_total * Decimal('0.01')
             total = sub_total + shipping
 
             # add order record

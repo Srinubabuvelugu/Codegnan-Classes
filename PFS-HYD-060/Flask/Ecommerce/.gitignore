@@ -1,0 +1,5 @@
+.env
+__pycache__/
+*.pyc
+flask_env/
+.flask_env/

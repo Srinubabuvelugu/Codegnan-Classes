@@ -99,9 +99,9 @@
             {% if product.storedpath %}
                 <div class="current-image">
                     <img
-                        src="{{ url_for('static', 
-                        filename=product.storedpath.replace('\\', '/').replace('static/', '')) }}"
+                        src="{{ product.storedpath }}"
                         alt="{{ product.productname }}"
+                        class="product-image"
                     >
                     <p>Current Image</p>
                 </div>

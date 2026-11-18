@@ -65,3 +65,240 @@
 [2026-11-17 15:46:52,442] - INFO:  * Restarting with stat
 [2026-11-17 15:46:53,952] - WARNING:  * Debugger is active!
 [2026-11-17 15:46:53,954] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-18 14:39:34,723] - INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2026-11-18 14:39:34,723] - INFO: [33mPress CTRL+C to quit[0m
+[2026-11-18 14:39:34,728] - INFO:  * Restarting with stat
+[2026-11-18 14:39:37,687] - WARNING:  * Debugger is active!
+[2026-11-18 14:39:37,706] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-18 14:39:54,446] - INFO: 127.0.0.1 - - [18/Nov/2026 14:39:54] "GET / HTTP/1.1" 200 -
+[2026-11-18 14:39:54,638] - INFO: 127.0.0.1 - - [18/Nov/2026 14:39:54] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:39:54,863] - INFO: 127.0.0.1 - - [18/Nov/2026 14:39:54] "GET / HTTP/1.1" 200 -
+[2026-11-18 14:39:54,906] - INFO: 127.0.0.1 - - [18/Nov/2026 14:39:54] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:39:55,136] - INFO: 127.0.0.1 - - [18/Nov/2026 14:39:55] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[2026-11-18 14:40:00,605] - INFO: User in register page
+[2026-11-18 14:40:00,639] - INFO: 127.0.0.1 - - [18/Nov/2026 14:40:00] "GET /register HTTP/1.1" 200 -
+[2026-11-18 14:40:00,664] - INFO: 127.0.0.1 - - [18/Nov/2026 14:40:00] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:40:34,020] - INFO: User email not exists and password also matched
+[2026-11-18 14:40:34,492] - INFO: Account created
+[2026-11-18 14:40:34,493] - INFO: User redirecting to login page
+[2026-11-18 14:40:34,494] - INFO: 127.0.0.1 - - [18/Nov/2026 14:40:34] "[32mPOST /register HTTP/1.1[0m" 302 -
+[2026-11-18 14:40:34,505] - INFO: User in login page
+[2026-11-18 14:40:34,543] - INFO: 127.0.0.1 - - [18/Nov/2026 14:40:34] "GET /login HTTP/1.1" 200 -
+[2026-11-18 14:40:34,588] - INFO: 127.0.0.1 - - [18/Nov/2026 14:40:34] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:40:45,794] - INFO: 127.0.0.1 - - [18/Nov/2026 14:40:45] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+[2026-11-18 14:40:45,863] - INFO: 127.0.0.1 - - [18/Nov/2026 14:40:45] "GET /login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+[2026-11-18 14:40:45,906] - INFO: 127.0.0.1 - - [18/Nov/2026 14:40:45] "GET /login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+[2026-11-18 14:40:45,949] - INFO: 127.0.0.1 - - [18/Nov/2026 14:40:45] "GET /login?__debugger__=yes&cmd=resource&f=console.png&s=kRY8ViczDgJkMRNj6iIb HTTP/1.1" 200 -
+[2026-11-18 14:40:45,968] - INFO: 127.0.0.1 - - [18/Nov/2026 14:40:45] "GET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[2026-11-18 14:43:00,306] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\app.py', reloading
+[2026-11-18 14:43:00,475] - INFO:  * Restarting with stat
+[2026-11-18 14:43:03,822] - WARNING:  * Debugger is active!
+[2026-11-18 14:43:03,826] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-18 14:43:06,651] - INFO: User in login page
+[2026-11-18 14:43:06,695] - INFO: 127.0.0.1 - - [18/Nov/2026 14:43:06] "GET /login HTTP/1.1" 200 -
+[2026-11-18 14:43:11,633] - INFO: 127.0.0.1 - - [18/Nov/2026 14:43:11] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+[2026-11-18 14:43:11,906] - INFO: 127.0.0.1 - - [18/Nov/2026 14:43:11] "[36mGET /login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2026-11-18 14:43:11,912] - INFO: 127.0.0.1 - - [18/Nov/2026 14:43:11] "[36mGET /login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:43:11,941] - INFO: 127.0.0.1 - - [18/Nov/2026 14:43:11] "GET /login?__debugger__=yes&cmd=resource&f=console.png&s=kmgaqlZ7gYt7tsj4NSXN HTTP/1.1" 200 -
+[2026-11-18 14:44:55,232] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\app.py', reloading
+[2026-11-18 14:44:55,580] - INFO:  * Restarting with stat
+[2026-11-18 14:44:59,151] - WARNING:  * Debugger is active!
+[2026-11-18 14:44:59,168] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-18 14:45:02,103] - INFO: admin user entering into admin dashboard page
+[2026-11-18 14:45:02,105] - INFO: 127.0.0.1 - - [18/Nov/2026 14:45:02] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2026-11-18 14:45:03,467] - INFO: 127.0.0.1 - - [18/Nov/2026 14:45:03] "GET /admin/dashboard HTTP/1.1" 200 -
+[2026-11-18 14:45:03,680] - INFO: 127.0.0.1 - - [18/Nov/2026 14:45:03] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:45:11,710] - INFO: 127.0.0.1 - - [18/Nov/2026 14:45:11] "GET /admin/products HTTP/1.1" 200 -
+[2026-11-18 14:45:11,729] - INFO: 127.0.0.1 - - [18/Nov/2026 14:45:11] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:45:14,145] - INFO: 127.0.0.1 - - [18/Nov/2026 14:45:14] "GET /admin/products/add-product HTTP/1.1" 200 -
+[2026-11-18 14:45:14,174] - INFO: 127.0.0.1 - - [18/Nov/2026 14:45:14] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:45:42,479] - INFO: HTTP Request: POST https://fwggfudvoajgmcjvmqfv.supabase.co/storage/v1/object/product-images/9fd55b73-e330-11f1-91b9-bc0ff35e6089_green_apple.jpg "HTTP/2 200 OK"
+[2026-11-18 14:45:42,958] - INFO: 127.0.0.1 - - [18/Nov/2026 14:45:42] "[32mPOST /admin/products/add-product HTTP/1.1[0m" 302 -
+[2026-11-18 14:45:43,819] - INFO: 127.0.0.1 - - [18/Nov/2026 14:45:43] "GET /admin/products HTTP/1.1" 200 -
+[2026-11-18 14:45:43,853] - INFO: 127.0.0.1 - - [18/Nov/2026 14:45:43] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:46:30,813] - INFO: 127.0.0.1 - - [18/Nov/2026 14:46:30] "[32mGET /logout HTTP/1.1[0m" 302 -
+[2026-11-18 14:46:30,827] - INFO: User in login page
+[2026-11-18 14:46:30,862] - INFO: 127.0.0.1 - - [18/Nov/2026 14:46:30] "GET /login HTTP/1.1" 200 -
+[2026-11-18 14:46:30,875] - INFO: 127.0.0.1 - - [18/Nov/2026 14:46:30] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:46:33,000] - INFO: User in register page
+[2026-11-18 14:46:33,014] - INFO: 127.0.0.1 - - [18/Nov/2026 14:46:33] "GET /register HTTP/1.1" 200 -
+[2026-11-18 14:46:33,029] - INFO: 127.0.0.1 - - [18/Nov/2026 14:46:33] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:46:55,009] - INFO: User email not exists and password also matched
+[2026-11-18 14:46:55,502] - INFO: Account created
+[2026-11-18 14:46:55,502] - INFO: User redirecting to login page
+[2026-11-18 14:46:55,503] - INFO: 127.0.0.1 - - [18/Nov/2026 14:46:55] "[32mPOST /register HTTP/1.1[0m" 302 -
+[2026-11-18 14:46:55,515] - INFO: User in login page
+[2026-11-18 14:46:55,517] - INFO: 127.0.0.1 - - [18/Nov/2026 14:46:55] "GET /login HTTP/1.1" 200 -
+[2026-11-18 14:46:55,553] - INFO: 127.0.0.1 - - [18/Nov/2026 14:46:55] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:47:05,356] - INFO: user1 user entering into admin dashboard page
+[2026-11-18 14:47:05,357] - INFO: 127.0.0.1 - - [18/Nov/2026 14:47:05] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2026-11-18 14:47:06,623] - INFO: 127.0.0.1 - - [18/Nov/2026 14:47:06] "GET /admin/dashboard HTTP/1.1" 200 -
+[2026-11-18 14:47:06,668] - INFO: 127.0.0.1 - - [18/Nov/2026 14:47:06] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:47:35,418] - INFO: 127.0.0.1 - - [18/Nov/2026 14:47:35] "GET /admin/dashboard HTTP/1.1" 200 -
+[2026-11-18 14:47:35,437] - INFO: 127.0.0.1 - - [18/Nov/2026 14:47:35] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:47:38,427] - INFO: 127.0.0.1 - - [18/Nov/2026 14:47:38] "[32mGET /logout HTTP/1.1[0m" 302 -
+[2026-11-18 14:47:38,445] - INFO: User in login page
+[2026-11-18 14:47:38,446] - INFO: 127.0.0.1 - - [18/Nov/2026 14:47:38] "GET /login HTTP/1.1" 200 -
+[2026-11-18 14:47:38,459] - INFO: 127.0.0.1 - - [18/Nov/2026 14:47:38] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:47:43,928] - INFO: user1 user entering into products page
+[2026-11-18 14:47:43,929] - INFO: 127.0.0.1 - - [18/Nov/2026 14:47:43] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2026-11-18 14:47:44,801] - INFO: 127.0.0.1 - - [18/Nov/2026 14:47:44] "GET /products HTTP/1.1" 200 -
+[2026-11-18 14:47:44,849] - INFO: 127.0.0.1 - - [18/Nov/2026 14:47:44] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:47:44,900] - INFO: 127.0.0.1 - - [18/Nov/2026 14:47:44] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:55:55,089] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\database\\utilsDB.py', reloading
+[2026-11-18 14:55:55,339] - INFO:  * Restarting with stat
+[2026-11-18 14:55:58,481] - WARNING:  * Debugger is active!
+[2026-11-18 14:55:58,495] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-18 14:57:25,802] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\database\\utilsDB.py', reloading
+[2026-11-18 14:57:25,907] - INFO:  * Restarting with stat
+[2026-11-18 14:57:28,041] - WARNING:  * Debugger is active!
+[2026-11-18 14:57:28,045] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-18 14:59:47,833] - INFO: 127.0.0.1 - - [18/Nov/2026 14:59:47] "[32mGET /logout HTTP/1.1[0m" 302 -
+[2026-11-18 14:59:47,845] - INFO: User in login page
+[2026-11-18 14:59:47,871] - INFO: 127.0.0.1 - - [18/Nov/2026 14:59:47] "GET /login HTTP/1.1" 200 -
+[2026-11-18 14:59:47,978] - INFO: 127.0.0.1 - - [18/Nov/2026 14:59:47] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 14:59:49,570] - INFO: User in register page
+[2026-11-18 14:59:49,580] - INFO: 127.0.0.1 - - [18/Nov/2026 14:59:49] "GET /register HTTP/1.1" 200 -
+[2026-11-18 14:59:49,593] - INFO: 127.0.0.1 - - [18/Nov/2026 14:59:49] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:00:17,327] - INFO: User email not exists and password also matched
+[2026-11-18 15:00:18,209] - INFO: Account created
+[2026-11-18 15:00:18,209] - INFO: User redirecting to login page
+[2026-11-18 15:00:18,210] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:18] "[32mPOST /register HTTP/1.1[0m" 302 -
+[2026-11-18 15:00:18,219] - INFO: User in login page
+[2026-11-18 15:00:18,222] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:18] "GET /login HTTP/1.1" 200 -
+[2026-11-18 15:00:18,263] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:18] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:00:32,456] - INFO: user2 user entering into products page
+[2026-11-18 15:00:32,457] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:32] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2026-11-18 15:00:33,351] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:33] "GET /products HTTP/1.1" 200 -
+[2026-11-18 15:00:33,382] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:33] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:00:33,390] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:33] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:00:41,826] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:41] "GET /products/1/details HTTP/1.1" 200 -
+[2026-11-18 15:00:41,846] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:41] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:00:41,850] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:41] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:00:43,925] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:43] "[32mPOST /products/1/add-to-cart HTTP/1.1[0m" 302 -
+[2026-11-18 15:00:44,762] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:44] "GET /products HTTP/1.1" 200 -
+[2026-11-18 15:00:44,796] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:44] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:00:44,797] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:44] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:00:47,037] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:47] "[35m[1mGET /cart HTTP/1.1[0m" 500 -
+[2026-11-18 15:00:47,056] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:47] "[36mGET /cart?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:00:47,067] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:47] "[36mGET /cart?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2026-11-18 15:00:47,078] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:47] "GET /cart?__debugger__=yes&cmd=resource&f=console.png&s=e7OqbTcUZY4lc8ghZ34H HTTP/1.1" 200 -
+[2026-11-18 15:00:47,102] - INFO: 127.0.0.1 - - [18/Nov/2026 15:00:47] "[36mGET /cart?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2026-11-18 15:01:46,303] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\app.py', reloading
+[2026-11-18 15:01:46,531] - INFO:  * Restarting with stat
+[2026-11-18 15:01:48,943] - WARNING:  * Debugger is active!
+[2026-11-18 15:01:48,946] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-18 15:01:50,973] - INFO: 127.0.0.1 - - [18/Nov/2026 15:01:50] "GET /cart HTTP/1.1" 200 -
+[2026-11-18 15:01:51,143] - INFO: 127.0.0.1 - - [18/Nov/2026 15:01:51] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:01:51,152] - INFO: 127.0.0.1 - - [18/Nov/2026 15:01:51] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:01:54,333] - INFO: 127.0.0.1 - - [18/Nov/2026 15:01:54] "[35m[1mGET /checkout HTTP/1.1[0m" 500 -
+[2026-11-18 15:01:54,355] - INFO: 127.0.0.1 - - [18/Nov/2026 15:01:54] "[36mGET /checkout?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:01:54,364] - INFO: 127.0.0.1 - - [18/Nov/2026 15:01:54] "[36mGET /checkout?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2026-11-18 15:01:54,376] - INFO: 127.0.0.1 - - [18/Nov/2026 15:01:54] "GET /checkout?__debugger__=yes&cmd=resource&f=console.png&s=zoacHyKv5aMIASOsfLgN HTTP/1.1" 200 -
+[2026-11-18 15:01:54,392] - INFO: 127.0.0.1 - - [18/Nov/2026 15:01:54] "GET /checkout?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[2026-11-18 15:02:15,111] - INFO: 127.0.0.1 - - [18/Nov/2026 15:02:15] "[35m[1mGET /checkout HTTP/1.1[0m" 500 -
+[2026-11-18 15:02:15,125] - INFO: 127.0.0.1 - - [18/Nov/2026 15:02:15] "[36mGET /checkout?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:02:15,128] - INFO: 127.0.0.1 - - [18/Nov/2026 15:02:15] "[36mGET /checkout?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2026-11-18 15:02:15,150] - INFO: 127.0.0.1 - - [18/Nov/2026 15:02:15] "[36mGET /checkout?__debugger__=yes&cmd=resource&f=console.png&s=zoacHyKv5aMIASOsfLgN HTTP/1.1[0m" 304 -
+[2026-11-18 15:02:15,163] - INFO: 127.0.0.1 - - [18/Nov/2026 15:02:15] "[36mGET /checkout?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2026-11-18 15:02:15,287] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\app.py', reloading
+[2026-11-18 15:02:15,532] - INFO:  * Restarting with stat
+[2026-11-18 15:02:18,125] - WARNING:  * Debugger is active!
+[2026-11-18 15:02:18,129] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-18 15:02:18,943] - INFO: 127.0.0.1 - - [18/Nov/2026 15:02:18] "GET /checkout HTTP/1.1" 200 -
+[2026-11-18 15:02:19,129] - INFO: 127.0.0.1 - - [18/Nov/2026 15:02:19] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:02:19,130] - INFO: 127.0.0.1 - - [18/Nov/2026 15:02:19] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:02:33,054] - INFO: 127.0.0.1 - - [18/Nov/2026 15:02:33] "[32mPOST /checkout HTTP/1.1[0m" 302 -
+[2026-11-18 15:02:33,492] - INFO: 127.0.0.1 - - [18/Nov/2026 15:02:33] "GET /orders HTTP/1.1" 200 -
+[2026-11-18 15:02:33,542] - INFO: 127.0.0.1 - - [18/Nov/2026 15:02:33] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:02:33,543] - INFO: 127.0.0.1 - - [18/Nov/2026 15:02:33] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:03:45,127] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\database\\userDB.py', reloading
+[2026-11-18 15:03:45,343] - INFO:  * Restarting with stat
+[2026-11-18 15:03:48,441] - WARNING:  * Debugger is active!
+[2026-11-18 15:03:48,452] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-18 15:03:50,589] - INFO: 127.0.0.1 - - [18/Nov/2026 15:03:50] "[32mPOST /checkout HTTP/1.1[0m" 302 -
+[2026-11-18 15:03:51,066] - INFO: 127.0.0.1 - - [18/Nov/2026 15:03:51] "GET /orders HTTP/1.1" 200 -
+[2026-11-18 15:03:51,241] - INFO: 127.0.0.1 - - [18/Nov/2026 15:03:51] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:03:51,248] - INFO: 127.0.0.1 - - [18/Nov/2026 15:03:51] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:04:01,561] - INFO: 127.0.0.1 - - [18/Nov/2026 15:04:01] "[35m[1mPOST /checkout HTTP/1.1[0m" 500 -
+[2026-11-18 15:04:01,579] - INFO: 127.0.0.1 - - [18/Nov/2026 15:04:01] "[36mGET /checkout?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:04:01,584] - INFO: 127.0.0.1 - - [18/Nov/2026 15:04:01] "[36mGET /checkout?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2026-11-18 15:04:01,592] - INFO: 127.0.0.1 - - [18/Nov/2026 15:04:01] "GET /checkout?__debugger__=yes&cmd=resource&f=console.png&s=MoL1QLfZSLpvFf9KEYFo HTTP/1.1" 200 -
+[2026-11-18 15:04:56,729] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\app.py', reloading
+[2026-11-18 15:04:56,968] - INFO:  * Restarting with stat
+[2026-11-18 15:04:59,659] - WARNING:  * Debugger is active!
+[2026-11-18 15:04:59,663] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-18 15:05:00,632] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:00] "GET /checkout HTTP/1.1" 200 -
+[2026-11-18 15:05:02,560] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:02] "GET /checkout HTTP/1.1" 200 -
+[2026-11-18 15:05:02,732] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:02] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:02,738] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:02] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:06,534] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:06] "GET /cart HTTP/1.1" 200 -
+[2026-11-18 15:05:06,564] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:06] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:06,567] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:06] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:11,348] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:11] "GET / HTTP/1.1" 200 -
+[2026-11-18 15:05:11,361] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:11] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:14,577] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:14] "GET /products HTTP/1.1" 200 -
+[2026-11-18 15:05:14,607] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:14] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:14,610] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:14] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:16,954] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:16] "GET /products/1/details HTTP/1.1" 200 -
+[2026-11-18 15:05:16,973] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:16] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:16,977] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:16] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:19,575] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:19] "[32mPOST /products/1/add-to-cart HTTP/1.1[0m" 302 -
+[2026-11-18 15:05:20,416] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:20] "GET /products HTTP/1.1" 200 -
+[2026-11-18 15:05:20,450] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:20] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:20,451] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:20] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:22,533] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:22] "GET /cart HTTP/1.1" 200 -
+[2026-11-18 15:05:22,550] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:22] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:22,555] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:22] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:25,177] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:25] "GET /checkout HTTP/1.1" 200 -
+[2026-11-18 15:05:25,192] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:25] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:25,195] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:25] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:37,776] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:37] "POST /checkout HTTP/1.1" 200 -
+[2026-11-18 15:05:37,800] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:37] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:05:37,803] - INFO: 127.0.0.1 - - [18/Nov/2026 15:05:37] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:06:04,812] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:04] "[32mPOST /verify-payment HTTP/1.1[0m" 302 -
+[2026-11-18 15:06:05,296] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:05] "GET /payment/success HTTP/1.1" 200 -
+[2026-11-18 15:06:05,336] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:05] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:06:05,337] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:05] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:06:10,350] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:10] "GET /orders HTTP/1.1" 200 -
+[2026-11-18 15:06:10,369] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:10] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:06:10,371] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:10] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:06:16,708] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:16] "GET /orders/1 HTTP/1.1" 200 -
+[2026-11-18 15:06:16,724] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:16] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:06:16,725] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:16] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:06:21,211] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:21] "GET /orders/1/invoice HTTP/1.1" 200 -
+[2026-11-18 15:06:21,239] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:21] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:06:21,243] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:21] "[36mGET /static/css/user.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:06:51,871] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:51] "[32mGET /logout HTTP/1.1[0m" 302 -
+[2026-11-18 15:06:51,886] - INFO: User in login page
+[2026-11-18 15:06:51,892] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:51] "GET /login HTTP/1.1" 200 -
+[2026-11-18 15:06:51,904] - INFO: 127.0.0.1 - - [18/Nov/2026 15:06:51] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:07:00,381] - INFO: admin user entering into admin dashboard page
+[2026-11-18 15:07:00,383] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:00] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2026-11-18 15:07:01,686] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:01] "GET /admin/dashboard HTTP/1.1" 200 -
+[2026-11-18 15:07:01,724] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:01] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:07:07,699] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:07] "GET /admin/orders HTTP/1.1" 200 -
+[2026-11-18 15:07:07,724] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:07] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:07:10,133] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:10] "GET /admin/orders HTTP/1.1" 200 -
+[2026-11-18 15:07:10,161] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:10] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:07:13,086] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:13] "GET /admin/orders HTTP/1.1" 200 -
+[2026-11-18 15:07:13,101] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:13] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:07:14,212] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:14] "GET /admin/users HTTP/1.1" 200 -
+[2026-11-18 15:07:14,236] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:14] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:07:19,814] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:19] "GET / HTTP/1.1" 200 -
+[2026-11-18 15:07:19,841] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:19] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:07:23,055] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:23] "GET /admin/products HTTP/1.1" 200 -
+[2026-11-18 15:07:23,080] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:23] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:07:27,596] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:27] "GET /admin/dashboard HTTP/1.1" 200 -
+[2026-11-18 15:07:27,621] - INFO: 127.0.0.1 - - [18/Nov/2026 15:07:27] "[36mGET /static/css/admin.css HTTP/1.1[0m" 304 -
+[2026-11-18 15:10:23,354] - INFO:  * Detected change in 'D:\\srinubabu\\Codegnan-Classes\\PFS-HYD-060\\Flask\\Ecommerce\\app.py', reloading
+[2026-11-18 15:10:23,518] - INFO:  * Restarting with stat
+[2026-11-18 15:10:26,088] - WARNING:  * Debugger is active!
+[2026-11-18 15:10:26,111] - INFO:  * Debugger PIN: 800-452-244
+[2026-11-18 15:41:55,786] - INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2026-11-18 15:41:55,787] - INFO: [33mPress CTRL+C to quit[0m
+[2026-11-18 15:41:55,788] - INFO:  * Restarting with stat
+[2026-11-18 15:41:57,813] - WARNING:  * Debugger is active!
+[2026-11-18 15:41:57,816] - INFO:  * Debugger PIN: 800-452-244

@@ -71,11 +71,10 @@
                 {% if product.storedpath %}
                 
                     <img
-                        src="{{ url_for('static', 
-                        filename=product.storedpath.replace('\\', '/').replace('static/', '')) }}"
+                        src="{{ product.storedpath }}"
                         alt="{{ product.productname }}"
                         class="product-image"
-                        >
+                    >
 
                 {% else %}
                     <div class="no-image">

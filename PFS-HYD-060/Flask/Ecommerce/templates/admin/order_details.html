@@ -166,11 +166,9 @@
                             {% if item.image %}
 
                             <img
-                                src="{{ url_for(
-                                    'static',
-                                    filename='uploads/' + item.image
-                                ) }}"
-                                alt="{{ item.product_name }}"
+                                src="{{ item.storedpath }}"
+                                alt="{{ item.productname }}"
+                                class="product-image"
                             >
 
                             {% endif %}

@@ -4,6 +4,36 @@ from psycopg2.extras import RealDictCursor
 
 
 class AuthQueries:
+    @staticmethod
+    def assignUserRole():
+        db_config = cursor = None
+
+        try:
+            db_config = DatabaseConnection()
+            cursor = db_config.cursor()
+
+            query = """
+                SELECT COUNT(*) 
+                FROM users 
+                WHERE role = 'admin'
+            """
+            cursor.execute(query)
+            admin_count = cursor.fetchone()[0]
+
+            if admin_count == 0:
+                return 'admin'
+
+            return 'user'
+
+        except Exception as e:
+            print("Error assigning user role:", e)
+            return None
+
+        finally:
+            if cursor:
+                cursor.close()
+            if db_config:
+                db_config.close()
 
     # get user data using email
     @staticmethod
@@ -41,6 +71,7 @@ class AuthQueries:
     def createUserAccount(name: str, email: str, password: str, phone: str):
         db_config = cursor = None
         try:
+            role = AuthQueries.assignUserRole()
             db_config = DatabaseConnection()
 
             if db_config is None:
@@ -49,11 +80,11 @@ class AuthQueries:
             cursor = db_config.cursor(cursor_factory=RealDictCursor)
 
             query = """
-                INSERT INTO users(username, email, hashpassword, phone)
-                VALUES (%s, %s, %s, %s)
+                INSERT INTO users(username, email, hashpassword, phone, role)
+                VALUES (%s, %s, %s, %s, %s)
             """
 
-            cursor.execute(query, (name, email, password, phone))
+            cursor.execute(query, (name, email, password, phone, role))
             db_config.commit()
 
             return True, "Account created"

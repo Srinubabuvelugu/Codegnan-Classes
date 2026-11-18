@@ -23,7 +23,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-app.secret_key = "srinubad;ofihbgp;w[R0IGNKA;OEP8EYQ0POHIENLKE,G]"
+app.secret_key = os.getenv('SECRET_KEY')
 # logging configuration
 logging.basicConfig(
     filename='app.log',
@@ -32,13 +32,7 @@ logging.basicConfig(
 )
 
 
-# create images folder in static if not exists
-if not os.path.exists('static/images'):
-    os.mkdir('static/images')
 
-# create static/images/products folder
-if not os.path.exists('static/images/products'):
-    os.mkdir('static/images/products')
 
 def login_required(role=None):
     def decorator(fn):
@@ -71,12 +65,12 @@ def razorpay_client():
     try:
         key = os.getenv('RAZORPAY_KEY_ID')
         secret_key = os.getenv('RAZORPAY_KEY_SECRET')
-        print(key, secret_key)
+        # print(key, secret_key)
         if not secret_key or not key:
             return "Not able to get razorpay keys from .env"
         
         client = razorpay.Client(auth=(key, secret_key))
-        print(client )
+        # print(client )
        
         return client
     except Exception as e:
@@ -162,8 +156,22 @@ def login():
             flash(user, 'err')
             logging.warning(user)
             return redirect('/login')
-        verify_password_status = bcrypt.checkpw(password=password.encode('utf-8'),
-                                    hashed_password=user['hashpassword'].encode('utf-8'))
+        # print("Stored hash:", user['hashpassword'])
+        # print("Hash type:", type(user['hashpassword']))
+        # print("Hash length:", len(user['hashpassword']))
+        stored_hash = user['hashpassword']
+
+        # Decode PostgreSQL hex-encoded hash
+        if isinstance(stored_hash, str) and stored_hash.startswith('\\x'):
+            stored_hash = bytes.fromhex(stored_hash[2:])
+
+        elif isinstance(stored_hash, str):
+            stored_hash = stored_hash.encode('utf-8')
+
+        verify_password_status = bcrypt.checkpw(
+            password=password.encode('utf-8'),
+            hashed_password=stored_hash
+        )
         if verify_password_status == False:
             flash('Password incorrect','err')
             logging.warning('Password incorrect')
@@ -189,7 +197,7 @@ def login():
 def products():
     _, products = AdminQueries.getAllProducts()
     _, categories = AdminQueries.getAllCategories()
-    print(categories)
+    # print(categories)
     return render_template('user/products.html', products=products, categories = categories)
 
 
@@ -199,12 +207,13 @@ def product_details(product_id):
     return render_template('user/product_details.html', product= product)
 
 @app.route('/cart')
+@user_required
 def cart():
     
     _,items = UserQueries.getCartItems(userid=session['id'])
-    print(items)
+    # print(items)
     sub_total = sum([item['subtotal'] for item in items])
-    shipping = sub_total * 0.01
+    shipping = sub_total * Decimal('0.01')
     
     return render_template('user/cart.html', cart_items = items,
                             subtotal = sub_total,
@@ -214,6 +223,7 @@ def cart():
 
 # update cart qunatity
 @app.route('/cart/<int:cartid>/update-quantity', methods = ['POST'])
+@user_required
 def update_cart_quantity(cartid):
     quantity = int(request.form.get('quantity'))
     status, msg = UserQueries.updateCartItemQuantity(cartid=cartid, quantity=quantity)
@@ -224,13 +234,16 @@ def update_cart_quantity(cartid):
 
 
 # remove cart item
+
 @app.route('/cart/<int:cartid>/remove', methods = ['POST'])
+@user_required
 def remove_cart_item(cartid):
     status, msg = UserQueries.deleteCartItem(cartid=cartid)
     flash(msg, 'msg' if status else 'err')
     return redirect('/cart')
 
 @app.route('/products/<int:product_id>/add-to-cart', methods = ['POST'])
+@user_required
 def add_to_cart(product_id):
     quanity = int(request.form.get('quantity'))
     status, msg = UserQueries.addCartItem(product_id=product_id,
@@ -244,6 +257,7 @@ def add_to_cart(product_id):
 
 #checkout 
 @app.route('/checkout', methods = ['GET','POST'])
+@user_required
 def checkout():
     if request.method == 'GET':
         _, items = UserQueries.getCartItems(userid=session['id'])
@@ -252,7 +266,7 @@ def checkout():
         for item in items:
             sub_total += item['subtotal']
         
-        shipping = sub_total * 0.01
+        shipping = sub_total * Decimal('0.01')
         total = sub_total + shipping
         session['total'] = total
         return render_template('user/checkout.html',
@@ -302,10 +316,12 @@ def checkout():
                 return "Razorpay authentication failed"
 
             total = session['total']
-            amount = int(round(total * 100))
+            
 
-            print("Total:", total)
-            print("Amount in paise:", amount)
+            amount = int(Decimal(str(total)) * 100)
+
+            # print("Total:", total)
+            # print("Amount in paise:", amount)
 
             if amount < 100:
                 flash("Minimum order amount is ₹1", "err")
@@ -397,7 +413,7 @@ def payment_cancel():
 @user_required
 def orders():
     _,rows=UserQueries.getOrders(session['id'])
-    print(rows)
+    # print(rows)
     return render_template('user/orders.html',orders=rows or [])
 @app.route('/orders/<int:order_id>')
 @user_required
@@ -412,7 +428,7 @@ def invoice(order_id):
     ok, order = UserQueries.getOrderDetails(
         order_id, session['id']
     )
-    print(order)
+    # print(order)
 
     if not ok:
         abort(404)
@@ -427,7 +443,7 @@ def download_invoice(order_id):
     ok, order = UserQueries.getOrderDetails(
         order_id, session['id']
     )
-    print(order)
+    # print(order)
 
     if not ok:
         abort(404)
@@ -528,6 +544,7 @@ def admin_dashboard():
 
 
 @app.route('/admin/products')
+@admin_required
 def admin_products():
     category = request.args.get('category')
     product_name  = request.args.get('search')
@@ -538,8 +555,8 @@ def admin_products():
                                                    category=category,
                                                    page_no=page,
                                                    per_page=per_page)
-    print("*" * 50)   
-    print(products)
+    # print("*" * 50)   
+    # print(products)
     total = len(products)
     total_pages = len(products) // per_page + 1
     _, categories = AdminQueries.getAllCategories()
@@ -553,6 +570,7 @@ def admin_products():
 
 
 @app.route('/admin/products/<int:product_id>/edit-product', methods = ['GET','POST'])
+@admin_required
 def admin_edit_product(product_id):
     if request.method == 'GET':
         # get the product info by using product_id
@@ -607,10 +625,11 @@ def admin_edit_product(product_id):
 
 
 @app.route('/admin/products/add-product',methods = ['GET','POST'])
+@admin_required
 def admin_add_product():
     if request.method == 'GET':
         _, categories = AdminQueries.getAllCategories()
-        print(categories)
+        # print(categories)
         return render_template('admin/add_product.html', categories = categories)
     if request.method == 'POST':
         product_name = request.form.get('name')
