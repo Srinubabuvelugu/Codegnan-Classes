@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+        SNS-Verify-OTP
+{% endblock %}
+{% block navmenu %}
+<div>
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+    <a href="/">Home</a>
+</div>
+    
+{% endblock %}
+
+
+{% block content %}
+    <div style="text-align: center;">
+        <div>
+            <h2>Verify OTP</h2>
+        </div>
+        <div>
+            <p>Here students can login and manage notes and files data</p>
+        </div>
+        <div>
+            <form action="/verifyotp" method="POST">
+                <div>
+                    <div>
+                        <label for="">OTP</label>
+                        <input type="number" name="otp" id="">
+                    </div>
+                    
+                    <div>
+                        <button type="submit">Submit</button>
+                    </div>
+                    
+                </div>
+            </form>
+        </div>
+        
+    </div>
+{% endblock %}

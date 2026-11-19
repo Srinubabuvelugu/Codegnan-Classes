@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 
 
 from database import createTables, AuthenticationQuaries
@@ -6,7 +6,7 @@ from utils import sendEmail, generateOTP, generateHashPassword, verifyHashPasswo
 
 # flask instance
 app = Flask(__name__)
-
+app.secret_key = "aieflbjkadfbhvlenh iulrnhgw; oeurhgq;iorhgj 4l5iu4"
 # ======================================================================
 #                              Authentication Routes
 # ======================================================================
@@ -69,8 +69,33 @@ The SNM Team"""
             print(msg)
             return redirect('/register')
         # store user data in session
+        session.clear()
+        session['otp'] = otp
+        session['email'] = email
+        session['password'] = password
+        session['username'] = username
         # redirect to verify otp
-        return msg
+        return redirect('/verifyotp')
+
+
+@app.route('/verifyotp', methods=['GET','POST'])
+def verify_otp():
+    if request.method == 'GET':
+        return render_template('verifyotp.html')
+    if request.method == 'POST':
+        otp = request.form.get('otp', type=int)
+        # if otp is incorrect
+        if otp != session['otp']:
+            print("Incorrect OTP")
+            return redirect('/verifyotp')
+        # otp correct and store user data in database
+        hash_password = generateHashPassword(password=session['password'])
+        msg = AuthenticationQuaries.createUserAccount(name=session['username'],
+                                                      email=session['email'],
+                                                      password=hash_password)
+        print(msg)
+        return redirect('/login')
+
 
 
 
