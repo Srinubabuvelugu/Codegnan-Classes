@@ -20,6 +20,25 @@ def home():
 def login():
     if request.method == 'GET':
         return render_template('login.html')
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        user = AuthenticationQuaries.getUserData(email=email)
+        hash_password = user.get('hashpassword')
+        if not hash_password:
+            print("Email Not Exists")
+            return redirect('/login')
+        status = verifyHashPassword(password=password, hash_password=hash_password)
+        if status == False:
+            print("Incorrect Password")
+            return redirect('/login')
+        return redirect('/dashboard')
+
+@app.route('/dashboard')
+def dashboard():
+    if request.method == 'GET':
+        return render_template('dashboard.html')
 
 
 # register route

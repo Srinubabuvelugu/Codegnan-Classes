@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block navmenu %}
+<div>
+    <a href="">Dashboard</a>
+    <a href="">Files</a>
+    <a href="">Notes</a>
+    <a href="">Logout</a>
+</div>
+    
+{% endblock %}
+
+
+{% block content %}
+    <div style="text-align: center;">
+        <div>
+            <h2>SNS Management</h2>
+        </div>
+        <div>
+            <p></p>
+        </div>
+        <div style="display: flex; background-color: antiquewhite;">
+            <div
+            style="margin: auto; padding: 15px;">
+                This Application can provide operations on Notes
+                <div>
+                    <a href="">My Files</a>
+                </div>
+                   
+            </div>
+            <div style="margin: auto; padding: 15px;">
+                This Application can provide operations on files
+                <div style="text-align: left; padding: 10px 15px 0px 0px;" >
+                    <a href="">My Notes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

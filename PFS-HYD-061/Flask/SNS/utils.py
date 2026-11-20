@@ -12,6 +12,7 @@ SENDER_EMAIL = os.getenv('SENDER_EMAIL')
 SENDER_PASSKEY = os.getenv('SENDER_PASSKEY')
 
 def sendEmail(to_email:str, subject:str, body:str):
+    print(SENDER_EMAIL, SENDER_PASSKEY)
     msg = MIMEMultipart()
     msg['From'] = SENDER_EMAIL
     msg['To'] = to_email
