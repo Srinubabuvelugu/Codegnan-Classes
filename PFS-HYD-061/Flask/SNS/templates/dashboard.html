@@ -2,9 +2,9 @@
 
 {% block navmenu %}
 <div>
-    <a href="">Dashboard</a>
+    <a href="/dashboard">Dashboard</a>
     <a href="">Files</a>
-    <a href="">Notes</a>
+    <a href="/dashboard/notes">Notes</a>
     <a href="">Logout</a>
 </div>
     
@@ -31,7 +31,7 @@
             <div style="margin: auto; padding: 15px;">
                 This Application can provide operations on files
                 <div style="text-align: left; padding: 10px 15px 0px 0px;" >
-                    <a href="">My Notes</a>
+                    <a href="{{ url_for('mynotes') }}">My Notes</a>
                 </div>
             </div>
         </div>

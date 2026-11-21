@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+ SNS-Notes
+{% endblock %}
+
+{% block navmenu %}
+<div>
+    <a href="/dashboard">Dashboard</a>
+    <a href="">Files</a>
+    <a href="/dashboard/notes">Notes</a>
+    <a href="">Logout</a>
+</div>
+    
+{% endblock %}
+
+
+{% block content %}
+    <div style="text-align: center;">
+        <div>
+            <h2>Add Notes</h2>
+        </div>
+        
+        
+        <div>
+            <div>
+                Here you can Add your new notes
+            </div>  
+
+            <div>
+                <form action="{{ url_for('addnotes') }}" method="POST">
+                    <div>
+                        <div>
+                            <label for="">Title</label>
+                            <input type="text" name="title" id="">
+                        </div>
+                        <div>
+                            <label for="">Content</label>
+                            <textarea name="content" id="" rows="5" cols="50"></textarea>
+                        </div>
+                        <button type="submit">Save</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+{% endblock %}

@@ -1,2 +1,2 @@
 from database.tables import createTables
-from database.utilsDB import AuthenticationQuaries
+from database.utilsDB import AuthenticationQuaries, NotesQueries

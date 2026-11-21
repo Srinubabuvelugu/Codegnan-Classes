@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+ SNS-Notes
+{% endblock %}
+
+{% block navmenu %}
+<div>
+    <a href="/dashboard">Dashboard</a>
+    <a href="">Files</a>
+    <a href="/dashboard/notes">Notes</a>
+    <a href="">Logout</a>
+</div>
+    
+{% endblock %}
+
+
+{% block content %}
+    <div style="text-align: center;">
+        <div>
+            <h2>Notes Management</h2>
+        </div>
+        
+        
+        <div>
+            <div>
+                Here you can manage your notes
+            </div>
+
+            <div>
+                <a href="{{ url_for('addnotes') }}">Add Notes</a>
+            </div>
+
+            <div>
+                {% if notes %}
+                    {% for note in notes %}
+                        <div>
+                            <div>
+                                <strong>Title: {{ note.title }}</strong>
+                                <p>Content: {{ note.content[:100]+ "..." }}</p>
+                            </div>                            
+
+                            <div>
+                                <button><a href="">View</a></button>
+                                <button><a href="">Update</a></button>
+                                <button><a href="">Delete</a></button>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                {% else %}
+                    <p>Create your first Notes start by clicking Add Notes </p>
+                {% endif %}
+            </div>
+        </div>
+{% endblock %}

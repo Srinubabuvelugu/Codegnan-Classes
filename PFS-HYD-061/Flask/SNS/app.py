@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for, flash
 
 
-from database import createTables, AuthenticationQuaries
+from database import createTables, AuthenticationQuaries, NotesQueries
 from utils import sendEmail, generateOTP, generateHashPassword, verifyHashPassword
 
 # flask instance
@@ -33,12 +33,14 @@ def login():
         if status == False:
             print("Incorrect Password")
             return redirect('/login')
+        # strore user data in session
+        session.clear()
+        session['id'] = user['userid']
+        session['email'] =email
+        session['username'] = user['username']
         return redirect('/dashboard')
 
-@app.route('/dashboard')
-def dashboard():
-    if request.method == 'GET':
-        return render_template('dashboard.html')
+
 
 
 # register route
@@ -117,6 +119,28 @@ def verify_otp():
 
 
 
+
+@app.route('/dashboard')
+def dashboard():
+    if request.method == 'GET':
+        return render_template('dashboard.html')
+
+@app.route('/dashboard/notes')
+def mynotes():
+    # get user note from databse
+    all_notes = NotesQueries.getNotesByUserId(userid=session['id'])
+    return render_template('/notes.html', notes = all_notes)
+
+@app.route('/dashboard/notes/add-notes', methods = ['GET','POST'])
+def addnotes():
+    if request.method == 'GET':
+        return render_template('addnotes.html')
+    if request.method == 'POST':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        msg = NotesQueries.addNotes(userid=session['id'], title=title, content=content)
+        flash(msg)
+        return redirect(url_for('mynotes'))
 
 
 

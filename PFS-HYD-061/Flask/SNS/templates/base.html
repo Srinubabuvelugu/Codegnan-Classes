@@ -17,6 +17,17 @@
         {% endblock %}
 
     </div>
+
+    <div>
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <div style="color: rgb(246, 170, 56); background-color: antiquewhite;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endwith %}
+    </div>
+
     
 
     {% block content %}

@@ -40,3 +40,49 @@ class AuthenticationQuaries:
                 cursor.close()
             if db_config: 
                 db_config.close()
+
+
+
+
+class NotesQueries:
+    @staticmethod
+    def addNotes(userid:int, title:str, content:str):
+        db_config = cursor = None
+        try:
+            db_config = DatabaseConnection()
+            cursor = db_config.cursor(dictionary=True)
+            query = """insert into notes(userid, title, content) values(%s, %s, %s)"""
+            cursor.execute(query,(userid, title, content))
+            db_config.commit()
+            return "Successfully Notes created" 
+        except Exception as e:
+            return f"Something wrong in \
+                        database.utilsDB.NotesQueries.addNotes():{e}"
+        finally:
+            if cursor: 
+                cursor.close()
+            if db_config: 
+                db_config.close()
+
+    # get the user notes
+    @staticmethod
+    def getNotesByUserId(userid:int):
+        db_config = cursor = None
+        try:
+            db_config = DatabaseConnection()
+            cursor = db_config.cursor(dictionary=True)
+            query = """select * from notes where userid = %s"""
+            cursor.execute(query,(userid, ))
+            data = cursor.fetchall()
+            return data
+        except Exception as e:
+            return f"Something wrong in \
+                        database.utilsDB.NotesQueries.getNotesByUserId():{e}"
+        finally:
+            if cursor: 
+                cursor.close()
+            if db_config: 
+                db_config.close()
+
+
+
